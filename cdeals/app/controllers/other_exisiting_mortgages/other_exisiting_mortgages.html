@@ -1,0 +1,555 @@
+<!-- Start Page Loading -->
+<div class="loading" ng-if="!customer.activeApplicant"><img src="assets/img/loading.gif" alt="loading-img"></div>
+<!-- End Page Loading -->
+<div ng-if="customer.activeApplicant">
+    <div class="page-header">
+        <h1 class="title">Other Existing Mortgages</h1>
+    </div>
+    <div class="container-widget">
+        <div class="row">
+            <div class="col-md-12 col-lg-12">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="col-lg-12 padding-0">
+                            <div class="panel panel-default panel-with-data" ng-repeat="(key, otherMortgage) in customer.allOtherExistingMort track by $index">
+                                <form name="updateMorgageForm" novalidate ng-submit="updateMorgageForm.$valid && updateOtherMortgage(otherMortgage)" >
+                                    <div class="panel-title benifits_title" ng-click="otherMortgage.show = !otherMortgage.show">
+                                        {{otherMortgage.FullName}} / {{otherMortgage.eOtherMortgageTypeDescription}} / &#163; {{otherMortgage.OutstandingMortgage}}
+                                    </div>
+                                    <input type="hidden" ng-model="otherMortgage.OtherMortID"/>
+                                    <div class="panel-body" ng-if="otherMortgage.show">
+                                        <div class="col-lg-12 padding-0">
+                                            <div class="col-sm-12">
+                                                <div class="form-group">
+                                                    <span class="step-heading step-heading-small">EDIT Other Mortgage Details</span>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                            <div class="col-lg-6">
+                                                <div class="form-group">
+                                                    <label class="form-label">Applicants</label>
+                                                    <div ng-repeat="applicantData in customer.applicants track by $index" ng-if="applicantData.ClientID">
+                                                        <div class="checkbox checkbox-primary" ng-class="{'checkbox-required': !(otherMortgage.clientids && otherMortgage.clientids.length)}">
+                                                            <input enter id="update_applicant_{{$index}}" type="checkbox" checklist-value="applicantData.ClientID" checklist-model="otherMortgage.clientids" ng-required="!(otherMortgage.clientids && otherMortgage.clientids.length)">
+                                                            <label for="update_applicant_{{$index}}">{{getApplicantTitle(applicantData.eTitleID) + ' ' + applicantData.Firstname + ' ' + applicantData.Surname}}</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <div class="form-group">
+
+                                                    <label class="form-label">Property Value</label>
+                                                    <span class="checkboxes pound">
+                                                        <input type="text" numbers-only enter class="form-control"  ng-model="otherMortgage.PropertyValue" ng-required="true" ng-change="changeKeyTextField(key, 'PropertyValue')"
+                                                               ng-focus="setFieldTypingStatus('PropertyValue', true)"
+                                                               ng-blur="setFieldTypingStatus('PropertyValue', false)"
+                                                               ng-disabled="checkPartnerTyping('PropertyValue')">
+                                                    </span>
+                                                </div>
+                                                <div ng-if="checkPartnerTyping('PropertyValue')">
+                                                    <label class="typing">{{partner}} is typing ...</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <div class="form-group">
+
+                                                    <label class="form-label">Outstanding Mortgage</label>
+                                                    <span class="checkboxes pound">
+                                                        <input type="text" only-digits enter class="form-control"  ng-model="otherMortgage.OutstandingMortgage" ng-required="true" ng-change="changeKeyTextField(key, 'OutstandingMortgage')"
+                                                               ng-focus="setFieldTypingStatus('OutstandingMortgage', true)"
+                                                               ng-blur="setFieldTypingStatus('OutstandingMortgage', false)"
+                                                               ng-disabled="checkPartnerTyping('OutstandingMortgage')">
+                                                    </span>
+                                                </div>
+                                                <div ng-if="checkPartnerTyping('PropertyValue')">
+                                                    <label class="typing">{{partner}} is typing ...</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <div class="form-group">
+                                                    <label class="form-label">Purchase Price</label>
+                                                    <span class="checkboxes pound">
+                                                        <input type="text" numbers-only enter class="form-control"  ng-model="otherMortgage.PurchasePrice" ng-required="true" ng-change="changeKeyTextField(key, 'PurchasePrice')"
+                                                               ng-focus="setFieldTypingStatus('PurchasePrice', true)"
+                                                               ng-blur="setFieldTypingStatus('PurchasePrice', false)"
+                                                               ng-disabled="checkPartnerTyping('PurchasePrice')">
+                                                    </span>
+                                                </div>
+                                                <div ng-if="checkPartnerTyping('PurchasePrice')">
+                                                    <label class="typing">{{partner}} is typing ...</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <div class="form-group">
+                                                    <label class="form-label">Term</label>
+                                                    <div>
+                                                        <span class="checkboxes">
+                                                            <input type="text" only-two-digits enter class="form-control"  ng-model="otherMortgage.Term" ng-required="true" ng-change="changeKeyTextField(key, 'Term')"
+                                                                   ng-focus="setFieldTypingStatus('Term', true)"
+                                                                   ng-blur="setFieldTypingStatus('Term', false)"
+                                                                   ng-disabled="checkPartnerTyping('Term')">
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div ng-if="checkPartnerTyping('Term')">
+                                                    <label class="typing">{{partner}} is typing ...</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <div class="form-group" ng-class="{'has-error': hasNotValidErrorDate(otherMortgage.PurchaseDate)}">
+                                                    <label class="form-label">Purchase Date (dd/mm/yyyy)</label>
+                                                    <div>
+                                                        <span class="checkboxes">
+                                                            <input type="text" enter class="form-control" ng-datepicker  ng-model="otherMortgage.PurchaseDate" ng-required="true" ng-change="changeKeyTextField(key, 'PurchaseDate')"
+                                                                   ng-focus="setFieldTypingStatus('PurchaseDate', true)"
+                                                                   ng-blur="setFieldTypingStatus('PurchaseDate', false)"
+                                                                   ng-disabled="checkPartnerTyping('PurchaseDate')">
+                                                        </span>
+                                                    </div>
+                                                    <span ng-show="hasNotValidErrorDate(otherMortgage.PurchaseDate)" class="help-block">Please enter Valid Date</span>
+                                                </div>
+                                                <div ng-if="checkPartnerTyping('PurchaseDate')">
+                                                    <label class="typing">{{partner}} is typing ...</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <div class="form-group">
+                                                    <label class="form-label">Lenders</label>
+                                                    <div>
+                                                        <span class="checkboxes">
+                                                            <ui-select dropdownenter ng-model="otherMortgage.eLenderID" ng-required="true">
+                                                                <ui-select-match placeholder="Please Select">{{$select.selected.name}}</ui-select-match>
+                                                                <ui-select-choices repeat="value.BackendLenderID as value in landerList| filter:$select.search">
+                                                                    <div ng-bind-html="value.name | highlight: $select.search"></div>
+                                                                </ui-select-choices>
+                                                            </ui-select>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <div class="form-group">
+                                                    <label class="form-label">Address</label>
+                                                    <div>
+                                                        <span class="checkboxes">
+                                                            <input type="text" enter class="form-control" ng-model="otherMortgage.Address" ng-required="true" ng-change="changeKeyTextField(key, 'Address')"
+                                                                   ng-focus="setFieldTypingStatus('Address', true)"
+                                                                   ng-blur="setFieldTypingStatus('Address', false)"
+                                                                   ng-disabled="checkPartnerTyping('Address')">
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div ng-if="checkPartnerTyping('Address')">
+                                                    <label class="typing">{{partner}} is typing ...</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <div class="form-group">
+                                                    <label class="form-label">Monthly Payments</label>
+                                                    <span class="checkboxes pound">
+                                                        <input type="text" numbers-only enter class="form-control" ng-model="otherMortgage.MonthlyPayments" ng-required="true" ng-change="changeKeyTextField(key, 'MonthlyPayments')"
+                                                               ng-focus="setFieldTypingStatus('MonthlyPayments', true)"
+                                                               ng-blur="setFieldTypingStatus('MonthlyPayments', false)"
+                                                               ng-disabled="checkPartnerTyping('MonthlyPayments')">
+                                                    </span>
+                                                </div>
+                                                <div ng-if="checkPartnerTyping('MonthlyPayments')">
+                                                    <label class="typing">{{partner}} is typing ...</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <div class="form-group">
+                                                    <label class="form-label">Interest Rate ( % )</label>
+                                                    <div>
+                                                        <span class="checkboxes">
+                                                            <input type="text" enter class="form-control" ng-model="otherMortgage.InterestRate" ng-required="true" ng-change="changeKeyTextField(key, 'InterestRate')" only-decimal-digits="5"
+                                                                   ng-focus="setFieldTypingStatus('InterestRate', true)"
+                                                                   ng-blur="setFieldTypingStatus('InterestRate', false)"
+                                                                   ng-disabled="checkPartnerTyping('InterestRate')">
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div ng-if="checkPartnerTyping('InterestRate')">
+                                                    <label class="typing">{{partner}} is typing ...</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <div class="form-group">
+                                                    <label class="form-label">Mortgage account number</label>
+                                                    <div>
+                                                        <span class="checkboxes">
+                                                            <input type="text" enter class="form-control" ng-model="otherMortgage.MortgageAccountNumber" ng-required="true" ng-change="changeKeyTextField(key, 'MortgageAccountNumber')"
+                                                                   ng-focus="setFieldTypingStatus('MortgageAccountNumber', true)"
+                                                                   ng-blur="setFieldTypingStatus('MortgageAccountNumber', false)"
+                                                                   ng-disabled="checkPartnerTyping('MortgageAccountNumber')">
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div ng-if="checkPartnerTyping('MortgageAccountNumber')">
+                                                    <label class="typing">{{partner}} is typing ...</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <div class="form-group">
+                                                    <label class="form-label">Current Repayment Type</label>
+                                                    <div>
+                                                        <span class="checkboxes">
+                                                            <ui-select dropdownenter ng-model="otherMortgage.CurrentRepaymentType" ng-required="true">
+                                                                <ui-select-match placeholder="Please Select">{{$select.selected.name}}</ui-select-match>
+                                                                <ui-select-choices repeat="value.val as value in repaymentMethods| filter:$select.search">
+                                                                    <div ng-bind-html="value.name | highlight: $select.search"></div>
+                                                                </ui-select-choices>
+                                                            </ui-select>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <div class="form-group">
+                                                    <label class="form-label">Mortgage Type</label>
+                                                    <div>
+                                                        <span class="checkboxes">
+                                                            <ui-select dropdownenter ng-model="otherMortgage.eMortgageTypeID" ng-required="true">
+                                                                <ui-select-match placeholder="Please Select">{{$select.selected.name}}</ui-select-match>
+                                                                <ui-select-choices repeat="value.val as value in mortgageTypes| filter:$select.search">
+                                                                    <div ng-bind-html="value.name | highlight: $select.search"></div>
+                                                                </ui-select-choices>
+                                                            </ui-select>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6" >
+                                                <div class="form-group">
+                                                    <label class="form-label">Rental Income</label>
+                                                    <span class="checkboxes pound">
+                                                        <input type="text" numbers-only enter class="form-control" ng-model="otherMortgage.RentalIncome" ng-required="true" ng-change="changeKeyTextField(key, 'RentalIncome')"
+                                                               ng-focus="setFieldTypingStatus('RentalIncome', true)"
+                                                               ng-blur="setFieldTypingStatus('RentalIncome', false)"
+                                                               ng-disabled="checkPartnerTyping('RentalIncome')">
+                                                    </span>
+                                                </div>
+                                                <div ng-if="checkPartnerTyping('RentalIncome')">
+                                                    <label class="typing">{{partner}} is typing ...</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <div class="form-group" ng-class="{'has-error': hasNotValidErrorDate(otherMortgage.EndDate)}">
+                                                    <label class="form-label">End date (dd/mm/yyyy)</label>
+                                                    <div>
+                                                        <span class="checkboxes">
+                                                            <input type="text" enter class="form-control" ng-datepicker ng-model="otherMortgage.EndDate" ng-required="true" ng-change="changeKeyTextField(key, 'EndDate')"
+                                                                   ng-focus="setFieldTypingStatus('EndDate', true)"
+                                                                   ng-blur="setFieldTypingStatus('EndDate', false)"
+                                                                   ng-disabled="checkPartnerTyping('EndDate')">
+                                                        </span>
+                                                    </div>
+                                                    <span ng-show="hasNotValidErrorDate(otherMortgage.EndDate)" class="help-block">Please enter Valid Date</span>
+                                                </div>
+                                                <div ng-if="checkPartnerTyping('EndDate')">
+                                                    <label class="typing">{{partner}} is typing ...</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <div class="form-group">
+                                                    <div class="checkbox checkbox-primary">
+                                                        <input enter id="outstanding_{{$index}}" type="checkbox" ng-true-value="true" ng-false-value="false" ng-model="otherMortgage.IsPending">
+                                                        <label for="outstanding_{{$index}}">outstanding</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-12 ">
+                                                <button type="button" ng-click="deleteOtherMortgage(otherMortgage)" class="btn btn-danger float-r scroll-top" >Delete</button>
+                                                <button type="submit" class="btn btn-success float-r margin-r-10 scroll-top" >Update</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 margin-b-10">
+                            <button ng-if="customer.allOtherExistingMort.length" type="button" class="btn btn-default float-r" ng-click="customer.OtherExistingMortgageDetails.isAnotherMortgage = !customer.OtherExistingMortgageDetails.isAnotherMortgage">Add More</button>
+                        </div>
+                        <div class="col-lg-12 padding-0">
+                            <div class="col-lg-12" ng-if="!customer.allOtherExistingMort">
+                                <div class="form-group">
+                                    <label class="form-label">Do you have another existing mortgage?</label>
+                                    <div>
+                                        <span class="checkboxes">
+                                            <div class="form-control radio-group">
+                                                <div class="radio radio-info radio-inline">
+                                                    <input enter type="radio" id="isAnotherMortgage_1" ng-value="true" ng-model="customer.OtherExistingMortgageDetails.isAnotherMortgage">
+                                                    <label for="isAnotherMortgage_1"> Yes </label>
+                                                </div>
+                                                <div class="radio radio-info radio-inline">
+                                                    <input enter type="radio" id="isAnotherMortgage_2" ng-value="false" ng-model="customer.OtherExistingMortgageDetails.isAnotherMortgage">
+                                                    <label for="isAnotherMortgage_2"> No </label>
+                                                </div>
+                                            </div>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-12" ng-if="customer.OtherExistingMortgageDetails.isAnotherMortgage" style="padding: 10px;border: 1px solid #ddd;">
+                                <form name="addOtherMortForm" novalidate ng-submit="addOtherMortForm.$valid && addOtherMortgage(customer.OtherExistingMortgageDetails);">
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            <span class="step-heading step-heading-small">ADD ANOTHER EXISTING MORTGAGE</span>
+                                        </div>
+                                    </div> 
+                                    <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label class="form-label">Applicants</label>
+
+                                            <div ng-repeat="applicantData in customer.applicants track by $index" ng-if="applicantData.ClientID">
+                                                <div class="checkbox checkbox-primary" ng-class="{'checkbox-required': !(customer.OtherExistingMortgageDetails.clientids && customer.OtherExistingMortgageDetails.clientids.length)}">
+                                                    <input enter id="applicant_{{$index}}" type="checkbox" checklist-value="applicantData.ClientID" checklist-model="customer.OtherExistingMortgageDetails.clientids" ng-required="!(customer.OtherExistingMortgageDetails.clientids && customer.OtherExistingMortgageDetails.clientids.length)" />
+                                                    <label for="applicant_{{$index}}">{{getApplicantTitle(applicantData.eTitleID) + ' ' + applicantData.Firstname + ' ' + applicantData.Surname}}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+
+                                            <label class="form-label">Property Value</label>
+                                            <span class="checkboxes pound">
+                                                <input type="text" numbers-only enter class="form-control"  ng-model="customer.OtherExistingMortgageDetails.PropertyValue" ng-required="true" ng-change="changeTextField('PropertyValue')" 
+                                                       ng-focus="setFieldTypingStatus('PropertyValue', true)"
+                                                       ng-blur="setFieldTypingStatus('PropertyValue', false)"
+                                                       ng-disabled="checkPartnerTyping('PropertyValue')">
+                                            </span>
+                                        </div>
+                                        <div ng-if="checkPartnerTyping('PropertyValue')">
+                                            <label class="typing">{{partner}} is typing ...</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+
+                                            <label class="form-label">Outstanding Mortgage</label>
+                                            <span class="checkboxes pound">
+                                                <input type="text" only-digits enter class="form-control"  ng-model="customer.OtherExistingMortgageDetails.OutstandingMortgage" ng-required="true" ng-change="changeKeyTextField(key, 'OutstandingMortgage')"
+                                                       ng-focus="setFieldTypingStatus('OutstandingMortgage', true)"
+                                                       ng-blur="setFieldTypingStatus('OutstandingMortgage', false)"
+                                                       ng-disabled="checkPartnerTyping('OutstandingMortgage')">
+                                            </span>
+                                        </div>
+                                        <div ng-if="checkPartnerTyping('PropertyValue')">
+                                            <label class="typing">{{partner}} is typing ...</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label class="form-label">Purchase Price</label>
+                                            <span class="checkboxes pound">
+                                                <input type="text" numers-only enter class="form-control"  ng-model="customer.OtherExistingMortgageDetails.PurchasePrice" ng-required="true" ng-change="changeTextField('PurchasePrice')"
+                                                       ng-focus="setFieldTypingStatus('PurchasePrice', true)"
+                                                       ng-blur="setFieldTypingStatus('PurchasePrice', false)"
+                                                       ng-disabled="checkPartnerTyping('PurchasePrice')">
+                                            </span>
+                                        </div>
+                                        <div ng-if="checkPartnerTyping('PurchasePrice')">
+                                            <label class="typing">{{partner}} is typing ...</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label class="form-label">Term</label>
+                                            <div>
+                                                <span class="checkboxes">
+                                                    <input type="text" only-two-digits enter class="form-control"  ng-model="customer.OtherExistingMortgageDetails.Term" ng-required="true" ng-change="changeTextField('Term')"
+                                                           ng-focus="setFieldTypingStatus('Term', true)"
+                                                           ng-blur="setFieldTypingStatus('Term', false)"
+                                                           ng-disabled="checkPartnerTyping('Term')">
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div ng-if="checkPartnerTyping('Term')">
+                                            <label class="typing">{{partner}} is typing ...</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group" ng-class="{'has-error': hasNotValidErrorDate(customer.OtherExistingMortgageDetails.PurchaseDate)}">
+                                            <label class="form-label">Purchase Date (dd/mm/yyyy)</label>
+                                            <div>
+                                                <span class="checkboxes">
+                                                    <input type="text" enter class="form-control" ng-datepicker  ng-model="customer.OtherExistingMortgageDetails.PurchaseDate" ng-required="true" ng-change="changeTextField('PurchaseDate')"
+                                                           ng-focus="setFieldTypingStatus('PurchaseDate', true)"
+                                                           ng-blur="setFieldTypingStatus('PurchaseDate', false)"
+                                                           ng-disabled="checkPartnerTyping('PurchaseDate')">
+                                                </span>
+                                            </div>
+                                            <span ng-show="hasNotValidErrorDate(customer.OtherExistingMortgageDetails.PurchaseDate)" class="help-block">Please enter Valid Date</span>
+
+                                        </div>
+                                        <div ng-if="checkPartnerTyping('PurchaseDate')">
+                                            <label class="typing">{{partner}} is typing ...</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label class="form-label">Lenders</label>
+                                            <div>
+                                                <span class="checkboxes">
+                                                    <ui-select dropdownenter ng-model="customer.OtherExistingMortgageDetails.eLenderID" ng-required="true">
+                                                        <ui-select-match placeholder="Please Select">{{$select.selected.name}}</ui-select-match>
+                                                        <ui-select-choices repeat="value.BackendLenderID as value in landerList| filter:$select.search">
+                                                            <div ng-bind-html="value.name | highlight: $select.search"></div>
+                                                        </ui-select-choices>
+                                                    </ui-select>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label class="form-label">Address</label>
+                                            <div>
+                                                <span class="checkboxes">
+                                                    <input type="text" enter class="form-control" ng-model="customer.OtherExistingMortgageDetails.Address" ng-required="true" ng-change="changeTextField('Address')"
+                                                           ng-focus="setFieldTypingStatus('Address', true)"
+                                                           ng-blur="setFieldTypingStatus('Address', false)"
+                                                           ng-disabled="checkPartnerTyping('Address')">
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div ng-if="checkPartnerTyping('Address')">
+                                            <label class="typing">{{partner}} is typing ...</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label class="form-label">Monthly Payments</label>
+                                            <span class="checkboxes pound">
+                                                <input type="text" numbers-only enter class="form-control" ng-model="customer.OtherExistingMortgageDetails.MonthlyPayments" ng-required="true" ng-change="changeTextField('MonthlyPayments')"
+                                                       ng-focus="setFieldTypingStatus('MonthlyPayments', true)"
+                                                       ng-blur="setFieldTypingStatus('MonthlyPayments', false)"
+                                                       ng-disabled="checkPartnerTyping('MonthlyPayments')">
+                                            </span>
+                                        </div>
+                                        <div ng-if="checkPartnerTyping('MonthlyPayments')">
+                                            <label class="typing">{{partner}} is typing ...</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label class="form-label">Interest Rate ( % )</label>
+                                            <div>
+                                                <span class="checkboxes">
+                                                    <input type="text" enter class="form-control" ng-model="customer.OtherExistingMortgageDetails.InterestRate" ng-required="true" ng-change="changeTextField('InterestRate')" only-decimal-digits="5"
+                                                           ng-focus="setFieldTypingStatus('InterestRate', true)"
+                                                           ng-blur="setFieldTypingStatus('InterestRate', false)"
+                                                           ng-disabled="checkPartnerTyping('InterestRate')">
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div ng-if="checkPartnerTyping('InterestRate')">
+                                            <label class="typing">{{partner}} is typing ...</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label class="form-label">Mortgage account number</label>
+                                            <div>
+                                                <span class="checkboxes">
+                                                    <input type="text" enter class="form-control" ng-model="customer.OtherExistingMortgageDetails.MortgageAccountNumber" ng-required="true" ng-change="changeTextField('MortgageAccountNumber')"
+                                                           ng-focus="setFieldTypingStatus('MortgageAccountNumber', true)"
+                                                           ng-blur="setFieldTypingStatus('MortgageAccountNumber', false)"
+                                                           ng-disabled="checkPartnerTyping('MortgageAccountNumber')">
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div ng-if="checkPartnerTyping('MortgageAccountNumber')">
+                                            <label class="typing">{{partner}} is typing ...</label>
+                                        </div>
+                                    </div>                                    
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label class="form-label">Current Repayment Type</label>
+                                            <div>
+                                                <span class="checkboxes">
+                                                    <ui-select dropdownenter ng-model="customer.OtherExistingMortgageDetails.CurrentRepaymentType" ng-required="true">
+                                                        <ui-select-match placeholder="Please Select">{{$select.selected.name}}</ui-select-match>
+                                                        <ui-select-choices repeat="value.val as value in repaymentMethods| filter:$select.search">
+                                                            <div ng-bind-html="value.name | highlight: $select.search"></div>
+                                                        </ui-select-choices>
+                                                    </ui-select>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label class="form-label">Mortgage Type</label>
+                                            <div>
+                                                <span class="checkboxes">
+                                                    <ui-select dropdownenter ng-model="customer.OtherExistingMortgageDetails.eMortgageTypeID" ng-required="true">
+                                                        <ui-select-match placeholder="Please Select">{{$select.selected.name}}</ui-select-match>
+                                                        <ui-select-choices repeat="value.val as value in mortgageTypes| filter:$select.search">
+                                                            <div ng-bind-html="value.name | highlight: $select.search"></div>
+                                                        </ui-select-choices>
+                                                    </ui-select>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label class="form-label">Rental Income</label>
+                                            <span class="checkboxes pound">
+                                                <input type="text" numbers-only enter class="form-control" ng-model="customer.OtherExistingMortgageDetails.RentalIncome" ng-required="true" ng-change="changeTextField('RentalIncome')"
+                                                       ng-focus="setFieldTypingStatus('RentalIncome', true)"
+                                                       ng-blur="setFieldTypingStatus('RentalIncome', false)"
+                                                       ng-disabled="checkPartnerTyping('RentalIncome')">
+                                            </span>
+                                        </div>
+                                        <div ng-if="checkPartnerTyping('RentalIncome')">
+                                            <label class="typing">{{partner}} is typing ...</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group" ng-class="{'has-error': hasNotValidErrorDate(customer.OtherExistingMortgageDetails.EndDate)}">
+                                            <label class="form-label">End date (dd/mm/yyyy)</label>
+                                            <div>
+                                                <span class="checkboxes">
+                                                    <input type="text" enter class="form-control" ng-datepicker ng-model="customer.OtherExistingMortgageDetails.EndDate" ng-required="true" ng-change="changeTextField('EndDate')"
+                                                           ng-focus="setFieldTypingStatus('EndDate', true)"
+                                                           ng-blur="setFieldTypingStatus('EndDate', false)"
+                                                           ng-disabled="checkPartnerTyping('EndDate')">
+                                                </span>
+                                            </div>
+                                            <span ng-show="hasNotValidErrorDate(customer.OtherExistingMortgageDetails.EndDate)" class="help-block">Please enter Valid Date</span>
+                                        </div>
+                                        <div ng-if="checkPartnerTyping('EndDate')">
+                                            <label class="typing">{{partner}} is typing ...</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <div class="checkbox checkbox-primary">
+                                                <input enter id="outstanding" type="checkbox" ng-true-value="true" ng-false-value="false" ng-model="customer.OtherExistingMortgageDetails.IsPending">
+                                                <label for="outstanding">outstanding</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12 ">
+                                        <button type="submit" class="btn btn-success float-r scroll-top">Save and Continue</button>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="col-lg-12 padding-t-5">
+                                <button type="button" class="btn scroll-top" ng-click="backButtonAction();">Back</button>
+                                <button type="button" class="btn btn-primary scroll-top" ng-click="saveOtherMortageDetails();">Save and Continue</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>  
+        </div>
+    </div>
+</div>

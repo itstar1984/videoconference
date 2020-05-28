@@ -1,0 +1,158 @@
+<!-- Start Page Loading -->
+<div class="loading" ng-if="!customer.activeApplicant"><img src="assets/img/loading.gif" alt="loading-img"></div>
+<!-- End Page Loading -->
+<div ng-if="customer.activeApplicant">
+    <div class="page-header">
+        <h1 class="title">Dependants</h1>
+    </div>
+    <div class="container-widget">
+        <div class="row">
+            <div class="col-md-12 col-lg-12">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="col-lg-12 padding-0">
+                            <div class="col-lg-12" ng-if="!customer.dependantList">
+                                <div class="form-group">
+                                    <label class="form-label">Do you have any dependant?</label>
+                                    <div>
+                                        <span class="checkboxes">
+                                            <div class="form-control radio-group">
+                                                <div class="radio radio-info radio-inline">
+                                                    <input enter type="radio" id="isDependant_1" ng-value="true" ng-model="customer.dependant.isDependant">
+                                                    <label for="isDependant_1"> Yes </label>
+                                                </div>
+                                                <div class="radio radio-info radio-inline">
+                                                    <input enter type="radio" id="isDependant_2" ng-value="false" ng-model="customer.dependant.isDependant">
+                                                    <label for="isDependant_2"> No </label>
+                                                </div>
+                                            </div>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel panel-default panel-with-data" ng-repeat="(key,dependant) in customer.dependantList track by $index">
+                                <form name="updateliabilityForm" novalidate ng-submit="updateliabilityForm.$valid && saveDependant(dependant)" >
+                                    <div class="panel-title benifits_title" ng-click="dependant.show = !dependant.show">Dependant&nbsp;/&nbsp;{{dependant.DepName}}&nbsp;/&nbsp;{{dependant.AgeDepUntil}}</div>
+                                    <div class="panel-body" ng-if="dependant.show">
+                                        <div class="col-lg-12 padding-0">
+                                            <div class="col-sm-12">
+                                                <div class="form-group">
+                                                    <span class="step-heading step-heading-small">Edit Dependant</span>
+                                                </div>
+                                            </div> 
+                                            <div class="col-lg-6">
+                                                <div class="form-group">
+                                                    <label class="form-label">Dependant Name</label>
+                                                    <span class="checkboxes">
+                                                        <input type="text" enter class="form-control"  ng-model="dependant.DepName"
+                                                               ng-focus="setFieldTypingStatus('DepName', true)"
+                                                               ng-blur="setFieldTypingStatus('DepName', false)"
+                                                               ng-disabled="checkPartnerTyping('DepName')" ng-change="changeAllDependantField(key, 'DepName')" ng-required="true">
+                                                    </span>
+                                                </div>
+                                                <div ng-if="checkPartnerTyping('DepName')">
+                                                    <label class="typing">{{partner}} is typing ...</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <div class="form-group">
+                                                    <label class="form-label">Age</label>
+                                                    <span class="checkboxes">
+                                                        <input type="text" numbers-only enter class="form-control"  ng-model="dependant.AgeDepUntil"
+                                                               ng-focus="setFieldTypingStatus('AgeDepUntil', true)"
+                                                               ng-blur="setFieldTypingStatus('AgeDepUntil', false)"
+                                                               ng-disabled="checkPartnerTyping('AgeDepUntil')" ng-change="changeAllDependantField(key, 'AgeDepUntil')" ng-required="true">
+                                                    </span>
+                                                </div>
+                                                <div ng-if="checkPartnerTyping('AgeDepUntil')">
+                                                    <label class="typing">{{partner}} is typing ...</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <div class="form-group">
+                                                    <label class="form-label">Living With Client</label>
+                                                    <div >
+                                                        <div class="checkbox checkbox-primary" >
+                                                            <input enter id="LivingWithClient" type="checkbox" value="true" ng-model="dependant.LivingWithClient" ng-checked="dependant.LivingWithClient == true;">
+                                                                <label for="LivingWithClient"></label>
+</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-12 ">
+                                                <button type="submit"  class="btn btn-success float-r scroll-top" >Update</button>
+                                                <button type="button" ng-click="deleteDependant(dependant)" class="scroll-top btn btn-danger float-r margin-r-10" >Delete</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="col-sm-12 margin-b-10">
+                                <button ng-if="customer.dependantList.length" type="button" class="btn btn-default float-r" ng-click="customer.dependant.isDependant = !customer.dependant.isDependant">Add More</button>
+                            </div>
+                            <div class="col-lg-12" style="padding: 10px;border: 1px solid #ddd;" ng-if="customer.dependant.isDependant">
+                                <form name="addDependantForm" novalidate ng-submit="addDependantForm.$valid && saveDependant(customer.dependant);">
+                                    <div class="col-lg-12 padding-0" >
+                                        <div class="col-sm-12">
+                                            <div class="form-group">
+                                                <span class="step-heading step-heading-small">Add Dependant</span>                                                
+                                            </div>
+                                        </div> 
+
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label class="form-label">Dependant Name</label>
+                                                <span class="checkboxes">
+                                                    <input type="text" enter class="form-control"  ng-model="customer.dependant.DepName"
+                                                           ng-focus="setFieldTypingStatus('DepName', true)"
+                                                           ng-blur="setFieldTypingStatus('DepName', false)"
+                                                           ng-disabled="checkPartnerTyping('DepName')" ng-change="changeDependantField('DepName')" ng-required="true">
+                                                </span>
+                                            </div>
+                                            <div ng-if="checkPartnerTyping('DepName')">
+                                                <label class="typing">{{partner}} is typing ...</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label class="form-label">Age</label>
+                                                <span class="checkboxes">
+                                                    <input type="text" numbers-only enter class="form-control"  ng-model="customer.dependant.AgeDepUntil"
+                                                           ng-focus="setFieldTypingStatus('AgeDepUntil', true)"
+                                                           ng-blur="setFieldTypingStatus('AgeDepUntil', false)"
+                                                           ng-disabled="checkPartnerTyping('AgeDepUntil')" ng-change="changeDependantField('AgeDepUntil')" ng-required="true">
+                                                </span>
+                                            </div>
+                                            <div ng-if="checkPartnerTyping('AgeDepUntil')">
+                                                <label class="typing">{{partner}} is typing ...</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label class="form-label">Living With Client</label>
+                                                <div >
+                                                    <div class="checkbox checkbox-primary" >
+                                                        <input enter id="LivingWithClient" type="checkbox" value="true" ng-model="customer.dependant.LivingWithClient" ng-checked="customer.dependant.LivingWithClient == true;">
+                                                        <label for="LivingWithClient"></label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-lg-12 ">
+                                            <button type="submit" class="btn btn-success float-r scroll-top" >Save and Continue</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="col-lg-12 padding-t-5">
+                                <button type="button" class="btn scroll-top" ng-click="backButtonAction();">Back</button>
+                                <button type="button" class="btn btn-primary scroll-top" ng-click="next()">Save and Continue</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

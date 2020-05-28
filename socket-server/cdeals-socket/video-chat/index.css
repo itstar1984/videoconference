@@ -1,0 +1,34 @@
+html, body {
+    padding: 0;
+    margin: 0;
+    height: 100%;
+    width: 100%;
+    background: #fff;
+    color: #fff;
+    font-family: Consolas, monospace;
+}
+input, button {
+    font-family: Consolas, monospace;
+}
+#localVideo {
+
+    position: fixed;
+    width: 30%;
+    bottom: 0;
+    right: 0;
+}
+#remotes{
+    position: fixed;
+    width:100%;
+    height: 100%;
+}
+
+.localContainer{
+    position: fixed;
+    width: 30%;
+    height: 30%;
+    bottom: 0;
+    right: 0;
+    background: gray;
+}
+

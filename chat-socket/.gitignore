@@ -1,0 +1,5 @@
+node_modules/
+/public/bower_components/angular-socket-io/nbproject/private/
+/nbproject/private/
+/public/bower_components/
+/chat-logs/

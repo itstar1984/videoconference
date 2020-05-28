@@ -1,0 +1,54 @@
+<!-- START SIDEPANEL -->
+<div role="tabpanel" class="sidepanel" ng-controller="sidePanelCtrl">
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs" role="tablist">
+        <li role="presentation" ng-class="{'active': isActiveTab(tab)}" ng-repeat="tab in tabList">
+            <a href="javascript:void(0)" ng-click="changeTab(tab)">{{tab}}</a>
+        </li>        
+    </ul>
+    <!-- Tab panes -->
+    <div class="tab-content">
+        <!-- Start Today -->
+        <div role="tabpanel" class="tab-pane active" id="chat" ng-if="isActiveTab('Consultants')">
+            <div class="gn-title">Click here to Transfer clients <i onclick="sidePannelToggle()" class="fa fa-times margin-t-5 margin-r-15 pointer-arrow float-r"></i></div>
+<!--            <ul class="group" ng-if="consultantList.length">
+                <li class="member" ng-repeat="consultant in consultantList">
+                    <a href="javascript:void(0)" ng-click="transferConsultant(consultant)">
+                        <b>{{consultant.name}}</b>
+                    </a>
+                    <span ng-if="consultant.status === 'online'" class="status online"></span>
+                    <span ng-if="consultant.status === 'offline'" class="status away"></span>
+                    <span ng-if="consultant.count >= 6" class="status busy"></span>
+                </li>                
+            </ul>-->
+            <ul class="group" ng-if="consultantList.length">
+                <li class="member padding-t-10 padding-b-10" ng-repeat="consultant in consultantList">
+                    <div class="col-sm-12">
+                        <div class="col-sm-8 padding-l-0" ng-class="{'padding-r-0':consultant.count >= 6}">
+                            <p>
+                                <span>{{consultant.name}}</span>
+                                <span ng-if="consultant.status === 'online'">is online Now</span>
+                                <span ng-if="consultant.count >= 6"> is Busy right Now</span>
+                            </p>
+                        </div>
+                        <div class="col-sm-4 padding-r-0" ng-class="{'padding-l-0':consultant.count >= 6}">
+                            <button ng-if="consultant.status === 'online'" class="btn btn-xs btn-primary float-r" type="button" ng-click="transferConsultant(consultant)" >Click Here to get Help!</button>
+                            <p style="color: orange" ng-if="consultant.count >= 6">Please wait for some time</p>
+                        </div>
+                    </div>
+                </li>                
+            </ul>
+        </div>
+        <div role="tabpanel" class="tab-pane active" id="chat" ng-if="isActiveTab('Waiting Clients')">
+            <div class="gn-title">Waiting Client(s)</div>
+            <ul class="group" ng-if="waitingClientList.length">
+                <li class="member" ng-repeat="client in waitingClientList" >
+                    <a href="javascript:void(0)" ng-class="{'disable-pointer': clientList.length > 6}" ng-click="factFindWaitClient(client)">
+                        <b>{{client.name}}</b>
+                    </a>
+                </li>                
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- END SIDEPANEL -->

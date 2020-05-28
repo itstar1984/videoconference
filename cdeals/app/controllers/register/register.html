@@ -1,0 +1,163 @@
+<div class="login-form">
+    <alert ng-repeat="alert in alerts"
+           class="alert-danger"
+           close="closeAlert($index)">{{alert.msg}}</alert>
+    <form class="form"
+          name="signupForm"
+          ng-submit="signupDetails()"
+          novalidate>
+        <div class="top">
+            <img src="assets/img/logo.png"
+                 alt="icon"
+                 class="icon">
+            <h2>CREATE AN ACCOUNT !</h2>
+        </div>
+        <div class="form-area">
+            <div class="group">
+                <ui-select name="eTitleID"
+                           ng-model="user.eTitleID"
+                           required="true"
+                           search-enabled="false">
+                    <ui-select-match placeholder="Please Select">{{$select.selected.name}}</ui-select-match>
+                    <ui-select-choices repeat="value.val as value in titleList| filter:$select.search">
+                        <div ng-bind-html="value.name | highlight: $select.search"></div>
+                    </ui-select-choices>
+                </ui-select>
+            </div>
+            <div class="group"
+                 ng-class="{'has-error': signupForm.FirstName.$dirty && signupForm.FirstName.$error.pattern}">
+                <input type="text"
+                       focus-me="focusName"
+                       ng-init="focusName=false"
+                       name="FirstName"
+                       ng-model="user.FirstName"
+                       class="form-control"
+                       placeholder="First Name"
+                       required="true"
+                       ng-pattern="/^[a-zA-Z]*$/">
+                <p ng-show="signupForm.FirstName.$dirty && signupForm.FirstName.$error.pattern"
+                   class="help-block">Please Enter Valid First Name(only alphabet) !</p>
+            </div>
+            <div class="group"
+                 ng-class="{'has-error': signupForm.Surname.$dirty && signupForm.Surname.$error.pattern}">
+                <input type="text"
+                       focus-me="focsuSur"
+                       ng-init="focsuSur=false"
+                       name="Surname"
+                       ng-model="user.Surname"
+                       class="form-control"
+                       placeholder="Surname"
+                       required="true"
+                       ng-pattern="/^[a-zA-Z]*$/">
+                <p ng-show="signupForm.Surname.$dirty && signupForm.Surname.$error.pattern"
+                   class="help-block">Please Enter Valid Surname(only alphabet)!</p>
+            </div>
+            <div class="group"
+                 ng-class="{'has-error': signupForm.Email.$dirty && signupForm.Email.$error.pattern}">
+                <input type="email"
+                       focus-me="focsuMail"
+                       ng-init="focsuMail=false"
+                       name="email"
+                       ng-model="user.Email"
+                       class="form-control"
+                       placeholder="E-mail"
+                       ng-blur="visibleEdit=true"
+                       ng-focus="visibleEdit=false"
+                       ng-pattern="/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/"
+                       required="true">
+                <div ng-show="visibleEdit">
+                    <p ng-show="signupForm.Email.$dirty && signupForm.Email.$error.pattern"
+                       class="help-block">Please Enter Valid Email !</p>
+                </div>
+                <p ng-show="validEmail">Please Enter Email!</p>
+            </div>
+            <div class="group"
+                 ng-class="{'has-error': signupForm.Password.$dirty && signupForm.Password.$error.minlength}">
+                <input type="password"
+                       focus-me="focusPwd"
+                       ng-init="focusPwd=false"
+                       name="Password"
+                       ng-model="user.Password"
+                       ng-minlength="6"
+                       class="form-control"
+                       placeholder="Password"
+                       required="true">
+                <p ng-show="signupForm.Password.$dirty && signupForm.Password.$error.minlength"
+                   class="help-block">Password is too short.</p>
+            </div>
+            <div class="group"
+                 ng-class="{'has-error': user.confirmPassword && user.Password !== user.confirmPassword}">
+                <input type="password"
+                       focus-me="focsuCnfmPwd"
+                       ng-init="focsuCnfmPwd=false"
+                       name="confirmPassword"
+                       ng-model="user.confirmPassword"
+                       class="form-control"
+                       placeholder="Confirm Password"
+                       required="true">
+                <p ng-show="user.confirmPassword && user.Password !== user.confirmPassword"
+                   class="help-block">Passwords not match!</p>
+            </div>
+            <div class="group"
+                 ng-class="{'has-error': signupForm.Mobile.$dirty && signupForm.Mobile.$error.pattern}">
+                <input type="text"
+                       focus-me="focusPhone"
+                       ng-init="focusPhone=false"
+                       name="Phone"
+                       ng-model="user.Mobile"
+                       class="form-control"
+                       ng-pattern="/^[0-9]{9,12}$/"
+                       placeholder="Phone Number"
+                       ng-blur="validPhoneNum=true"
+                       ng-focus="validPhoneNum=false"
+                       phone-numbers
+                       required="true">
+                <div ng-show="validPhoneNum">
+                    <p ng-show="signupForm.phoneNumber.$dirty && signupForm.phoneNumber.$error.pattern"
+                       class="help-block">Please Enter Valid Phone Number !</p>
+                    <p ng-show="signupForm.phoneNumber.$error.maxlength"
+                       class="help-block">Phone Number is too long.</p>
+                </div>
+            </div>
+            <div class="group"
+                 ng-class="{'has-error': signupForm.PostCode.$dirty && signupForm.PostCode.$error.required}">
+                <input type="text"
+                       focus-me="focusPostCode"
+                       ng-init="focusPostCode=false"
+                       name="PostCode"
+                       ng-model="user.PostCode"
+                       class="form-control"
+                       placeholder="Post Code"
+                       required="true"> </div>
+            <div class="group">
+                <label>Existing Client ?</label>
+                <div class="radio radio-info radio-inline"
+                     ng-init="user.IsExistingClient = false">
+                    <input type="radio"
+                           id="inlineRadio1"
+                           ng-value="true"
+                           name="radioInline"
+                           ng-model="user.IsExistingClient">
+                    <label for="inlineRadio1"> Yes </label>
+                </div>
+                <div class="radio radio-inline">
+                    <input type="radio"
+                           id="inlineRadio2"
+                           ng-value="false"
+                           name="radioInline"
+                           ng-model="user.IsExistingClient">
+                    <label for="inlineRadio2"> No </label>
+                </div>
+            </div>
+            <!--            <button type="submit" ng-disabled="signupForm.$invalid" class="btn btn-primary btn-block" >REGISTER NOW</button>-->
+            <button type="submit"
+                    class="btn btn-primary btn-block">REGISTER NOW</button>
+        </div>
+    </form>
+    <div class="footer-links row">
+        <div class="col-xs-12 text-center">
+            <a ui-sref="login">
+                <i class="fa fa-sign-in"></i> Login Here</a>
+        </div>
+    </div>
+</div>

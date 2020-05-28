@@ -1,0 +1,1057 @@
+<!-- Start Page Loading -->
+<div class="loading" ng-if="!customer.activeApplicant"><img src="assets/img/loading.gif" alt="loading-img"></div>
+<!-- End Page Loading -->
+<div ng-if="customer.activeApplicant">
+    <div class="page-header">
+        <h1 class="title">Property Details</h1>
+    </div>
+    <div class="container-widget">
+        <div class="row">
+            <div class="col-md-12 col-lg-12">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="col-lg-12 padding-0 margin-b-10">
+                            <ul id="fact-form-breadcrumb">
+<!--                                <li><a ng-class="{'active' : isPropertyTabActive('addProperty')}" href="javascript:;" ng-click="setPropertyTab('addProperty');">Add Property</a></li>-->
+                                <li><a ng-class="{'active' : isPropertyTabActive('propertyDetails')}" href="javascript:;" ng-click="setPropertyTab('propertyDetails');">Property Details</a></li>
+                                <li><a ng-class="{'active' : isPropertyTabActive('additionalPropertyDetails')}" href="javascript:;" ng-click="setPropertyTab('additionalPropertyDetails');">Additional Property Details</a></li>
+                            </ul>
+                        </div>
+
+<!--                        <div ng-if="isPropertyTabActive('addProperty')" class="col-lg-10">
+                            <form class="form"  name="propertyAddressForm" novalidate ng-submit="propertyAddressForm.$valid && createaddress(customer.Properties['address'])">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <span class="step-heading step-heading-small">MORTGAGE PROPERTY ADDRESS</span>
+                                    </div>
+                                </div>                                                
+                                <div class="col-lg-10">
+                                    <div class="col-lg-12">
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label  class="form-label"><b>Postal Code Address :</b></label><br/>
+                                                                                                <a class="btn btn-success" ng-click="customer.Properties.showCodeterm = !customer.Properties.showCodeterm;">postal code</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label class="form-label">Search Post Code </label>
+                                                <div>
+                                                    <span class="checkboxes">
+                                                        <input type="text" enter class="form-control" placeholder="Post code" ng-model="customer.Properties.postCodeTerm"
+                                                               ng-focus="setFieldTypingStatus('postCodeTerm', true)"
+                                                               ng-blur="setFieldTypingStatus('postCodeTerm', false)"
+                                                               ng-disabled="checkPartnerTyping('postCodeTerm')" ng-change="changeTextField('Properties', 'postCodeTerm')">
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div ng-if="checkPartnerTyping('postCodeTerm')">
+                                                <label class="typing">{{partner}} is typing ...</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="form-group margin-t-5">
+                                                <br/>
+                                                <a href="javascript:void(0)" class="btn btn-success" ng-click="searchPostCode(customer.Properties.postCodeTerm)">Search</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12"  ng-show="customer.Properties.addressList && customer.Properties.addressList.length">
+                                        <div class="col-lg-12">
+                                            <div class="form-group">
+                                                <label  class="form-label"><b>Choose from Below Address</b></label><br/>
+                                            </div>
+                                        </div>
+                                        <div class="addressListDiv">
+                                            <ul>
+                                                <li ng-repeat="address in customer.Properties.addressList" ng-click="selectPostalCode(address.Id)">
+                                                    <a href="javascript:void(0)">{{address.Description}}</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-10">
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label class="form-label">Address1</label>
+                                            <div>
+                                                <span class="checkboxes">
+                                                    <input type="text" enter class="form-control"  ng-model="customer.Properties['address']['Address1']"
+                                                           ng-focus="setFieldTypingStatus('Address1', true)"
+                                                           ng-blur="setFieldTypingStatus('Address1', false)"
+                                                           ng-disabled="checkPartnerTyping('Address1')" ng-required="true" ng-change="changeTextForAddressField('Address1')">
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div ng-if="checkPartnerTyping('Address1')">
+                                            <label class="typing">{{partner}} is typing ...</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label class="form-label">Address2</label>
+                                            <div>
+                                                <span class="checkboxes">
+                                                    <input type="text" enter class="form-control" ng-model="customer.Properties['address']['Address2']"
+                                                           ng-focus="setFieldTypingStatus('Address2', true)"
+                                                           ng-blur="setFieldTypingStatus('Address2', false)"
+                                                           ng-disabled="checkPartnerTyping('Address2')" ng-required="true" ng-change="changeTextForAddressField('Address2')">
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div ng-if="checkPartnerTyping('Address2')">
+                                            <label class="typing">{{partner}} is typing ...</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label class="form-label">Address3</label>
+                                            <div>
+                                                <span class="checkboxes">
+                                                    <input type="text" enter class="form-control"  ng-model="customer.Properties['address']['Address3']"
+                                                           ng-focus="setFieldTypingStatus('Address3', true)"
+                                                           ng-blur="setFieldTypingStatus('Address3', false)"
+                                                           ng-disabled="checkPartnerTyping('Address3')" ng-change="changeTextForAddressField('Address3')">
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div ng-if="checkPartnerTyping('Address3')">
+                                            <label class="typing">{{partner}} is typing ...</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label class="form-label">Town/City</label>
+                                            <div>
+                                                <span class="checkboxes">
+                                                    <input type="text" enter class="form-control" ng-model="customer.Properties['address']['Town']"
+                                                           ng-focus="setFieldTypingStatus('Town', true)"
+                                                           ng-blur="setFieldTypingStatus('Town', false)"
+                                                           ng-disabled="checkPartnerTyping('Town')" ng-required="true" ng-change="changeTextForAddressField('Town')">
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div ng-if="checkPartnerTyping('Town')">
+                                            <label class="typing">{{partner}} is typing ...</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label class="form-label">County</label>
+                                            <div>
+                                                <span class="checkboxes">
+                                                    <input type="text" enter class="form-control"  ng-model="customer.Properties['address']['County']"
+                                                           ng-focus="setFieldTypingStatus('County', true)"
+                                                           ng-blur="setFieldTypingStatus('County', false)"
+                                                           ng-disabled="checkPartnerTyping('County')" ng-required="true" ng-change="changeTextForAddressField('County')">
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div ng-if="checkPartnerTyping('County')">
+                                            <label class="typing">{{partner}} is typing ...</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label class="form-label">Country</label>
+                                            <div>
+                                                <span class="checkboxes">
+                                                    <input type="text" enter class="form-control" ng-model="customer.Properties['address']['Country']"
+                                                           ng-focus="setFieldTypingStatus('Country', true)"
+                                                           ng-blur="setFieldTypingStatus('Country', false)"
+                                                           ng-disabled="checkPartnerTyping('Country')" ng-required="true" ng-change="changeTextForAddressField('Country')">
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div ng-if="checkPartnerTyping('Country')">
+                                            <label class="typing">{{partner}} is typing ...</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label class="form-label">Postcode</label>
+                                            <div>
+                                                <span class="checkboxes">
+                                                    <input type="text" enter class="form-control"  ng-model="customer.Properties['address']['PostCode']"
+                                                           ng-focus="setFieldTypingStatus('PostCode', true)"
+                                                           ng-blur="setFieldTypingStatus('PostCode', false)"
+                                                           ng-disabled="checkPartnerTyping('PostCode')" ng-required="true" ng-change="changeTextForAddressField('PostCode')">
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div ng-if="checkPartnerTyping('PostCode')">
+                                            <label class="typing">{{partner}} is typing ...</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12 margin-t-10">
+                                        <button type="button" class="btn scroll-top" ng-click="backButtonAction();">Back</button>
+                                        <button type="submit" class="btn btn-primary scroll-top">Save and Continue</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>-->
+                        <div ng-if="isPropertyTabActive('propertyDetails')" class="col-lg-8">
+                            <div ng-if="customer.Properties.createNewAdd" class="panel panel-body padding-15">
+                                <form class="form"  name="propertyAddressForm" novalidate ng-submit="propertyAddressForm.$valid && createaddress(customer.Properties['address'])">
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            <span class="step-heading step-heading-small">MORTGAGE PROPERTY ADDRESS</span>
+                                        </div>
+                                    </div>                                                
+                                    <div class="col-lg-10">
+                                        <div class="col-lg-12">
+                                            <div class="col-lg-6">
+                                                <div class="form-group">
+                                                    <label  class="form-label"><b>Postal Code Address :</b></label><br/>
+                                                    <!--                                                <a class="btn btn-success" ng-click="customer.Properties.showCodeterm = !customer.Properties.showCodeterm;">postal code</a>-->
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-12">
+                                            <div class="col-lg-6">
+                                                <div class="form-group">
+                                                    <label class="form-label">Search Post Code </label>
+                                                    <div>
+                                                        <span class="checkboxes">
+                                                            <input type="text" enter class="form-control" placeholder="Post code" ng-model="customer.Properties.postCodeTerm"
+                                                                   ng-focus="setFieldTypingStatus('postCodeTerm', true)"
+                                                                   ng-blur="setFieldTypingStatus('postCodeTerm', false)"
+                                                                   ng-disabled="checkPartnerTyping('postCodeTerm')" ng-change="changeTextField('Properties', 'postCodeTerm')">
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div ng-if="checkPartnerTyping('postCodeTerm')">
+                                                    <label class="typing">{{partner}} is typing ...</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <div class="form-group margin-t-5">
+                                                    <br/>
+                                                    <a href="javascript:void(0)" class="btn btn-success" ng-click="searchPostCode(customer.Properties.postCodeTerm)">Search</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-12"  ng-show="customer.Properties.addressList && customer.Properties.addressList.length">
+                                            <div class="col-lg-12">
+                                                <div class="form-group">
+                                                    <label  class="form-label"><b>Choose from Below Address</b></label><br/>
+                                                </div>
+                                            </div>
+                                            <div class="addressListDiv">
+                                                <ul>
+                                                    <li ng-repeat="address in customer.Properties.addressList" ng-click="selectPostalCode(address.Id)">
+                                                        <a href="javascript:void(0)">{{address.Description}}</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-10">
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label class="form-label">Address1</label>
+                                                <div>
+                                                    <span class="checkboxes">
+                                                        <input type="text" enter class="form-control"  ng-model="customer.Properties['address']['Address1']"
+                                                               ng-focus="setFieldTypingStatus('Address1', true)"
+                                                               ng-blur="setFieldTypingStatus('Address1', false)"
+                                                               ng-disabled="checkPartnerTyping('Address1')" ng-required="true" ng-change="changeTextForAddressField('Address1')">
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div ng-if="checkPartnerTyping('Address1')">
+                                                <label class="typing">{{partner}} is typing ...</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label class="form-label">Address2</label>
+                                                <div>
+                                                    <span class="checkboxes">
+                                                        <input type="text" enter class="form-control" ng-model="customer.Properties['address']['Address2']"
+                                                               ng-focus="setFieldTypingStatus('Address2', true)"
+                                                               ng-blur="setFieldTypingStatus('Address2', false)"
+                                                               ng-disabled="checkPartnerTyping('Address2')" ng-required="true" ng-change="changeTextForAddressField('Address2')">
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div ng-if="checkPartnerTyping('Address2')">
+                                                <label class="typing">{{partner}} is typing ...</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label class="form-label">Address3</label>
+                                                <div>
+                                                    <span class="checkboxes">
+                                                        <input type="text" enter class="form-control"  ng-model="customer.Properties['address']['Address3']"
+                                                               ng-focus="setFieldTypingStatus('Address3', true)"
+                                                               ng-blur="setFieldTypingStatus('Address3', false)"
+                                                               ng-disabled="checkPartnerTyping('Address3')" ng-change="changeTextForAddressField('Address3')">
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div ng-if="checkPartnerTyping('Address3')">
+                                                <label class="typing">{{partner}} is typing ...</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label class="form-label">Town/City</label>
+                                                <div>
+                                                    <span class="checkboxes">
+                                                        <input type="text" enter class="form-control" ng-model="customer.Properties['address']['Town']"
+                                                               ng-focus="setFieldTypingStatus('Town', true)"
+                                                               ng-blur="setFieldTypingStatus('Town', false)"
+                                                               ng-disabled="checkPartnerTyping('Town')" ng-required="true" ng-change="changeTextForAddressField('Town')">
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div ng-if="checkPartnerTyping('Town')">
+                                                <label class="typing">{{partner}} is typing ...</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label class="form-label">County</label>
+                                                <div>
+                                                    <span class="checkboxes">
+                                                        <input type="text" enter class="form-control"  ng-model="customer.Properties['address']['County']"
+                                                               ng-focus="setFieldTypingStatus('County', true)"
+                                                               ng-blur="setFieldTypingStatus('County', false)"
+                                                               ng-disabled="checkPartnerTyping('County')" ng-required="true" ng-change="changeTextForAddressField('County')">
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div ng-if="checkPartnerTyping('County')">
+                                                <label class="typing">{{partner}} is typing ...</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label class="form-label">Country</label>
+                                                <div>
+                                                    <span class="checkboxes">
+                                                        <input type="text" enter class="form-control" ng-model="customer.Properties['address']['Country']"
+                                                               ng-focus="setFieldTypingStatus('Country', true)"
+                                                               ng-blur="setFieldTypingStatus('Country', false)"
+                                                               ng-disabled="checkPartnerTyping('Country')" ng-required="true" ng-change="changeTextForAddressField('Country')">
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div ng-if="checkPartnerTyping('Country')">
+                                                <label class="typing">{{partner}} is typing ...</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label class="form-label">Postcode</label>
+                                                <div>
+                                                    <span class="checkboxes">
+                                                        <input type="text" enter class="form-control"  ng-model="customer.Properties['address']['PostCode']"
+                                                               ng-focus="setFieldTypingStatus('PostCode', true)"
+                                                               ng-blur="setFieldTypingStatus('PostCode', false)"
+                                                               ng-disabled="checkPartnerTyping('PostCode')" ng-required="true" ng-change="changeTextForAddressField('PostCode')">
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div ng-if="checkPartnerTyping('PostCode')">
+                                                <label class="typing">{{partner}} is typing ...</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-12 margin-t-10">
+                                            <button type="button" ng-click="customer.Properties.createNewAdd = !customer.Properties.createNewAdd" class="btn scroll-top">Cancel</button>
+                                            <button type="submit" class="btn btn-primary scroll-top">Save</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <form class="form" name="propertyDetailForm" novalidate ng-submit="propertyDetailForm.$valid && savePropertyDetails(customer.Properties)">
+                                <div class="col-lg-12">
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label class="form-label">Select Address</label>
+                                            <div>
+                                                <span class="checkboxes">
+                                                    <ui-select dropdownenter ng-model="customer.Properties.AddressID" ng-required="true">
+                                                        <ui-select-match placeholder="Please Select">{{$select.selected.name}}</ui-select-match>
+                                                        <ui-select-choices repeat="value.val as value in addressList| filter:$select.search">
+                                                            <div ng-bind-html="value.name | highlight: $select.search"></div>
+                                                        </ui-select-choices>
+                                                    </ui-select>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="padding-t-25">
+                                            <input type="button" class="btn btn-primary" ng-click="customer.Properties.createNewAdd = !customer.Properties.createNewAdd" value="Create Address">
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="form-label">Property Type</label>
+                                        <div>
+                                            <span class="checkboxes">
+                                                <ui-select dropdownenter ng-model="customer.Properties.ePropertyTypeID" ng-required="true">
+                                                    <ui-select-match placeholder="Please Select">{{$select.selected.name}}</ui-select-match>
+                                                    <ui-select-choices repeat="value.val as value in propertyType| filter:$select.search">
+                                                        <div ng-bind-html="value.name | highlight: $select.search"></div>
+                                                    </ui-select-choices>
+                                                </ui-select>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12" ng-if="customer.Properties.ePropertyTypeID === 2">
+                                    <div class="form-group">
+                                        <span class="step-heading step-heading-small">ADDITIONAL FLAT QUESTIONS:</span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6" ng-if="customer.Properties.ePropertyTypeID === 2">
+                                    <div class="form-group">
+                                        <label class="form-label">Lift</label>
+                                        <div>
+                                            <span class="checkboxes">
+                                                <div class="form-control radio-group">
+                                                    <div class="radio radio-info radio-inline">
+                                                        <input enter type="radio" id="Lift1" ng-value="true" ng-model="customer.Properties.Lift">
+                                                        <label for="Lift1"> Yes </label>
+                                                    </div>
+                                                    <div class="radio radio-info radio-inline">
+                                                        <input enter type="radio" id="Lift2" ng-value="false" ng-model="customer.Properties.Lift">
+                                                        <label for="Lift2"> No </label>
+                                                    </div>
+                                                </div>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6" ng-if="customer.Properties.ePropertyTypeID === 2">
+                                    <div class="form-group">
+                                        <label class="form-label">Studio Flat</label>
+                                        <div>
+                                            <span class="checkboxes">
+                                                <div class="form-control radio-group">
+                                                    <div class="radio radio-info radio-inline">
+                                                        <input enter type="radio" id="StudioFlat1" ng-value="true" ng-model="customer.Properties.StudioFlat">
+                                                        <label for="StudioFlat1"> Yes </label>
+                                                    </div>
+                                                    <div class="radio radio-info radio-inline">
+                                                        <input enter type="radio" id="StudioFlat2" ng-value="false" ng-model="customer.Properties.StudioFlat">
+                                                        <label for="StudioFlat2"> No </label>
+                                                    </div>
+                                                </div>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6" ng-if="customer.Properties.ePropertyTypeID === 2">
+                                    <div class="form-group">
+                                        <label class="form-label">Converted</label>
+                                        <div>
+                                            <span class="checkboxes">
+                                                <div class="form-control radio-group">
+                                                    <div class="radio radio-info radio-inline">
+                                                        <input enter type="radio" id="Converted1" ng-value="true" ng-model="customer.Properties.Converted">
+                                                        <label for="Converted1"> Yes </label>
+                                                    </div>
+                                                    <div class="radio radio-info radio-inline">
+                                                        <input enter type="radio" id="Converted2" ng-value="false" ng-model="customer.Properties.Converted">
+                                                        <label for="Converted2"> No </label>
+                                                    </div>
+                                                </div>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6" ng-if="customer.Properties.ePropertyTypeID === 2">
+                                    <div class="form-group">
+                                        <label class="form-label">Balcony Access</label>
+                                        <div>
+                                            <span class="checkboxes">
+                                                <div class="form-control radio-group">
+                                                    <div class="radio radio-info radio-inline">
+                                                        <input enter type="radio" id="BalconyAccess1" ng-value="true" ng-model="customer.Properties.BalconyAccess">
+                                                        <label for="BalconyAccess1"> Yes </label>
+                                                    </div>
+                                                    <div class="radio radio-info radio-inline">
+                                                        <input enter type="radio" id="BalconyAccess2" ng-value="false" ng-model="customer.Properties.BalconyAccess">
+                                                        <label for="BalconyAccess2"> No </label>
+                                                    </div>
+                                                </div>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6" ng-if="customer.Properties.ePropertyTypeID === 2">
+                                    <div class="form-group">
+                                        <label class="form-label">Purpose Built</label>
+                                        <div>
+                                            <span class="checkboxes">
+                                                <div class="form-control radio-group">
+                                                    <div class="radio radio-info radio-inline">
+                                                        <input enter type="radio" id="PurposeBuilt1" ng-value="true" ng-model="customer.Properties.PurposeBuilt">
+                                                        <label for="PurposeBuilt1"> Yes </label>
+                                                    </div>
+                                                    <div class="radio radio-info radio-inline">
+                                                        <input enter type="radio" id="PurposeBuilt2" ng-value="false" ng-model="customer.Properties.PurposeBuilt">
+                                                        <label for="PurposeBuilt2"> No </label>
+                                                    </div>
+                                                </div>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6" ng-if="customer.Properties.ePropertyTypeID === 2">
+                                    <div class="form-group">
+                                        <label class="form-label">Above Commercial Premises</label>
+                                        <div>
+                                            <span class="checkboxes">
+                                                <div class="form-control radio-group">
+                                                    <div class="radio radio-info radio-inline">
+                                                        <input enter type="radio" id="AboveCommercial1" ng-value="true" ng-model="customer.Properties.AboveCommercial">
+                                                        <label for="AboveCommercial1"> Yes </label>
+                                                    </div>
+                                                    <div class="radio radio-info radio-inline">
+                                                        <input enter type="radio" id="AboveCommercial2" ng-value="false" ng-model="customer.Properties.AboveCommercial">
+                                                        <label for="AboveCommercial2"> No </label>
+                                                    </div>
+                                                </div>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6" ng-if="customer.Properties.AboveCommercial">
+                                    <div class="form-group">
+                                        <label class="form-label">Above Commercial - type of premises</label>
+                                        <div>
+                                            <span class="checkboxes">
+                                                <ui-select dropdownenter ng-model="customer.Properties.eAboveCommercialID">
+                                                    <ui-select-match placeholder="Please Select">{{$select.selected.name}}</ui-select-match>
+                                                    <ui-select-choices repeat="value.val as value in eAboveCommercial| filter:$select.search">
+                                                        <div ng-bind-html="value.name | highlight: $select.search"></div>
+                                                    </ui-select-choices>
+                                                </ui-select>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6" ng-if="customer.Properties.ePropertyTypeID === 2">
+                                    <div class="form-group">
+                                        <label class="form-label">Which floor is flat on?</label>
+                                        <div>
+                                            <span class="checkboxes">
+                                                <input type="text" enter class="form-control" ng-model="customer.Properties.Floor" ng-focus="setFieldTypingStatus('Floor', true)" only-two-digits
+                                                       ng-blur="setFieldTypingStatus('Floor', false)"
+                                                       ng-disabled="checkPartnerTyping('Floor')" ng-required="true" ng-change="changeTextField('Properties', 'Floor')">
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div ng-if="checkPartnerTyping('Floor')">
+                                        <label class="typing">{{partner}} is typing ...</label>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6" ng-if="customer.Properties.ePropertyTypeID === 2">
+                                    <div class="form-group">
+                                        <label class="form-label">Number of floors in whole block</label>
+                                        <div>
+                                            <span class="checkboxes">
+                                                <input type="text" enter class="form-control" ng-model="customer.Properties.NumFloors" ng-focus="setFieldTypingStatus('NumFloors', true)" only-two-digits
+                                                       ng-blur="setFieldTypingStatus('NumFloors', false)"
+                                                       ng-disabled="checkPartnerTyping('NumFloors')" ng-required="true" ng-change="changeTextField('Properties', 'NumFloors')">
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div ng-if="checkPartnerTyping('NumFloors')">
+                                        <label class="typing">{{partner}} is typing ...</label>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="form-label">Property Status</label>
+                                        <div>
+                                            <span class="checkboxes">
+                                                <ui-select dropdownenter ng-model="customer.Properties.ePropertyStatusID" ng-required="true">
+                                                    <ui-select-match placeholder="Please Select">{{$select.selected.name}}</ui-select-match>
+                                                    <ui-select-choices repeat="value.val as value in propertyStatus| filter:$select.search">
+                                                        <div ng-bind-html="value.name | highlight: $select.search"></div>
+                                                    </ui-select-choices>
+                                                </ui-select>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="form-label">Residency Type</label>
+                                        <div>
+                                            <span class="checkboxes">
+                                                <ui-select dropdownenter ng-model="customer.Properties.ePropertyResidenceID" ng-required="true">
+                                                    <ui-select-match placeholder="Please Select">{{$select.selected.name}}</ui-select-match>
+                                                    <ui-select-choices repeat="value.val as value in residencyType| filter:$select.search">
+                                                        <div ng-bind-html="value.name | highlight: $select.search"></div>
+                                                    </ui-select-choices>
+                                                </ui-select>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="form-label">Tenure</label>
+                                        <div>
+                                            <span class="checkboxes">
+                                                <ui-select dropdownenter ng-model="customer.Properties.eTenureTypeID" ng-required="true">
+                                                    <ui-select-match placeholder="Please Select">{{$select.selected.name}}</ui-select-match>
+                                                    <ui-select-choices repeat="value.val as value in tenureType| filter:$select.search">
+                                                        <div ng-bind-html="value.name | highlight: $select.search"></div>
+                                                    </ui-select-choices>
+                                                </ui-select>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6" ng-if="customer.Properties.eTenureTypeID === 4">
+                                    <div class="form-group">
+                                        <label class="form-label">Flying Freehold Percentage</label>
+                                        <div>
+                                            <span class="checkboxes">
+                                                <input enter type="text" only-two-digits class="form-control" ng-model="customer.Properties.FlyingFreeholdPercent" ng-focus="setFieldTypingStatus('FlyingFreeholdPercent', true)" only-years
+                                                       ng-blur="setFieldTypingStatus('FlyingFreeholdPercent', false)"
+                                                       ng-disabled="checkPartnerTyping('FlyingFreeholdPercent')" ng-change="changeTextField('Properties', 'FlyingFreeholdPercent')">
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div ng-if="checkPartnerTyping('FlyingFreeholdPercent')">
+                                        <label class="typing">{{partner}} is typing ...</label>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6" ng-if="customer.Properties.eTenureTypeID === 2">
+                                    <div class="form-group">
+                                        <label class="form-label">Number of lease years remaining</label>
+                                        <div>
+                                            <span class="checkboxes">
+                                                <input type="text" enter class="form-control" ng-model="customer.Properties.LeaseYearsRemaining" ng-focus="setFieldTypingStatus('LeaseYearsRemaining', true)" age-limits
+                                                       ng-blur="setFieldTypingStatus('LeaseYearsRemaining', false)"
+                                                       ng-disabled="checkPartnerTyping('LeaseYearsRemaining')" ng-required="true" ng-change="changeTextField('Properties', 'LeaseYearsRemaining')">
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div ng-if="checkPartnerTyping('LeaseYearsRemaining')">
+                                        <label class="typing">{{partner}} is typing ...</label>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="form-label">Built Year</label>
+                                        <div>
+                                            <span class="checkboxes">
+                                                <input type="text" enter class="form-control" ng-model="customer.Properties.YearBuiltIn" ng-focus="setFieldTypingStatus('YearBuiltIn', true)" only-years
+                                                       ng-blur="setFieldTypingStatus('YearBuiltIn', false)"
+                                                       ng-disabled="checkPartnerTyping('YearBuiltIn')" ng-change="changeBuiltYear(customer.Properties.YearBuiltIn)" ng-required="true" ng-change="changeTextField('Properties', 'YearBuiltIn')">
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div ng-if="checkPartnerTyping('YearBuiltIn')">
+                                        <label class="typing">{{partner}} is typing ...</label>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="form-label">Property Age</label>
+                                        <div>
+                                            <span class="checkboxes">
+                                                <div class="col-sm-12 padding-0" >
+                                                    <div class="col-sm-3 padding-l-0">
+                                                        <input type="text" enter class="form-control" ng-model="customer.Properties.AgeYears" ng-focus="setFieldTypingStatus('AgeYears', true)" age-limits
+                                                               ng-blur="setFieldTypingStatus('AgeYears', false)"
+                                                               ng-disabled="checkPartnerTyping('AgeYears')" ng-required="true" ng-change="changeTextField('Properties', 'AgeYears')">
+                                                        <div ng-if="checkPartnerTyping('AgeYears')">
+                                                            <label class="typing">{{partner}} is typing ...</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-3">
+                                                        <label class="form-label">Years</label>
+                                                    </div>
+                                                    <div class="col-sm-3">
+                                                        <input type="text" enter class="form-control" ng-model="customer.Properties.AgeMonths" ng-focus="setFieldTypingStatus('AgeMonths', true)" only-two-digits
+                                                               ng-blur="setFieldTypingStatus('AgeMonths', false)"
+                                                               ng-disabled="checkPartnerTyping('AgeMonths')" ng-required="true" ng-change="changeTextField('Properties', 'AgeMonths')">
+                                                        <div ng-if="checkPartnerTyping('AgeMonths')">
+                                                            <label class="typing">{{partner}} is typing ...</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-3 padding-r-0">
+                                                        <label class="form-label">Months</label>
+                                                    </div>
+                                                </div>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12 margin-t-10">
+                                    <button type="button" class="btn scroll-top" ng-click="backButtonAction();">Back</button>
+                                    <button type="submit" class="btn btn-primary scroll-top">Save and Continue</button>
+                                </div>
+                            </form>
+                        </div>
+                        <div ng-if="isPropertyTabActive('additionalPropertyDetails')" class="col-lg-8">
+                            <form class="form" name="additionalPropertyDetailForm" novalidate ng-submit="additionalPropertyDetailForm.$valid && savePropertyDetails(customer.Properties)">
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="form-label">Construction Type</label>
+                                        <div>
+                                            <span class="checkboxes">
+                                                <ui-select dropdownenter ng-model="customer.Properties.eConstructionTypeID" ng-required="true">
+                                                    <ui-select-match placeholder="Please Select">{{$select.selected.name}}</ui-select-match>
+                                                    <ui-select-choices repeat="value.val as value in constructionType| filter:$select.search">
+                                                        <div ng-bind-html="value.name | highlight: $select.search"></div>
+                                                    </ui-select-choices>
+                                                </ui-select>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6"  ng-if="customer.Properties.eConstructionTypeID === 2">
+                                    <div class="form-group">
+                                        <label class="form-label">Non Standard Construction Type</label>
+                                        <div>
+                                            <span class="checkboxes">
+                                                <ui-select dropdownenter ng-model="customer.Properties.eNonStdConstructionTypeID" ng-required="true">
+                                                    <ui-select-match placeholder="Please Select">{{$select.selected.name}}</ui-select-match>
+                                                    <ui-select-choices repeat="value.val as value in nonStdConstructionTypes| filter:$select.search">
+                                                        <div ng-bind-html="value.name | highlight: $select.search"></div>
+                                                    </ui-select-choices>
+                                                </ui-select>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="form-label">Wall Construction Type</label>
+                                        <div>
+                                            <span class="checkboxes">
+                                                <ui-select dropdownenter ng-model="customer.Properties.eWallConstructionID" ng-required="true">
+                                                    <ui-select-match placeholder="Please Select">{{$select.selected.name}}</ui-select-match>
+                                                    <ui-select-choices repeat="value.val as value in wallConstructionTypes| filter:$select.search">
+                                                        <div ng-bind-html="value.name | highlight: $select.search"></div>
+                                                    </ui-select-choices>
+                                                </ui-select>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6" >
+                                    <div class="form-group">
+                                        <label class="form-label">Roof Construction Type</label>
+                                        <div>
+                                            <span class="checkboxes">
+                                                <ui-select dropdownenter ng-model="customer.Properties.eRoofConstructionID" ng-required="true">
+                                                    <ui-select-match placeholder="Please Select">{{$select.selected.name}}</ui-select-match>
+                                                    <ui-select-choices repeat="value.val as value in roofConstructionTypes| filter:$select.search">
+                                                        <div ng-bind-html="value.name | highlight: $select.search"></div>
+                                                    </ui-select-choices>
+                                                </ui-select>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="form-label">Country</label>
+                                        <div>
+                                            <span class="checkboxes">
+                                                <ui-select dropdownenter ng-model="customer.Properties.eCountryID" ng-required="true">
+                                                    <ui-select-match placeholder="Please Select">{{$select.selected.name}}</ui-select-match>
+                                                    <ui-select-choices repeat="value.val as value in countryList| filter:$select.search">
+                                                        <div ng-bind-html="value.name | highlight: $select.search"></div>
+                                                    </ui-select-choices>
+                                                </ui-select>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="form-label">Reason for Capital Raising(Applicable for LTB)</label>
+                                        <div>
+                                            <span class="checkboxes">
+                                                <ui-select dropdownenter ng-model="customer.ExtraCommonLenderQn.CapitalRaisingReason">
+                                                    <ui-select-match placeholder="Please Select">{{$select.selected.label}}</ui-select-match>
+                                                    <ui-select-choices repeat="value.value as value in reasonForCapitalRaising| filter:$select.search">
+                                                        <div ng-bind-html="value.label | highlight: $select.search"></div>
+                                                    </ui-select-choices>
+                                                </ui-select>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6" ng-if="customer.Properties.MultipleOccupancy">
+                                    <div class="form-group">
+                                        <label class="form-label">Ownership Percentage %</label>
+                                        <div>
+                                            <span class="checkboxes">
+                                                <input type="text" enter class="form-control" ng-model="customer.Properties.PercentShared" ng-focus="setFieldTypingStatus('PercentShared', true)" only-two-digits
+                                                       ng-blur="setFieldTypingStatus('PercentShared', false)"
+                                                       ng-disabled="checkPartnerTyping('PercentShared')"  ng-required="true" ng-change="changeTextField('Properties', 'PercentShared')">
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div ng-if="checkPartnerTyping('PercentShared')">
+                                        <label class="typing">{{partner}} is typing ...</label>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="form-label">Number of bedrooms</label>
+                                        <div>
+                                            <span class="checkboxes">
+                                                <div class="col-sm-12 padding-0" style="margin-bottom: 18px;">
+
+                                                    <div class="col-sm-3 padding-0">
+
+                                                        <input type="text" enter class="form-control" ng-model="customer.Properties.NumBedrooms" ng-focus="setFieldTypingStatus('NumBedrooms', true)" only-two-digits
+                                                               ng-blur="setFieldTypingStatus('NumBedrooms', false)"
+                                                               ng-disabled="checkPartnerTyping('NumBedrooms')" ng-required="true" ng-change="changeTextField('Properties', 'NumBedrooms')">
+
+                                                    </div>
+                                                </div>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div ng-if="checkPartnerTyping('NumBedrooms')">
+                                        <label class="typing">{{partner}} is typing ...</label>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="form-label">Number of Kitchen(s)</label>
+                                        <div>
+                                            <span class="checkboxes">
+                                                <div class="col-sm-12 padding-0" style="margin-bottom: 18px;"> 
+                                                    <div class="col-sm-3 padding-0">
+
+                                                        <input type="text" enter class="form-control" ng-model="customer.Properties.NumKitchens" ng-focus="setFieldTypingStatus('NumKitchens', true)" only-two-digits
+                                                               ng-blur="setFieldTypingStatus('NumKitchens', false)"
+                                                               ng-disabled="checkPartnerTyping('NumKitchens')" ng-required="true" ng-change="changeTextField('Properties', 'NumKitchens')">
+
+                                                    </div>
+                                                </div>
+                                            </span>
+                                        </div>
+
+                                    </div>
+                                    <div ng-if="checkPartnerTyping('NumKitchens')">
+                                        <label class="typing">{{partner}} is typing ...</label>
+                                    </div>
+                                </div>
+                                <!-- <div class="col-lg-6" ng-if="customer.Properties.SemiCommercial">
+                                    <div class="form-group">
+                                        <label class="form-label">Ownership Percentage %</label>
+                                        <div>
+                                            <span class="checkboxes">
+                                                <input type="text" enter class="form-control" ng-model="customer.ExtraCommonLenderQn.SemicommericalPercentage" ng-focus="setFieldTypingStatus('SemicommericalPercentage', true)"
+                                                       ng-blur="setFieldTypingStatus('SemicommericalPercentage', false)"
+                                                       ng-disabled="checkPartnerTyping('SemicommericalPercentage')" ng-required="true" ng-change="changeTextField('ExtraCommonLenderQn', 'SemicommericalPercentage')">
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div ng-if="checkPartnerTyping('SemicommericalPercentage')">
+                                        <label class="typing">{{partner}} is typing ...</label>
+                                    </div>
+                                </div> -->
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="form-label">Is Ownership Shared?</label>
+                                        <div class="form-control radio-group">
+                                            <div>
+                                                <span class="checkboxes">
+                                                    <div class="radio radio-info radio-inline">
+                                                        <input enter type="radio" id="IsOwnershipShared1" ng-value="true" ng-model="customer.Properties.MultipleOccupancy">
+                                                        <label for="IsOwnershipShared1"> Yes </label>
+                                                    </div>
+                                                    <div class="radio radio-info radio-inline">
+                                                        <input enter type="radio" id="IsOwnershipShared2" ng-value="false" ng-model="customer.Properties.MultipleOccupancy">
+                                                        <label for="IsOwnershipShared2"> No </label>
+                                                    </div>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="form-label">Ex Local Authority?</label>
+                                        <div>
+                                            <span class="checkboxes">
+                                                <div class="form-control radio-group">
+                                                    <div class="radio radio-info radio-inline">
+                                                        <input enter type="radio" id="ExLocalAuthority1" ng-value="true" ng-model="customer.Properties.ExLocalAuthority">
+                                                        <label for="ExLocalAuthority1"> Yes </label>
+                                                    </div>
+                                                    <div class="radio radio-info radio-inline">
+                                                        <input enter type="radio" id="ExLocalAuthority2" ng-value="false" ng-model="customer.Properties.ExLocalAuthority">
+                                                        <label for="ExLocalAuthority2"> No </label>
+                                                    </div>
+                                                </div>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="form-label">Semi Commercial</label>
+                                        <div>
+                                            <span class="checkboxes">
+                                                <div class="form-control radio-group">
+                                                    <div class="radio radio-info radio-inline">
+                                                        <input enter type="radio" id="SemiCommercial1" ng-value="true" ng-model="customer.Properties.SemiCommercial">
+                                                        <label for="SemiCommercial1"> Yes </label>
+                                                    </div>
+                                                    <div class="radio radio-info radio-inline">
+                                                        <input enter type="radio" id="SemiCommercial2" ng-value="false" ng-model="customer.Properties.SemiCommercial">
+                                                        <label for="SemiCommercial2"> No </label>
+                                                    </div>
+                                                </div>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="form-label">Multiple Occupancy</label>
+                                        <div>
+                                            <span class="checkboxes">
+                                                <div class="form-control radio-group">
+                                                    <div class="radio radio-info radio-inline">
+                                                        <input enter type="radio" id="IsHMO1" ng-value="true" ng-model="customer.ExtraCommonLenderQn.IsHMO">
+                                                        <label for="IsHMO1"> Yes </label>
+                                                    </div>
+                                                    <div class="radio radio-info radio-inline">
+                                                        <input enter type="radio" id="IsHMO2" ng-value="false" ng-model="customer.ExtraCommonLenderQn.IsHMO">
+                                                        <label for="IsHMO2"> No </label>
+                                                    </div>
+                                                </div>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="form-label">Agricultural tie</label>
+                                        <div>
+                                            <span class="checkboxes">
+                                                <div class="form-control radio-group">
+                                                    <div class="radio radio-info radio-inline">
+                                                        <input enter type="radio" id="AgriculturalTie1" ng-value="true" ng-model="customer.Properties.AgriculturalTie">
+                                                        <label for="AgriculturalTie1"> Yes </label>
+                                                    </div>
+                                                    <div class="radio radio-info radio-inline">
+                                                        <input enter type="radio" id="AgriculturalTie2" ng-value="false" ng-model="customer.Properties.AgriculturalTie">
+                                                        <label for="AgriculturalTie2"> No </label>
+                                                    </div>
+                                                </div>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="form-label">Less than 10 years old (no architect cert)</label>
+                                        <div>
+                                            <span class="checkboxes">
+                                                <div class="form-control radio-group">
+                                                    <div class="radio radio-info radio-inline">
+                                                        <input enter type="radio" id="ArchitectCertificate1" ng-value="true" ng-model="customer.Properties.ArchitectCertificate">
+                                                        <label for="ArchitectCertificate1"> Yes </label>
+                                                    </div>
+                                                    <div class="radio radio-info radio-inline">
+                                                        <input enter type="radio" id="ArchitectCertificate2" ng-value="false" ng-model="customer.Properties.ArchitectCertificate">
+                                                        <label for="ArchitectCertificate2"> No </label>
+                                                    </div>
+                                                </div>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="form-label">Is Family Let</label>
+                                        <div>
+                                            <span class="checkboxes">
+                                                <div class="form-control radio-group">
+                                                    <div class="radio radio-info radio-inline">
+                                                        <input enter type="radio" id="IsFamilyLet1" ng-value="true" ng-model="customer.ExtraCommonLenderQn.IsFamilyLet">
+                                                        <label for="IsFamilyLet1"> Yes </label>
+                                                    </div>
+                                                    <div class="radio radio-info radio-inline">
+                                                        <input enter type="radio" id="IsFamilyLet2" ng-value="false" ng-model="customer.ExtraCommonLenderQn.IsFamilyLet">
+                                                        <label for="IsFamilyLet2"> No </label>
+                                                    </div>
+                                                </div>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="form-label">Is Student Let</label>
+                                        <div>
+                                            <span class="checkboxes">
+                                                <div class="form-control radio-group">
+                                                    <div class="radio radio-info radio-inline">
+                                                        <input enter type="radio" id="IsStudentLet1" ng-value="true" ng-model="customer.ExtraCommonLenderQn.IsStudentLet">
+                                                        <label for="IsStudentLet1"> Yes </label>
+                                                    </div>
+                                                    <div class="radio radio-info radio-inline">
+                                                        <input enter type="radio" id="IsStudentLet2" ng-value="false" ng-model="customer.ExtraCommonLenderQn.IsStudentLet">
+                                                        <label for="IsStudentLet2"> No </label>
+                                                    </div>
+                                                </div>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="form-label">Is Self Build</label>
+                                        <div>
+                                            <span class="checkboxes">
+                                                <div class="form-control radio-group">
+                                                    <div class="radio radio-info radio-inline">
+                                                        <input enter type="radio" id="SelfBuild1" ng-value="true" ng-model="customer.Properties.SelfBuild">
+                                                        <label for="SelfBuild1"> Yes </label>
+                                                    </div>
+                                                    <div class="radio radio-info radio-inline">
+                                                        <input enter type="radio" id="SelfBuild2" ng-value="false" ng-model="customer.Properties.SelfBuild">
+                                                        <label for="SelfBuild2"> No </label>
+                                                    </div>
+                                                </div>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12 margin-t-10">
+                                    <button type="button" class="btn scroll-top" ng-click="backButtonActionForTabs('additionalPropertyDetailForm');">Back</button>
+                                    <button type="submit" class="btn btn-primary scroll-top">Save and Continue</button>
+                                </div>
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>  
+    </div>
+</div>

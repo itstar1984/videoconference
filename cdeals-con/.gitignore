@@ -1,0 +1,7 @@
+/.idea/
+/.settings/
+/.buildpath
+/.project
+/php_pages/
+/nbproject/
+/app/constant.js

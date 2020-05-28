@@ -1,0 +1,648 @@
+<!-- Start Page Loading -->
+<div class="loading"
+     ng-if="!customer.activeApplicant"><img src="assets/img/loading.gif"
+         alt="loading-img"></div>
+<!-- End Page Loading -->
+<div ng-if="customer.activeApplicant">
+    <div class="page-header">
+        <h1 class="title">Quote Summary</h1>
+    </div>
+    <div class="container-widget"
+         ng-if="customer.applicants && customer.applicants.length">
+        <div class="row">
+            <div class="col-md-12 col-lg-12">
+                <div class="panel panel-transparent padding-0">
+                    <div class="panel-body">
+                        <div role="tabpanel">
+                            <!-- Nav tabs -->
+                            <ul class="nav nav-tabs"
+                                role="tablist">
+                                <li role="presentation"
+                                    ng-class="{'active' : getActiveQuoteSummryTab('activeQuote')}">
+                                    <a href="javascript:void(0)"
+                                       ng-click="setQuoteSummryTab('activeQuote')"
+                                       data-toggle="tab">Active Quotes</a>
+                                </li>
+                                <li role="presentation"
+                                    ng-class="{'active' : getActiveQuoteSummryTab('deActiveQuote')}">
+                                    <a href="javascript:void(0)"
+                                       ng-click="setQuoteSummryTab('deActiveQuote')"
+                                       data-toggle="tab">De-Active Quotes </a>
+                                </li>
+                            </ul>
+                            <!-- Tab panes -->
+                            <div class="tab-content">
+                                <div role="tabpanel"
+                                     class="tab-pane"
+                                     ng-class="{'active' : getActiveQuoteSummryTab('activeQuote')}">
+                                    <div class="row padding-0 soruceNowDiv">
+                                        <div class="col-md-12">
+                                            <div class="col-md-12 padding-0 margin-b-10">
+                                                <div class="filter-header">Active Quotes </div>
+                                                <div class="filter-body">
+                                                    <table class="table table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>View</th>
+                                                                <th>Quote</th>
+                                                                <th>Quote For</th>
+                                                                <th>Lender Name</th>
+                                                                <th>Product Name</th>
+                                                                <th>Initial Pay</th>
+                                                                <th>Total Cost</th>
+                                                                <th>Total Fee</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr ng-repeat="quote in customer.activeQuotes">
+                                                                <td>
+                                                                    <a href="javascript:void(0)"
+                                                                       ng-click="showActiveQuote(quote)">
+                                                                        <i class="fa fa-download"></i>
+                                                                    </a>
+                                                                </td>
+                                                                <td>{{quote.quote}}</td>
+                                                                <td>{{quote.quoteFor}}</td>
+                                                                <td>{{quote.LenderName}}</td>
+                                                                <td>{{quote.productName}}</td>
+                                                                <td>{{quote.initialPay}}</td>
+                                                                <td>{{quote.totalCost}}</td>
+                                                                <td>{{quote.totalFee}}</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12 DataCol"
+                                             ng-if="customer.activeProductSummary.length && customer.showActiveProductSummary">
+                                            <table width="100%"
+                                                   border="0"
+                                                   cellspacing="10"
+                                                   cellpadding="0">
+                                                <tr>
+                                                    <td align="center"
+                                                        class="greay-rc">Product Feature</td>
+                                                    <td align="center"
+                                                        class="greay-rc"
+                                                        ng-if="shortlist.ProductID == shortlist.SelectedProductId"
+                                                        ng-repeat="shortlist in customer.activeProductSummary| orderBy : 'ProductID' track by $index">Value</td>
+                                                </tr>
+                                                <!-- <tr>
+                                                    <td class="bor bor-b">Select Product </td>
+                                                    <td height="50"
+                                                        align="center"
+                                                        class="bor bor-b"
+                                                        ng-if="shortlist.ProductID == shortlist.SelectedProductId"
+                                                        ng-repeat="shortlist in customer.activeProductSummary| orderBy : 'ProductID' track by $index">
+                                                        <div class="checkbox checkbox-primary margin-t-0">
+                                                            <input enter
+                                                                   id="productID_{{$index}}"
+                                                                   type="checkbox"
+                                                                   checklist-model="selectedClientID.ProductID"
+                                                                   checklist-value="shortlist.ProductID"
+                                                                   name="ProductID"
+                                                                   ng-disabled="shortlist.ProductID && shortlist.ProductID !== shortlist.SelectedProductId"
+                                                                   ng-checked="shortlist.ProductID === shortlist.SelectedProductId">
+                                                            <label for="productID_{{$index}}">Select Product {{$index + 1}} </label>
+                                                        </div>
+                                                    </td>
+                                                </tr> -->
+                                                <tr>
+                                                    <td class="bor bor-b">Lender Name </td>
+                                                    <td align="center"
+                                                        class="bor bor-b"
+                                                        ng-if="shortlist.ProductID == shortlist.SelectedProductId"
+                                                        ng-repeat="shortlist in customer.activeProductSummary| orderBy : 'ProductID' track by $index">{{shortlist.LenderName}}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="bor bor-b">Product Name </td>
+                                                    <td align="center"
+                                                        class="bor bor-b"
+                                                        ng-if="shortlist.ProductID == shortlist.SelectedProductId"
+                                                        ng-repeat="shortlist in customer.activeProductSummary| orderBy : 'ProductID' track by $index">{{shortlist.ProductName}}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="bor bor-b">Product Type </td>
+                                                    <td align="center"
+                                                        class="bor bor-b"
+                                                        ng-if="shortlist.ProductID == shortlist.SelectedProductId"
+                                                        ng-repeat="shortlist in customer.activeProductSummary| orderBy : 'ProductID' track by $index">{{shortlist.ProductType}}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="bor bor-b">Term </td>
+                                                    <td align="center"
+                                                        class="bor bor-b"
+                                                        ng-if="shortlist.ProductID == shortlist.SelectedProductId"
+                                                        ng-repeat="shortlist in customer.activeProductSummary| orderBy : 'ProductID' track by $index">
+                                                        <span ng-if="shortlist.Term">{{shortlist.Term}}</span>
+                                                        <span ng-if="!shortlist.Term">-</span>
+                                                    </td>
+                                                    <tr>
+                                                        <td class="bor bor-b">Initial Rate </td>
+                                                        <td align="center"
+                                                            class="bor bor-b"
+                                                            ng-if="shortlist.ProductID == shortlist.SelectedProductId"
+                                                            ng-repeat="shortlist in customer.activeProductSummary| orderBy : 'ProductID' track by $index">{{shortlist.InitialRate||'-'}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="bor bor-b">Reverting Rate </td>
+                                                        <td align="center"
+                                                            class="bor bor-b"
+                                                            ng-if="shortlist.ProductID == shortlist.SelectedProductId"
+                                                            ng-repeat="shortlist in customer.activeProductSummary| orderBy : 'ProductID' track by $index">{{shortlist.RevertingRate||'-'}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="bor bor-b">Initial Payment </td>
+                                                        <td align="center"
+                                                            class="bor bor-b"
+                                                            ng-if="shortlist.ProductID == shortlist.SelectedProductId"
+                                                            ng-repeat="shortlist in customer.activeProductSummary| orderBy : 'ProductID' track by $index">{{shortlist.InitialPayment}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="bor bor-b">Rev Payment </td>
+                                                        <td align="center"
+                                                            class="bor bor-b"
+                                                            ng-if="shortlist.ProductID == shortlist.SelectedProductId"
+                                                            ng-repeat="shortlist in customer.activeProductSummary| orderBy : 'ProductID' track by $index">{{shortlist.RevPayment}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="bor bor-b">Total Cost </td>
+                                                        <td align="center"
+                                                            class="bor bor-b"
+                                                            ng-if="shortlist.ProductID == shortlist.SelectedProductId"
+                                                            ng-repeat="shortlist in customer.activeProductSummary| orderBy : 'ProductID' track by $index">{{shortlist.TotalCost}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="bor bor-b">Incremental Cost </td>
+                                                        <td align="center"
+                                                            class="bor bor-b"
+                                                            ng-if="shortlist.ProductID == shortlist.SelectedProductId"
+                                                            ng-repeat="shortlist in customer.activeProductSummary| orderBy : 'ProductID' track by $index">
+                                                            {{shortlist.IncrementalCost}}
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="bor bor-b">Total Fee </td>
+                                                        <td align="center"
+                                                            class="bor bor-b"
+                                                            ng-if="shortlist.ProductID == shortlist.SelectedProductId"
+                                                            ng-repeat="shortlist in customer.activeProductSummary| orderBy : 'ProductID' track by $index">{{shortlist.TotalFee}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="bor bor-b">ERC </td>
+                                                        <td align="center"
+                                                            class="bor bor-b"
+                                                            ng-if="shortlist.ProductID == shortlist.SelectedProductId"
+                                                            ng-repeat="shortlist in customer.activeProductSummary| orderBy : 'ProductID' track by $index">{{shortlist.ERC}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="bor bor-b">ERC End Date </td>
+                                                        <td align="center"
+                                                            class="bor bor-b"
+                                                            ng-if="shortlist.ProductID == shortlist.SelectedProductId"
+                                                            ng-repeat="shortlist in customer.activeProductSummary| orderBy : 'ProductID' track by $index">{{shortlist.ERCEndDate||'-'}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="bor bor-b">ERC OverHang </td>
+                                                        <td align="center"
+                                                            class="bor bor-b"
+                                                            ng-if="shortlist.ProductID == shortlist.SelectedProductId"
+                                                            ng-repeat="shortlist in customer.activeProductSummary| orderBy : 'ProductID' track by $index">{{shortlist.ERCOverHang}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="bor bor-b">Booking Fee </td>
+                                                        <td align="center"
+                                                            class="bor bor-b"
+                                                            ng-if="shortlist.ProductID == shortlist.SelectedProductId"
+                                                            ng-repeat="shortlist in customer.activeProductSummary| orderBy : 'ProductID' track by $index">{{shortlist.BookingFee}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="bor bor-b">Arrangement Fee </td>
+                                                        <td align="center"
+                                                            class="bor bor-b"
+                                                            ng-if="shortlist.ProductID == shortlist.SelectedProductId"
+                                                            ng-repeat="shortlist in customer.activeProductSummary| orderBy : 'ProductID' track by $index">{{shortlist.ArrangementFee}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="bor bor-b">HLC </td>
+                                                        <td align="center"
+                                                            class="bor bor-b"
+                                                            ng-if="shortlist.ProductID == shortlist.SelectedProductId"
+                                                            ng-repeat="shortlist in customer.activeProductSummary| orderBy : 'ProductID' track by $index">{{shortlist.HLC}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="bor bor-b">Valuation Fee </td>
+                                                        <td align="center"
+                                                            class="bor bor-b"
+                                                            ng-if="shortlist.ProductID == shortlist.SelectedProductId"
+                                                            ng-repeat="shortlist in customer.activeProductSummary| orderBy : 'ProductID' track by $index">{{shortlist.ValuationFee}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="bor bor-b">Cashback </td>
+                                                        <td align="center"
+                                                            class="bor bor-b"
+                                                            ng-if="shortlist.ProductID == shortlist.SelectedProductId"
+                                                            ng-repeat="shortlist in customer.activeProductSummary| orderBy : 'ProductID' track by $index">{{shortlist.Cashback}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="bor bor-b">Incentives </td>
+                                                        <td align="center"
+                                                            class="bor bor-b"
+                                                            ng-if="shortlist.ProductID == shortlist.SelectedProductId"
+                                                            ng-repeat="shortlist in customer.activeProductSummary| orderBy : 'ProductID' track by $index">
+                                                            <span ng-if="shortlist.Incentives">{{shortlist.Incentives}}</span>
+                                                            <span ng-if="!shortlist.Incentives">-</span>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="bor bor-b">Lending Criteria </td>
+                                                        <td align="center"
+                                                            class="bor bor-b"
+                                                            ng-if="shortlist.ProductID == shortlist.SelectedProductId"
+                                                            ng-repeat="shortlist in customer.activeProductSummary| orderBy : 'ProductID' track by $index">{{shortlist.LendingCriteria}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="bor bor-b">Affordability Features </td>
+                                                        <td align="center"
+                                                            class="bor bor-b"
+                                                            ng-if="shortlist.ProductID == shortlist.SelectedProductId"
+                                                            ng-repeat="shortlist in customer.activeProductSummary| orderBy : 'ProductID' track by $index">
+                                                            {{shortlist.AffordabilityFeatures}}
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="bor bor-b">Adverse </td>
+                                                        <td align="center"
+                                                            class="bor bor-b"
+                                                            ng-if="shortlist.ProductID == shortlist.SelectedProductId"
+                                                            ng-repeat="shortlist in customer.activeProductSummary| orderBy : 'ProductID' track by $index">
+                                                            {{shortlist.Adverse}}
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="bor bor-b">Overpayment </td>
+                                                        <td align="center"
+                                                            class="bor bor-b"
+                                                            ng-if="shortlist.ProductID == shortlist.SelectedProductId"
+                                                            ng-repeat="shortlist in customer.activeProductSummary| orderBy : 'ProductID' track by $index">{{shortlist.Overpayment||'-'}} </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="bor bor-b">CapitalRaised </td>
+                                                        <td align="center"
+                                                            class="bor bor-b"
+                                                            ng-if="shortlist.ProductID == shortlist.SelectedProductId"
+                                                            ng-repeat="shortlist in customer.activeProductSummary| orderBy : 'ProductID' track by $index">{{shortlist.CapitalRaised}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="bor bor-b">Product ID </td>
+                                                        <td align="center"
+                                                            class="bor bor-b"
+                                                            ng-if="shortlist.ProductID == shortlist.SelectedProductId"
+                                                            ng-repeat="shortlist in customer.activeProductSummary| orderBy : 'ProductID' track by $index">{{shortlist.ProductID}}</td>
+                                                    </tr>
+                                            </table>
+                                            <div>
+                                                <table class="table table-condensed table-bordered">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Product Notes</th>
+                                                            <!-- <th ng-if="customer.activeProductSummary.length >= 2">Product 2 Notes</th>
+                                                            <th ng-if="customer.activeProductSummary.length >= 3">Product 3 Notes</th>
+                                                            <th ng-if="customer.activeProductSummary.length >= 4">Product 4 Notes</th>
+                                                            <th ng-if="customer.activeProductSummary.length === 5">Product 5 Notes</th> -->
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>{{customer.activeProductNotes.ProductID1Notes}}</td>
+                                                            <!-- <td ng-if="customer.activeProductSummary.length >= 2">{{customer.activeProductNotes.ProductID2Notes}}</td>
+                                                            <td ng-if="customer.activeProductSummary.length >= 3">{{customer.activeProductNotes.ProductID3Notes}}</td>
+                                                            <td ng-if="customer.activeProductSummary.length >= 4">{{customer.activeProductNotes.ProductID4Notes}}</td>
+                                                            <td ng-if="customer.activeProductSummary.length === 5">{{customer.activeProductNotes.ProductID5Notes}}</td> -->
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row margin-t-10">
+                                        <button type="button"
+                                                class="btn scroll-top"
+                                                ng-click="backButtonAction();">Back</button>
+                                        <button type="button"
+                                                class="btn btn-primary scroll-top"
+                                                ng-click="nextButtonAction();">Next</button>
+                                    </div>
+                                </div>
+                                <div role="tabpanel"
+                                     class="tab-pane"
+                                     ng-class="{'active' : getActiveQuoteSummryTab('deActiveQuote')}">
+                                    <div class="row padding-0 soruceNowDiv">
+                                        <div class="col-md-12">
+                                            <div class="col-md-12 padding-0 margin-b-10">
+                                                <div class="filter-header">De-Active Quotes </div>
+                                                <div class="filter-body">
+                                                    <table class="table table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>View</th>
+                                                                <th>Quote</th>
+                                                                <th>Quote For</th>
+                                                                <th>Lender Name</th>
+                                                                <th>Product Name</th>
+                                                                <th>Initial Pay</th>
+                                                                <th>Total Cost</th>
+                                                                <th>Total Fee</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr ng-repeat="quote in customer.deActiveQuotes">
+                                                                <td>
+                                                                    <a href="javascript:void(0)"
+                                                                       ng-click="showDeactiveQuote(quote)">
+                                                                        <i class="fa fa-download"></i>
+                                                                    </a>
+                                                                </td>
+                                                                <td>{{quote.quote}}</td>
+                                                                <td>{{quote.quoteFor}}</td>
+                                                                <td>{{quote.LenderName}}</td>
+                                                                <td>{{quote.productName}}</td>
+                                                                <td>{{quote.initialPay}}</td>
+                                                                <td>{{quote.totalCost}}</td>
+                                                                <td>{{quote.totalFee}}</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12 DataCol"
+                                             ng-if="customer.deActiveProductSummary.length && customer.showdeActiveProductSummary">
+                                            <table width="100%"
+                                                   border="0"
+                                                   cellspacing="10"
+                                                   cellpadding="0">
+                                                <tr>
+                                                    <td align="center"
+                                                        class="greay-rc">Product Feature</td>
+                                                    <td align="center"
+                                                        class="greay-rc"
+                                                        ng-if="shortlist.ProductID === shortlist.SelectedProductId"
+                                                        ng-repeat="shortlist in customer.deActiveProductSummary track by $index">Value</td>
+                                                </tr>
+                                                <!-- <tr>
+                                                    <td class="bor bor-b">Select Product </td>
+                                                    <td height="50"
+                                                        align="center"
+                                                        class="bor bor-b"
+                                                        ng-if="shortlist.ProductID === shortlist.SelectedProductId"
+                                                        ng-repeat="shortlist in customer.deActiveProductSummary track by $index">
+                                                        <div class="checkbox checkbox-primary margin-t-0">
+                                                            <input id="productID_{{$index}}"
+                                                                   type="checkbox"
+                                                                   enter
+                                                                   checklist-model="selectedClientID.ProductID"
+                                                                   checklist-value="shortlist.ProductID"
+                                                                   name="ProductID"
+                                                                   ng-disabled="shortlist.ProductID != shortlist.SelectedProductId"
+                                                                   ng-checked="shortlist.ProductID === shortlist.SelectedProductId">
+                                                            <label for="productID_{{$index}}">Select Product {{$index + 1}} </label>
+                                                        </div>
+                                                    </td>
+                                                </tr> -->
+                                                <tr>
+                                                    <td class="bor bor-b">Lender Name </td>
+                                                    <td align="center"
+                                                        class="bor bor-b"
+                                                        ng-if="shortlist.ProductID === shortlist.SelectedProductId"
+                                                        ng-repeat="shortlist in customer.deActiveProductSummary track by $index">{{shortlist.LenderName}}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="bor bor-b">Product Name </td>
+                                                    <td align="center"
+                                                        class="bor bor-b"
+                                                        ng-if="shortlist.ProductID === shortlist.SelectedProductId"
+                                                        ng-repeat="shortlist in customer.deActiveProductSummary track by $index">{{shortlist.ProductName}}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="bor bor-b">Product Type </td>
+                                                    <td align="center"
+                                                        class="bor bor-b"
+                                                        ng-if="shortlist.ProductID === shortlist.SelectedProductId"
+                                                        ng-repeat="shortlist in customer.deActiveProductSummary track by $index">{{shortlist.ProductType}}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="bor bor-b">Term </td>
+                                                    <td align="center"
+                                                        class="bor bor-b"
+                                                        ng-if="shortlist.ProductID === shortlist.SelectedProductId"
+                                                        ng-repeat="shortlist in customer.deActiveProductSummary track by $index">
+                                                        <span ng-if="shortlist.Term">{{shortlist.Term}}</span>
+                                                        <span ng-if="!shortlist.Term">-</span>
+                                                    </td>
+                                                    <tr>
+                                                        <td class="bor bor-b">Initial Rate </td>
+                                                        <td align="center"
+                                                            class="bor bor-b"
+                                                            ng-if="shortlist.ProductID === shortlist.SelectedProductId"
+                                                            ng-repeat="shortlist in customer.deActiveProductSummary track by $index">{{shortlist.InitialRate||'-'}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="bor bor-b">Reverting Rate </td>
+                                                        <td align="center"
+                                                            class="bor bor-b"
+                                                            ng-if="shortlist.ProductID === shortlist.SelectedProductId"
+                                                            ng-repeat="shortlist in customer.deActiveProductSummary track by $index">{{shortlist.RevertingRate||'-'}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="bor bor-b">Initial Payment </td>
+                                                        <td align="center"
+                                                            class="bor bor-b"
+                                                            ng-if="shortlist.ProductID === shortlist.SelectedProductId"
+                                                            ng-repeat="shortlist in customer.deActiveProductSummary track by $index">{{shortlist.InitialPayment}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="bor bor-b">Rev Payment </td>
+                                                        <td align="center"
+                                                            class="bor bor-b"
+                                                            ng-if="shortlist.ProductID === shortlist.SelectedProductId"
+                                                            ng-repeat="shortlist in customer.deActiveProductSummary track by $index">{{shortlist.RevPayment}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="bor bor-b">Total Cost </td>
+                                                        <td align="center"
+                                                            class="bor bor-b"
+                                                            ng-if="shortlist.ProductID === shortlist.SelectedProductId"
+                                                            ng-repeat="shortlist in customer.deActiveProductSummary track by $index">{{shortlist.TotalCost}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="bor bor-b">Incremental Cost </td>
+                                                        <td align="center"
+                                                            class="bor bor-b"
+                                                            ng-if="shortlist.ProductID === shortlist.SelectedProductId"
+                                                            ng-repeat="shortlist in customer.deActiveProductSummary track by $index">
+                                                            {{shortlist.IncrementalCost}}
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="bor bor-b">Total Fee </td>
+                                                        <td align="center"
+                                                            class="bor bor-b"
+                                                            ng-if="shortlist.ProductID === shortlist.SelectedProductId"
+                                                            ng-repeat="shortlist in customer.deActiveProductSummary track by $index">{{shortlist.TotalFee}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="bor bor-b">ERC </td>
+                                                        <td align="center"
+                                                            class="bor bor-b"
+                                                            ng-if="shortlist.ProductID === shortlist.SelectedProductId"
+                                                            ng-repeat="shortlist in customer.deActiveProductSummary track by $index">{{shortlist.ERC}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="bor bor-b">ERC End Date </td>
+                                                        <td align="center"
+                                                            class="bor bor-b"
+                                                            ng-if="shortlist.ProductID === shortlist.SelectedProductId"
+                                                            ng-repeat="shortlist in customer.deActiveProductSummary track by $index">{{shortlist.ERCEndDate||'-'}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="bor bor-b">ERC OverHang </td>
+                                                        <td align="center"
+                                                            class="bor bor-b"
+                                                            ng-if="shortlist.ProductID === shortlist.SelectedProductId"
+                                                            ng-repeat="shortlist in customer.deActiveProductSummary track by $index">{{shortlist.ERCOverHang}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="bor bor-b">Booking Fee </td>
+                                                        <td align="center"
+                                                            class="bor bor-b"
+                                                            ng-if="shortlist.ProductID === shortlist.SelectedProductId"
+                                                            ng-repeat="shortlist in customer.deActiveProductSummary track by $index">{{shortlist.BookingFee}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="bor bor-b">Arrangement Fee </td>
+                                                        <td align="center"
+                                                            class="bor bor-b"
+                                                            ng-if="shortlist.ProductID === shortlist.SelectedProductId"
+                                                            ng-repeat="shortlist in customer.deActiveProductSummary track by $index">{{shortlist.ArrangementFee}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="bor bor-b">HLC </td>
+                                                        <td align="center"
+                                                            class="bor bor-b"
+                                                            ng-if="shortlist.ProductID === shortlist.SelectedProductId"
+                                                            ng-repeat="shortlist in customer.deActiveProductSummary track by $index">{{shortlist.HLC}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="bor bor-b">Valuation Fee </td>
+                                                        <td align="center"
+                                                            class="bor bor-b"
+                                                            ng-if="shortlist.ProductID === shortlist.SelectedProductId"
+                                                            ng-repeat="shortlist in customer.deActiveProductSummary track by $index">{{shortlist.ValuationFee}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="bor bor-b">Cashback </td>
+                                                        <td align="center"
+                                                            class="bor bor-b"
+                                                            ng-if="shortlist.ProductID === shortlist.SelectedProductId"
+                                                            ng-repeat="shortlist in customer.deActiveProductSummary track by $index">{{shortlist.Cashback}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="bor bor-b">Incentives </td>
+                                                        <td align="center"
+                                                            class="bor bor-b"
+                                                            ng-if="shortlist.ProductID === shortlist.SelectedProductId"
+                                                            ng-repeat="shortlist in customer.deActiveProductSummary track by $index">
+                                                            <span ng-if="shortlist.Incentives">{{shortlist.Incentives}}</span>
+                                                            <span ng-if="!shortlist.Incentives">-</span>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="bor bor-b">Lending Criteria </td>
+                                                        <td align="center"
+                                                            class="bor bor-b"
+                                                            ng-if="shortlist.ProductID === shortlist.SelectedProductId"
+                                                            ng-repeat="shortlist in customer.deActiveProductSummary track by $index">{{shortlist.LendingCriteria}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="bor bor-b">Affordability Features </td>
+                                                        <td align="center"
+                                                            class="bor bor-b"
+                                                            ng-if="shortlist.ProductID === shortlist.SelectedProductId"
+                                                            ng-repeat="shortlist in customer.deActiveProductSummary track by $index">
+                                                            {{shortlist.AffordabilityFeatures}}
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="bor bor-b">Adverse </td>
+                                                        <td align="center"
+                                                            class="bor bor-b"
+                                                            ng-if="shortlist.ProductID === shortlist.SelectedProductId"
+                                                            ng-repeat="shortlist in customer.deActiveProductSummary track by $index">
+                                                            {{shortlist.Adverse}}
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="bor bor-b">Overpayment </td>
+                                                        <td align="center"
+                                                            class="bor bor-b"
+                                                            ng-if="shortlist.ProductID === shortlist.SelectedProductId"
+                                                            ng-repeat="shortlist in customer.deActiveProductSummary track by $index">{{shortlist.Overpayment||'-'}} </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="bor bor-b">CapitalRaised </td>
+                                                        <td align="center"
+                                                            class="bor bor-b"
+                                                            ng-if="shortlist.ProductID === shortlist.SelectedProductId"
+                                                            ng-repeat="shortlist in customer.deActiveProductSummary track by $index">{{shortlist.CapitalRaised}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="bor bor-b">Product ID </td>
+                                                        <td align="center"
+                                                            class="bor bor-b"
+                                                            ng-if="shortlist.ProductID === shortlist.SelectedProductId"
+                                                            ng-repeat="shortlist in customer.deActiveProductSummary track by $index">{{shortlist.ProductID}}</td>
+                                                    </tr>
+                                            </table>
+                                            <div>
+                                                <table class="table table-condensed table-bordered">
+                                                    <thead>
+                                                        <tr>
+                                                            <thProduct Notes</th>
+                                                                <!-- <th ng-if="customer.deActiveProductSummary.length >= 2">Product 2 Notes</th>
+                                                            <th ng-if="customer.deActiveProductSummary.length >= 3">Product 3 Notes</th>
+                                                            <th ng-if="customer.deActiveProductSummary.length >= 4">Product 4 Notes</th>
+                                                            <th ng-if="customer.deActiveProductSummary.length === 5">Product 5 Notes</th> -->
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td{{customer.deActiveProductNotes.ProductID1Notes}}</td>
+                                                                <!-- <td ng-if="customer.deActiveProductSummary.length >= 2">{{customer.deActiveProductNotes.ProductID2Notes}}</td>
+                                                            <td ng-if="customer.deActiveProductSummary.length >= 3">{{customer.deActiveProductNotes.ProductID3Notes}}</td>
+                                                            <td ng-if="customer.deActiveProductSummary.length >= 4">{{customer.deActiveProductNotes.ProductID4Notes}}</td>
+                                                            <td ng-if="customer.deActiveProductSummary.length === 5">{{customer.deActiveProductNotes.ProductID5Notes}}</td> -->
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row margin-t-10">
+                                        <button type="button"
+                                                class="btn scroll-top"
+                                                ng-click="backButtonAction();">Back</button>
+                                        <button type="button"
+                                                class="btn btn-primary scroll-top"
+                                                ng-click="nextButtonAction();">Next</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

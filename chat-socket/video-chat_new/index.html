@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>SimpleWebRTC Server</title>
+        <link href="style.css" rel="stylesheet" type="text/css"/>
+        <script src="jquery.min.js" type="text/javascript"></script>
+        <script src="socket.io.js"></script>
+        <script src="simplewebrtc.bundle.js"></script>
+        <script src="my_socket.js" type="text/javascript"></script>
+    </head>    
+    <body>
+<!--        <button id="screenShareButton"></button>-->
+        <!--        <p id="subTitle"></p>
+                <form id="createRoom">
+                    <input id="sessionInput"/>
+                    <button type="submit">Create it!</button>
+                </form>-->
+        <div class="videoContainer">
+            <video id="localVideo" style="height: 150px;" oncontextmenu="return false;"></video>
+            <div id="localVolume" class="volume_bar"></div>
+        </div>
+        <div id="remotes"></div>
+
+        <!--        <div id="remotes"></div>
+                <video id="localVideo"></video>-->
+    </body>
+</html>

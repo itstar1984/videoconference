@@ -1,0 +1,1838 @@
+<div class="page-header">
+    <h1 class="title">Credit History</h1>
+</div>
+<div class="container-widget">
+    <div class="row">
+        <div class="col-md-12 col-lg-12">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <div class="col-lg-12 padding-0">
+                        <div class="col-lg-12">
+                            <div class="form-group">
+                                <label class="form-label">Do you have any CCJ?</label>
+                                <div class="form-control radio-group" ng-if="!customer.CCJlist && !customer.CCJlist.length">
+                                    <div class="radio radio-info radio-inline">
+                                        <input type="radio" id="isCCJ_1" ng-value="true" ng-model="customer.CCJs.isCCJ" enter>
+                                        <label for="isCCJ_1"> Yes </label>
+                                    </div>
+                                    <div class="radio radio-info radio-inline">
+                                        <input type="radio" id="isCCJ_2" ng-value="false" ng-model="customer.CCJs.isCCJ" enter>
+                                        <label for="isCCJ_2"> No </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-12 padding-0 panel-with-data margin-b-10" ng-repeat="(key, ccj) in customer.CCJlist track by $index">
+                            <form name="updateCCJDetails" novalidate ng-submit="updateCCJDetails.$valid && updateCCJ(ccj)" >
+                                <div class="panel-title benifits_title" ng-click="ccj.show = !ccj.show;">CCJ / {{ccj.FullName}} / {{ccj.Amount}}</div>
+                                <input type="hidden" enter class="form-control"  ng-model="ccj.CreditHistoryID" />
+                                <div class="panel-body" ng-if="ccj.show">
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            <span class="step-heading step-heading-small">update CCJ</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label class="form-label">Applicants</label>
+                                            <div ng-repeat="(key,applicant) in customer.applicants track by $index" ng-if="applicant.ClientID">
+                                                <div class="checkbox checkbox-primary" ng-class="{'checkbox-required': !(ccj.clientids && ccj.clientids.length)}">
+                                                    <input id="uccjapp_{{key}}_{{$index}}" type="checkbox"  checklist-value="applicant.ClientID" checklist-model="ccj.clientids" ng-required="!(ccj.clientids && ccj.clientids.length)" enter />
+                                                    <label for="uccjapp_{{key}}_{{$index}}">{{getApplicantTitle(applicant.eTitleID) + ' ' + applicant.Firstname + ' ' + applicant.Surname}}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label class="form-label">Amount</label>
+                                            <span class="checkboxes pound">
+                                                <input type="text" numbers-only enter class="form-control" ng-model="ccj.Amount" ng-required="true" ng-change="changeKeyTextFieldCCJ(key, 'Amount')" 
+                                                       ng-focus="setFieldTypingStatus('Amount', true)"
+                                                       ng-blur="setFieldTypingStatus('Amount', false)"
+                                                       ng-disabled="checkPartnerTyping('Amount')">
+                                            </span>
+                                        </div>
+                                        <div ng-if="checkPartnerTyping('Amount')">
+                                            <label class="typing">{{partner}} is typing ...</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group" ng-class="{'has-error': hasNotValidErrorDate(ccj.JudgementDate)}">
+                                            <label class="form-label">Date Registered (dd/mm/yyyy)</label>
+                                            <div>
+                                                <span class="checkboxes">
+                                                    <input type="text" enter class="form-control" ng-datepicker ng-model="ccj.JudgementDate" ng-required="true" ng-change="changeKeyTextFieldCCJ(key, 'JudgementDate')" 
+                                                           ng-focus="setFieldTypingStatus('JudgementDate', true)"
+                                                           ng-blur="setFieldTypingStatus('JudgementDate', false)"
+                                                           ng-disabled="checkPartnerTyping('JudgementDate')">
+                                                </span>
+                                            </div>
+                                            <span ng-show="hasNotValidErrorDate(ccj.JudgementDate)" class="help-block">Please enter Valid Date</span>
+                                        </div>
+                                        <div ng-if="checkPartnerTyping('JudgementDate')">
+                                            <label class="typing">{{partner}} is typing ...</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label class="form-label">Is Satisfied</label>
+                                            <div >
+                                                <div class="checkbox checkbox-primary">
+                                                    <input id="checkbox102" type="checkbox" ng-model="ccj.Satisfied" ng-value="true" enter>
+                                                    <label for="checkbox102">
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6" ng-if="ccj.Satisfied">
+                                        <div class="form-group" ng-class="{'has-error': hasNotValidErrorDate(ccj.DateSatisfied)}">
+                                            <label class="form-label">Date Satisfied (dd/mm/yyyy)</label>
+                                            <div>
+                                                <span class="checkboxes">
+                                                    <input type="text" enter class="form-control" ng-datepicker ng-model="ccj.DateSatisfied" ng-required="true" ng-change="changeKeyTextFieldCCJ(key, 'DateSatisfied')" 
+                                                           ng-focus="setFieldTypingStatus('DateSatisfied', true)"
+                                                           ng-blur="setFieldTypingStatus('DateSatisfied', false)"
+                                                           ng-disabled="checkPartnerTyping('DateSatisfied')">
+                                                </span>
+                                                <span ng-show="hasNotValidErrorDate(ccj.DateSatisfied)" class="help-block">Please enter Valid Date</span>
+                                            </div>
+                                            <div ng-if="checkPartnerTyping('DateSatisfied')">
+                                                <label class="typing">{{partner}} is typing ...</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <button type="button" ng-click="deleteCH(ccj, 'DeleteCCJ')" class="btn btn-danger float-r scroll-top">Delete</button>
+                                        <button type="submit" class="btn btn-success margin-r-10 float-r scroll-top">Update</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="col-lg-12" style="padding-bottom: 10px; padding-left: 15px;" ng-if="customer.CCJlist && customer.CCJlist.length">
+                            <button type="button" class="btn btn-default float-r" ng-click="customer.CCJs.isCCJ = !customer.CCJs.isCCJ">Add More CCJ</button>
+                        </div>
+                        <div ng-if="customer.CCJs.isCCJ">
+                            <form name="AddCCJDetails" novalidate ng-submit="AddCCJDetails.$valid && SaveCCJ(customer.CCJs)">
+                                <div class="col-lg-12 padding-0 panel-with-data margin-b-10">
+                                    <div class="panel-body">
+                                        <div class="col-sm-12">
+                                            <div class="form-group">
+                                                <span class="step-heading step-heading-small">ADD CCJ</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label class="form-label">Applicants</label>
+                                                <div ng-repeat="(key,applicant) in customer.applicants track by $index" ng-if="applicant.ClientID">
+                                                    <div class="checkbox checkbox-primary" ng-class="{'checkbox-required': !(customer.CCJs.clientids && customer.CCJs.clientids.length)}">
+                                                        <input id="ccjapp{{key}}" type="checkbox"  checklist-value="applicant.ClientID" checklist-model="customer.CCJs.clientids" ng-required="!(customer.CCJs.clientids && customer.CCJs.clientids.length)" enter />
+                                                        <label for="ccjapp{{key}}">{{getApplicantTitle(applicant.eTitleID) + ' ' + applicant.Firstname + ' ' + applicant.Surname}}</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label class="form-label">Amount</label>
+                                                <span class="checkboxes pound">
+                                                    <input type="text" numbers-only enter class="form-control"  ng-model="customer.CCJs.Amount" ng-required="true" ng-change="changeTextFieldCCJ('Amount')" 
+                                                           ng-focus="setFieldTypingStatus('Amount', true)"
+                                                           ng-blur="setFieldTypingStatus('Amount', false)"
+                                                           ng-disabled="checkPartnerTyping('Amount')">
+                                                </span>
+                                            </div>
+                                            <div ng-if="checkPartnerTyping('Amount')">
+                                                <label class="typing">{{partner}} is typing ...</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="form-group" ng-class="{'has-error': hasNotValidErrorDate(customer.CCJs.JudgementDate)}">
+                                                <label class="form-label">Date Registered (dd/mm/yyyy)</label>
+                                                <div>
+                                                    <span class="checkboxes">
+                                                        <input type="text" enter class="form-control" ng-datepicker ng-model="customer.CCJs.JudgementDate" ng-required="true" ng-change="changeTextFieldCCJ('JudgementDate')" 
+                                                               ng-focus="setFieldTypingStatus('JudgementDate', true)"
+                                                               ng-blur="setFieldTypingStatus('JudgementDate', false)"
+                                                               ng-disabled="checkPartnerTyping('JudgementDate')">
+                                                    </span>
+                                                </div>
+                                                <span ng-show="hasNotValidErrorDate(customer.CCJs.JudgementDate)" class="help-block">Please enter Valid Date</span>
+                                            </div>
+                                            <div ng-if="checkPartnerTyping('JudgementDate')">
+                                                <label class="typing">{{partner}} is typing ...</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label class="form-label">Is Satisfied</label>
+                                                <div >
+                                                    <div class="checkbox checkbox-primary">
+                                                        <input id="checkbox102" type="checkbox" ng-model="customer.CCJs.Satisfied" ng-value="true" enter>
+                                                        <label for="checkbox102">
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6" ng-if="customer.CCJs.Satisfied">
+                                            <div class="form-group" ng-class="{'has-error': hasNotValidErrorDate(customer.CCJs.DateSatisfied)}">
+                                                <label class="form-label">Date Satisfied (dd/mm/yyyy) </label>
+                                                <div>
+                                                    <span class="checkboxes">
+                                                        <input type="text" enter class="form-control" ng-datepicker ng-model="customer.CCJs.DateSatisfied" ng-required="true" ng-change="changeTextFieldCCJ('DateSatisfied')" 
+                                                               ng-focus="setFieldTypingStatus('DateSatisfied', true)"
+                                                               ng-blur="setFieldTypingStatus('DateSatisfied', false)"
+                                                               ng-disabled="checkPartnerTyping('DateSatisfied')">
+                                                    </span>
+                                                </div>
+                                                <span ng-show="hasNotValidErrorDate(customer.CCJs.DateSatisfied)" class="help-block">Please enter Valid Date</span>
+                                            </div>
+                                            <div ng-if="checkPartnerTyping('DateSatisfied')">
+                                                <label class="typing">{{partner}} is typing ...</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-12">
+                                            <button type="submit" class="btn btn-success float-r scroll-top">Save and Continue</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="col-lg-12" >
+                            <div class="form-group">
+                                <label class="form-label">Do you have any Arrears?</label>
+                                <div class="form-control radio-group" ng-if="!customer.ArrearDefaultlist && !customer.ArrearDefaultlist.length">
+                                    <div class="radio radio-info radio-inline">
+                                        <input type="radio" id="isArrears_1" ng-value="true"ng-model="customer.ArrearsDefaults.isArrears" enter>
+                                        <label for="isArrears_1"> Yes </label>
+                                    </div>
+                                    <div class="radio radio-info radio-inline">
+                                        <input type="radio" id="isArrears_2" ng-value="false" ng-model="customer.ArrearsDefaults.isArrears" enter>
+                                        <label for="isArrears_2"> No </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-12 padding-0 margin-b-10 panel-with-data" ng-repeat="(key,defaultData) in customer.ArrearDefaultlist track by $index">
+                            <form name="updateArrearDetails" novalidate ng-submit="updateArrearDetails.$valid && updateArrearDefault(defaultData)">
+                                <div class="panel-title benifits_title" ng-click="defaultData.show = !defaultData.show;">Arrears / {{defaultData.FullName}}</div>
+                                <input type="hidden" enter class="form-control"  ng-model="defaultData.CreditHistoryID" />
+                                <div class="panel-body" ng-if="defaultData.show">
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            <span class="step-heading step-heading-small">EDIT ARREAR DATA</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label class="form-label">Applicants</label>
+                                            <div ng-repeat="(key,applicant) in customer.applicants track by $index" ng-if="applicant.ClientID">
+                                                <div class="checkbox checkbox-primary" ng-class="{'checkbox-required': !(defaultData.clientids && defaultData.clientids.length)}">
+                                                    <input id="u_arrear_app_{{key}}_{{$index}}" type="checkbox"  checklist-value="applicant.ClientID" checklist-model="defaultData.clientids" ng-required="!(defaultData.clientids && defaultData.clientids.length)" enter />
+                                                    <label for="u_arrear_app_{{key}}_{{$index}}">{{getApplicantTitle(applicant.eTitleID) + ' ' + applicant.Firstname + ' ' + applicant.Surname}}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label class="form-label">Type</label>
+                                            <div>
+                                                <span class="checkboxes">
+                                                    <ui-select dropdownenter ng-model="defaultData.eArrDefTypeID" ng-required="true">
+                                                        <ui-select-match placeholder="Please Select">{{$select.selected.name}}</ui-select-match>
+                                                        <ui-select-choices repeat="value.val as value in ArrearsType| filter:$select.search">
+                                                            <div ng-bind-html="value.name | highlight: $select.search"></div>
+                                                        </ui-select-choices>
+                                                    </ui-select>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label class="form-label">Lender</label>
+                                            <div>
+                                                <span class="checkboxes">
+                                                    <ui-select dropdownenter ng-model="defaultData.eLenderID" ng-required="true">
+                                                        <ui-select-match placeholder="Please Select">{{$select.selected.name}}</ui-select-match>
+                                                        <ui-select-choices repeat="value.val as value in LenderType| filter:$select.search">
+                                                            <div ng-bind-html="value.name | highlight: $select.search"></div>
+                                                        </ui-select-choices>
+                                                    </ui-select>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group" ng-class="{'has-error': hasNotValidErrorDate(defaultData.ArrDefDate)}">
+                                            <label class="form-label">Date Incurred (dd/mm/yyyy)</label>
+                                            <div>
+                                                <span class="checkboxes">
+                                                    <input type="text" enter class="form-control" ng-datepicker  ng-model="defaultData.ArrDefDate" ng-required="true" ng-change="changeKeyTextFieldArrears(key, 'ArrDefDate')" 
+                                                           ng-focus="setFieldTypingStatus('ArrDefDate', true)"
+                                                           ng-blur="setFieldTypingStatus('ArrDefDate', false)"
+                                                           ng-disabled="checkPartnerTyping('ArrDefDate')">
+                                                </span>
+                                            </div>
+                                            <span ng-show="hasNotValidErrorDate(defaultData.ArrDefDate)" class="help-block">Please enter Valid Date</span>
+                                        </div>
+                                        <div ng-if="checkPartnerTyping('ArrDefDate')">
+                                            <label class="typing">{{partner}} is typing ...</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label class="form-label">Is Cleared</label>
+                                            <div >
+                                                <div class="checkbox checkbox-primary">
+                                                    <input id="checkbox109" type="checkbox" ng-model="defaultData.Satisfied" ng-value="true" enter>
+                                                    <label for="checkbox109">
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <div class="form-group">
+                                            <label class="form-label">Do you have any occurrences in last 12 months ?</label>
+                                            <div>
+                                                <span class="checkboxes">
+                                                    <div class="form-control radio-group">
+                                                        <div class="radio radio-info radio-inline">
+                                                            <input type="radio" id="isNumOccurence12_1_{{$index}}" ng-value="1" ng-model="defaultData.Highest12" enter>
+                                                            <label for="isNumOccurence12_1_{{$index}}"> Yes </label>
+                                                        </div>
+                                                        <div class="radio radio-info radio-inline">
+                                                            <input type="radio" id="isNumOccurence12_2_{{$index}}" ng-value="0" ng-model="defaultData.Highest12" enter>
+                                                            <label for="isNumOccurence12_2_{{$index}}"> No </label>
+                                                        </div>
+                                                    </div>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12" ng-if="defaultData.Highest12">
+                                        <div class="row">
+                                            <div class="col-lg-4">
+                                                <div class="form-group">
+                                                    <label class="form-label">Number of occurrences in last 12 months ?</label>
+                                                    <div>
+                                                        <span class="checkboxes">
+                                                            <input type="number" enter class="form-control"
+                                                                   max="12"
+                                                                   ng-model="defaultData.NumOccurence12"
+                                                                   ng-focus="setFieldTypingStatus('NumOccurence12', true)"
+                                                                   ng-blur="setFieldTypingStatus('NumOccurence12', false)"
+                                                                   ng-disabled="checkPartnerTyping('NumOccurence12')"
+                                                                   ng-change="changeTextFieldArrears('NumOccurence12');">
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div ng-if="checkPartnerTyping('NumOccurence12')">
+                                                    <label class="typing">{{partner}} is typing ...</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-8">
+                                                <div  ng-if="defaultData.NumOccurence12 > 0 && defaultData.NumOccurence12 < 13">
+                                                    <div  ng-repeat="itorator in occur12">
+                                                        <div ng-if=" $index < defaultData.NumOccurence12">
+                                                            <div ng-if="defaultData.arreas12[itorator]">
+                                                                <label class="padding-l-10">{{ $index + 1}}-th occurrence = {{defaultData.arreas12[$index]}}</label>
+                                                                <a href="javascript:;" ng-click="defaultData.arreas12[itorator] = setToMonthFormat(defaultData.arreas12[itorator]);"> 
+                                                                    <i class="fa fa-pencil" ></i>
+                                                                </a> 
+                                                            </div>   
+                                                            <div ng-if="!defaultData.arreas12[itorator]">
+                                                                <div ng-init="defaultData.selectMonth12[itorator] = true;"> 
+                                                                    <div ng-if="defaultData.selectMonth12[itorator]">
+                                                                        <label class="padding-l-10">Please select month / year of your {{ $index + 1}}-th occurrence</label>
+                                                                        <ul class="monthlist">
+                                                                            <li ng-repeat="currMonth in months"  ng-click="defaultData.selectMonth12[itorator] = false; defaultData.arreas12Month[itorator] = currMonth;" ng-class="{'activeMonth':defaultData.arreas12Month[itorator] == currMonth}">
+                                                                                <a href="javascript:;">
+                                                                                    {{currMonth}}
+                                                                                </a>              
+                                                                            </li>
+                                                                        </ul>
+                                                                    </div>
+                                                                    <div ng-if="!defaultData.selectMonth12[itorator]">
+                                                                        <label class="padding-l-10">Please select date of your {{ $index + 1}}-th occurrence</label>
+                                                                        <ul  class="monthlist">                                                                               
+                                                                            <li ng-repeat="day in dayspermonth12[defaultData.arreas12Month[itorator]]" ng-click="defaultData.arreas12Day[itorator] = day; defaultData.arreas12[itorator] = day + ' / ' + defaultData.arreas12Month[itorator]" ng-class="{'activeDay':defaultData.arreas12Day[itorator] == day}">
+                                                                                <a href="javascript:;">{{day}}</a>              
+                                                                            </li>
+                                                                        </ul>
+                                                                    </div>
+                                                                </div>
+                                                            </div>   
+                                                        </div>
+                                                    </div>   
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-12">
+                                        <div class="form-group">
+                                            <label class="form-label">Do you have any occurrences in last 24 months ?</label>
+                                            <div>
+                                                <span class="checkboxes">
+                                                    <div class="form-control radio-group">
+                                                        <div class="radio radio-info radio-inline">
+                                                            <input type="radio" id="isNumOccurence24_1_{{$index}}" ng-value="1" ng-model="defaultData.Highest24" enter>
+                                                            <label for="isNumOccurence24_1_{{$index}}"> Yes </label>
+                                                        </div>
+                                                        <div class="radio radio-info radio-inline">
+                                                            <input type="radio" id="isNumOccurence24_2_{{$index}}" ng-value="0" ng-model="defaultData.Highest24" enter>
+                                                            <label for="isNumOccurence24_2_{{$index}}"> No </label>
+                                                        </div>
+                                                    </div>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12" ng-if="defaultData.Highest24">
+                                        <div class="row">
+                                            <div class="col-lg-4">
+                                                <div class="form-group">
+                                                    <label class="form-label">Number of occurrences in last 24 months ?</label>
+                                                    <div>
+                                                        <span class="checkboxes">
+                                                            <input type="number" enter class="form-control"
+                                                                   max="12"
+                                                                   ng-model="defaultData.NumOccurence24"
+                                                                   ng-focus="setFieldTypingStatus('NumOccurence24', true)"
+                                                                   ng-blur="setFieldTypingStatus('NumOccurence24', false)"
+                                                                   ng-disabled="checkPartnerTyping('NumOccurence24')"
+                                                                   ng-change="changeTextFieldArrears('NumOccurence24');">
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div ng-if="checkPartnerTyping('NumOccurence24')">
+                                                    <label class="typing">{{partner}} is typing ...</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-8">
+                                                <div  ng-if="defaultData.NumOccurence24 > 0 && defaultData.NumOccurence24 < 13">
+                                                    <div  ng-repeat="itorator in occur24">
+                                                        <div ng-if=" $index < defaultData.NumOccurence24">
+                                                            <div ng-if="defaultData.arreas24[itorator]">
+                                                                <label class="padding-l-10">{{ $index + 1}}-th occurrence = {{defaultData.arreas24[$index]}}</label>
+                                                                <a href="javascript:;" ng-click="defaultData.arreas24[itorator] = setToMonthFormat(defaultData.arreas24[itorator]);"> 
+                                                                    <i class="fa fa-pencil" ></i>
+                                                                </a> 
+                                                            </div>   
+                                                            <div ng-if="!defaultData.arreas24[itorator]">
+                                                                <div ng-init="defaultData.selectMonth24[itorator] = true;"> 
+                                                                    <div ng-if="defaultData.selectMonth24[itorator]">
+                                                                        <label class="padding-l-10">Please select month / year of your {{ $index + 1}}-th occurrence</label>
+                                                                        <ul class="monthlist">
+                                                                            <li ng-repeat="currMonth in months24"  ng-click="defaultData.selectMonth24[itorator] = false; defaultData.arreas24Month[itorator] = currMonth;" ng-class="{'activeMonth':defaultData.arreas24Month[itorator] == currMonth}">
+                                                                                <a href="javascript:;">
+                                                                                    {{currMonth}}
+                                                                                </a>              
+                                                                            </li>
+                                                                        </ul>
+                                                                    </div>
+                                                                    <div ng-if="!defaultData.selectMonth24[itorator]">
+                                                                        <label class="padding-l-10">Please select date of your {{ $index + 1}}-th occurrence</label>
+                                                                        <ul  class="monthlist">                                                                               
+                                                                            <li ng-repeat="day in dayspermonth24[defaultData.arreas24Month[itorator]]" ng-click="defaultData.arreas24Day[itorator] = day; defaultData.arreas24[itorator] = day + ' / ' + defaultData.arreas24Month[itorator]" ng-class="{'activeDay':defaultData.arreas24Day[itorator] == day}">
+                                                                                <a href="javascript:;">{{day}}</a>              
+                                                                            </li>
+                                                                        </ul>
+                                                                    </div>
+                                                                </div>
+                                                            </div>   
+                                                        </div>
+                                                    </div>   
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-12">
+                                        <div class="form-group">
+                                            <label class="form-label">Do you have any occurrences in last 36 months ?</label>
+                                            <div>
+                                                <span class="checkboxes">
+                                                    <div class="form-control radio-group">
+                                                        <div class="radio radio-info radio-inline">
+                                                            <input type="radio" id="isNumOccurence36_1_{{$index}}" ng-value="1" ng-model="defaultData.Highest36" enter>
+                                                            <label for="isNumOccurence36_1_{{$index}}"> Yes </label>
+                                                        </div>
+                                                        <div class="radio radio-info radio-inline">
+                                                            <input type="radio" id="isNumOccurence36_2_{{$index}}" ng-value="0" ng-model="defaultData.Highest36" enter>
+                                                            <label for="isNumOccurence36_2_{{$index}}"> No </label>
+                                                        </div>
+                                                    </div>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12" ng-if="defaultData.Highest36">
+                                        <div class="row">
+                                            <div class="col-lg-4">
+                                                <div class="form-group">
+                                                    <label class="form-label">Number of occurrences in last 36 months ?</label>
+                                                    <div>
+                                                        <span class="checkboxes">
+                                                            <input type="number" enter class="form-control"
+                                                                   max="12"
+                                                                   ng-model="defaultData.NumOccurence36"
+                                                                   ng-focus="setFieldTypingStatus('NumOccurence36', true)"
+                                                                   ng-blur="setFieldTypingStatus('NumOccurence36', false)"
+                                                                   ng-disabled="checkPartnerTyping('NumOccurence36')"
+                                                                   ng-change="changeTextFieldArrears('NumOccurence36');">
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div ng-if="checkPartnerTyping('NumOccurence36')">
+                                                    <label class="typing">{{partner}} is typing ...</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-8">
+                                                <div  ng-if="defaultData.NumOccurence36 > 0 && defaultData.NumOccurence36 < 13">
+                                                    <div  ng-repeat="itorator in occur36">
+                                                        <div ng-if=" $index < defaultData.NumOccurence36">
+                                                            <div ng-if="defaultData.arreas36[itorator]">
+                                                                <label class="padding-l-10">{{ $index + 1}}-th occurrence = {{defaultData.arreas36[$index]}}</label>
+                                                                <a href="javascript:;" ng-click="defaultData.arreas36[itorator] = setToMonthFormat(defaultData.arreas36[itorator]);"> 
+                                                                    <i class="fa fa-pencil" ></i>
+                                                                </a> 
+                                                            </div>   
+                                                            <div ng-if="!defaultData.arreas36[itorator]">
+                                                                <div ng-init="defaultData.selectMonth36[itorator] = true;"> 
+                                                                    <div ng-if="defaultData.selectMonth36[itorator]">
+                                                                        <label class="padding-l-10">Please select month / year of your {{ $index + 1}}-th occurrence</label>
+                                                                        <ul class="monthlist">
+                                                                            <li ng-repeat="currMonth in months36"  ng-click="defaultData.selectMonth36[itorator] = false; defaultData.arreas36Month[itorator] = currMonth;" ng-class="{'activeMonth':defaultData.arreas36Month[itorator] == currMonth}">
+                                                                                <a href="javascript:;">
+                                                                                    {{currMonth}}
+                                                                                </a>              
+                                                                            </li>
+                                                                        </ul>
+                                                                    </div>
+                                                                    <div ng-if="!defaultData.selectMonth36[itorator]">
+                                                                        <label class="padding-l-10">Please select date of your {{ $index + 1}}-th occurrence</label>
+                                                                        <ul  class="monthlist">                                                                               
+                                                                            <li ng-repeat="day in dayspermonth36[defaultData.arreas36Month[itorator]]" ng-click="defaultData.arreas36Day[itorator] = day; defaultData.arreas36[itorator] = day + ' / ' + defaultData.arreas36Month[itorator]" ng-class="{'activeDay':defaultData.arreas36Day[itorator] == day}">
+                                                                                <a href="javascript:;">{{day}}</a>              
+                                                                            </li>
+                                                                        </ul>
+                                                                    </div>
+                                                                </div>
+                                                            </div>   
+                                                        </div>
+                                                    </div>   
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-12">
+                                        <div class="form-group">
+                                            <label class="form-label">Do you have any occurrences in last 72 months ?</label>
+                                            <div>
+                                                <span class="checkboxes">
+                                                    <div class="form-control radio-group">
+                                                        <div class="radio radio-info radio-inline">
+                                                            <input type="radio" id="isNumOccurence72_1_{{$index}}" ng-value="1"ng-model="defaultData.Highest72" enter>
+                                                            <label for="isNumOccurence72_1_{{$index}}"> Yes </label>
+                                                        </div>
+                                                        <div class="radio radio-info radio-inline">
+                                                            <input type="radio" id="isNumOccurence72_2_{{$index}}" ng-value="0" ng-model="defaultData.Highest72" enter>
+                                                            <label for="isNumOccurence72_2_{{$index}}"> No </label>
+                                                        </div>
+                                                    </div>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12" ng-if="defaultData.Highest72">
+                                        <div class="row">
+                                            <div class="col-lg-4">
+                                                <div class="form-group">
+                                                    <label class="form-label">Number of occurrences in last 72 months ?</label>
+                                                    <div>
+                                                        <span class="checkboxes">
+                                                            <input type="number" enter class="form-control"
+                                                                   max="36"
+                                                                   ng-model="defaultData.NumOccurence72"
+                                                                   ng-focus="setFieldTypingStatus('NumOccurence72', true)"
+                                                                   ng-blur="setFieldTypingStatus('NumOccurence72', false)"
+                                                                   ng-disabled="checkPartnerTyping('NumOccurence72')"
+                                                                   ng-change="changeTextFieldArrears('NumOccurence72');">
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div ng-if="checkPartnerTyping('NumOccurence72')">
+                                                    <label class="typing">{{partner}} is typing ...</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-8">
+                                                <div  ng-if="defaultData.NumOccurence72 > 0 && defaultData.NumOccurence72 < 37">
+                                                    <div  ng-repeat="itorator in occur72">
+                                                        <div ng-if=" $index < defaultData.NumOccurence72">
+                                                            <div ng-if="defaultData.arreas72[itorator]">
+                                                                <label class="padding-l-10">{{ $index + 1}}-th occurrence = {{defaultData.arreas72[$index]}}</label>
+                                                                <a href="javascript:;" ng-click="defaultData.arreas72[itorator] = setToMonthFormat(defaultData.arreas72[itorator]);"> 
+                                                                    <i class="fa fa-pencil" ></i>
+                                                                </a> 
+                                                            </div>   
+                                                            <div ng-if="!defaultData.arreas72[itorator]">
+                                                                <div ng-init="defaultData.selectMonth72[itorator] = true;"> 
+                                                                    <div ng-if="defaultData.selectMonth72[itorator]">
+                                                                        <label class="padding-l-10">Please select month / year of your {{ $index + 1}}-th occurrence</label>
+                                                                        <ul class="monthlist">
+                                                                            <li ng-repeat="currMonth in months72"  ng-click="defaultData.selectMonth72[itorator] = false; defaultData.arreas72Month[itorator] = currMonth;" ng-class="{'activeMonth':defaultData.arreas72Month[itorator] == currMonth}">
+                                                                                <a href="javascript:;">
+                                                                                    {{currMonth}}
+                                                                                </a>              
+                                                                            </li>
+                                                                        </ul>
+                                                                    </div>
+                                                                    <div ng-if="!defaultData.selectMonth72[itorator]">
+                                                                        <label class="padding-l-10">Please select date of your {{ $index + 1}}-th occurrence</label>
+                                                                        <ul  class="monthlist">                                                                               
+                                                                            <li ng-repeat="day in dayspermonth72[defaultData.arreas72Month[itorator]]" ng-click="defaultData.arreas72Day[itorator] = day; defaultData.arreas72[itorator] = day + ' / ' + defaultData.arreas72Month[itorator]" ng-class="{'activeDay':defaultData.arreas72Day[itorator] == day}">
+                                                                                <a href="javascript:;">{{day}}</a>              
+                                                                            </li>
+                                                                        </ul>
+                                                                    </div>
+                                                                </div>
+                                                            </div>   
+                                                        </div>
+                                                    </div>   
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <button type="button" ng-click="deleteCH(defaultData, 'DeleteArrearsDefaults')" class="btn btn-danger float-r scroll-top">Delete</button>
+                                        <button type="submit" class="btn btn-success margin-r-10 float-r scroll-top">Update</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="col-lg-12" style="padding-bottom: 10px; padding-left: 15px;" ng-if="customer.ArrearDefaultlist && customer.ArrearDefaultlist.length">
+                            <button type="button" class="btn btn-default float-r" ng-click="customer.ArrearsDefaults.isArrears = !customer.ArrearsDefaults.isArrears">Add More Arrear</button>
+                        </div>
+                        <div ng-if="customer.ArrearsDefaults.isArrears">
+                            <form name="AddArrearDetails" novalidate ng-submit="AddArrearDetails.$valid && SaveArrearDefault(customer.ArrearsDefaults)">
+                                <div class="col-lg-12 padding-0 margin-b-10 panel-with-data">
+                                    <div class="panel-body">
+                                        <div class="col-sm-12">
+                                            <div class="form-group">
+                                                <span class="step-heading step-heading-small">ARREAR DATA</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label class="form-label">Applicants</label>
+                                                <div ng-repeat="(key,applicant) in customer.applicants track by $index" ng-if="applicant.ClientID">
+                                                    <div class="checkbox checkbox-primary" ng-class="{'checkbox-required': !(customer.ArrearsDefaults.clientids && customer.ArrearsDefaults.clientids.length)}">
+                                                        <input id="defaultapp{{key}}" enter type="checkbox"  checklist-value="applicant.ClientID" checklist-model="customer.ArrearsDefaults.clientids" ng-required="!(customer.ArrearsDefaults.clientids && customer.ArrearsDefaults.clientids.length)" />
+                                                        <label for="defaultapp{{key}}">{{getApplicantTitle(applicant.eTitleID) + ' ' + applicant.Firstname + ' ' + applicant.Surname}}</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label class="form-label">Type</label>
+                                                <div>
+                                                    <span class="checkboxes">
+                                                        <ui-select dropdownenter ng-model="customer.ArrearsDefaults.eArrDefTypeID" ng-required="true">
+                                                            <ui-select-match placeholder="Please Select">{{$select.selected.name}}</ui-select-match>
+                                                            <ui-select-choices repeat="value.val as value in ArrearsType| filter:$select.search">
+                                                                <div ng-bind-html="value.name | highlight: $select.search"></div>
+                                                            </ui-select-choices>
+                                                        </ui-select>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label class="form-label">Lender</label>
+                                                <div>
+                                                    <span class="checkboxes">
+                                                        <ui-select dropdownenter ng-model="customer.ArrearsDefaults.eLenderID" ng-required="true">
+                                                            <ui-select-match placeholder="Please Select">{{$select.selected.name}}</ui-select-match>
+                                                            <ui-select-choices repeat="value.val as value in LenderType| filter:$select.search">
+                                                                <div ng-bind-html="value.name | highlight: $select.search"></div>
+                                                            </ui-select-choices>
+                                                        </ui-select>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="form-group" ng-class="{'has-error': hasNotValidErrorDate(customer.ArrearsDefaults.ArrDefDate)}">
+                                                <label class="form-label">Date Incurred (dd/mm/yyyy)</label>
+                                                <div>
+                                                    <span class="checkboxes">
+                                                        <input type="text" enter class="form-control" ng-datepicker  ng-model="customer.ArrearsDefaults.ArrDefDate" ng-required="true" ng-change="changeTextFieldArrears('ArrDefDate')"
+                                                               ng-focus="setFieldTypingStatus('ArrDefDate', true)"
+                                                               ng-blur="setFieldTypingStatus('ArrDefDate', false)"
+                                                               ng-disabled="checkPartnerTyping('ArrDefDate')">
+                                                    </span>
+                                                </div>
+                                                <span ng-show="hasNotValidErrorDate(customer.ArrearsDefaults.ArrDefDate)" class="help-block">Please enter Valid Date</span>
+                                            </div>
+                                            <div ng-if="checkPartnerTyping('ArrDefDate')">
+                                                <label class="typing">{{partner}} is typing ...</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label class="form-label">Is Cleared</label>
+                                                <div >
+                                                    <div class="checkbox checkbox-primary">
+                                                        <input id="checkbox108" type="checkbox" ng-model="customer.ArrearsDefaults.Satisfied" ng-value="true" enter>
+                                                        <label for="checkbox108">
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-12">
+                                            <div class="form-group">
+                                                <label class="form-label">Do you have any occurrences in last 12 months ?</label>
+                                                <div>
+                                                    <span class="checkboxes">
+                                                        <div class="form-control radio-group">
+                                                            <div class="radio radio-info radio-inline">
+                                                                <input type="radio" id="isNumOccurence12_1" ng-value="1"ng-model="customer.ArrearsDefaults.Highest12" enter>
+                                                                <label for="isNumOccurence12_1"> Yes </label>
+                                                            </div>
+                                                            <div class="radio radio-info radio-inline">
+                                                                <input type="radio" id="isNumOccurence12_2" ng-value="0" ng-model="customer.ArrearsDefaults.Highest12" enter>
+                                                                <label for="isNumOccurence12_2"> No </label>
+                                                            </div>
+                                                        </div>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-12" ng-if="customer.ArrearsDefaults.Highest12">
+                                            <div class="row">
+                                                <div class="col-lg-4">
+                                                    <div class="form-group">
+                                                        <label class="form-label">Number of occurrences in last 12 months ?</label>
+                                                        <div>
+                                                            <span class="checkboxes">
+                                                                <input type="number" enter class="form-control"
+                                                                       max="12"
+                                                                       ng-model="customer.ArrearsDefaults.NumOccurence12"
+                                                                       ng-focus="setFieldTypingStatus('NumOccurence12', true)"
+                                                                       ng-blur="setFieldTypingStatus('NumOccurence12', false)"
+                                                                       ng-disabled="checkPartnerTyping('NumOccurence12')"
+                                                                       ng-change="changeTextFieldArrears('NumOccurence12');">
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                    <div ng-if="checkPartnerTyping('NumOccurence12')">
+                                                        <label class="typing">{{partner}} is typing ...</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-8">
+                                                    <div  ng-if="customer.ArrearsDefaults.NumOccurence12 > 0 && customer.ArrearsDefaults.NumOccurence12 < 13">
+                                                        <div  ng-repeat="itorator in occur12">
+                                                            <div ng-if=" $index < customer.ArrearsDefaults.NumOccurence12">
+                                                                <div ng-if="customer.ArrearsDefaults.arreas12[itorator]">
+                                                                    <label class="padding-l-10">{{ $index + 1}}-th occurrence = {{customer.ArrearsDefaults.arreas12[$index]}}</label>
+                                                                    <a href="javascript:;" ng-click="customer.ArrearsDefaults.arreas12[itorator] = setToMonthFormat(customer.ArrearsDefaults.arreas12[itorator]);"> 
+                                                                        <i class="fa fa-pencil" ></i>
+                                                                    </a> 
+                                                                </div>   
+                                                                <div ng-if="!customer.ArrearsDefaults.arreas12[itorator]">
+                                                                    <div ng-init="customer.ArrearsDefaults.selectMonth12[itorator] = true;"> 
+                                                                        <div ng-if="customer.ArrearsDefaults.selectMonth12[itorator]">
+                                                                            <label class="padding-l-10">Please select month / year of your {{ $index + 1}}-th occurrence</label>
+                                                                            <ul class="monthlist">
+                                                                                <li ng-repeat="currMonth in months"  ng-click="customer.ArrearsDefaults.selectMonth12[itorator] = false; customer.ArrearsDefaults.arreas12Month[itorator] = currMonth;" ng-class="{'activeMonth':customer.ArrearsDefaults.arreas12Month[itorator] == currMonth}">
+                                                                                    <a href="javascript:;">
+                                                                                        {{currMonth}}
+                                                                                    </a>              
+                                                                                </li>
+                                                                            </ul>
+                                                                        </div>
+                                                                        <div ng-if="!customer.ArrearsDefaults.selectMonth12[itorator]">
+                                                                            <label class="padding-l-10">Please select date of your {{ $index + 1}}-th occurrence</label>
+                                                                            <ul  class="monthlist">                                                                               
+                                                                                <li ng-repeat="day in dayspermonth12[customer.ArrearsDefaults.arreas12Month[itorator]]" ng-click="customer.ArrearsDefaults.arreas12Day[itorator] = day; customer.ArrearsDefaults.arreas12[itorator] = day + ' / ' + customer.ArrearsDefaults.arreas12Month[itorator]" ng-class="{'activeDay':customer.ArrearsDefaults.arreas12Day[itorator] == day}">
+                                                                                    <a href="javascript:;">{{day}}</a>              
+                                                                                </li>
+                                                                            </ul>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>   
+                                                            </div>
+                                                        </div>   
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-lg-12">
+                                            <div class="form-group">
+                                                <label class="form-label">Do you have any occurrences in last 24 months ?</label>
+                                                <div>
+                                                    <span class="checkboxes">
+                                                        <div class="form-control radio-group">
+                                                            <div class="radio radio-info radio-inline">
+                                                                <input type="radio" id="isNumOccurence24_1" ng-value="1"ng-model="customer.ArrearsDefaults.Highest24" enter>
+                                                                <label for="isNumOccurence24_1"> Yes </label>
+                                                            </div>
+                                                            <div class="radio radio-info radio-inline">
+                                                                <input type="radio" id="isNumOccurence24_2" ng-value="0" ng-model="customer.ArrearsDefaults.Highest24" enter>
+                                                                <label for="isNumOccurence24_2"> No </label>
+                                                            </div>
+                                                        </div>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-12" ng-if="customer.ArrearsDefaults.Highest24">
+                                            <div class="row">
+                                                <div class="col-lg-4">
+                                                    <div class="form-group">
+                                                        <label class="form-label">Number of occurrences in last 24 months ?</label>
+                                                        <div>
+                                                            <span class="checkboxes">
+                                                                <input type="number" enter class="form-control"
+                                                                       max="12"
+                                                                       ng-model="customer.ArrearsDefaults.NumOccurence24"
+                                                                       ng-focus="setFieldTypingStatus('NumOccurence24', true)"
+                                                                       ng-blur="setFieldTypingStatus('NumOccurence24', false)"
+                                                                       ng-disabled="checkPartnerTyping('NumOccurence24')"
+                                                                       ng-change="changeTextFieldArrears('NumOccurence24');">
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                    <div ng-if="checkPartnerTyping('NumOccurence24')">
+                                                        <label class="typing">{{partner}} is typing ...</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-8">
+                                                    <div  ng-if="customer.ArrearsDefaults.NumOccurence24 > 0 && customer.ArrearsDefaults.NumOccurence24 < 13">
+                                                        <div  ng-repeat="itorator in occur24">
+                                                            <div ng-if=" $index < customer.ArrearsDefaults.NumOccurence24">
+                                                                <div ng-if="customer.ArrearsDefaults.arreas24[itorator]">
+                                                                    <label class="padding-l-10">{{ $index + 1}}-th occurrence = {{customer.ArrearsDefaults.arreas24[$index]}}</label>
+                                                                    <a href="javascript:;" ng-click="customer.ArrearsDefaults.arreas24[itorator] = setToMonthFormat(customer.ArrearsDefaults.arreas24[itorator]);"> 
+                                                                        <i class="fa fa-pencil" ></i>
+                                                                    </a> 
+                                                                </div>   
+                                                                <div ng-if="!customer.ArrearsDefaults.arreas24[itorator]">
+                                                                    <div ng-init="customer.ArrearsDefaults.selectMonth24[itorator] = true;"> 
+                                                                        <div ng-if="customer.ArrearsDefaults.selectMonth24[itorator]">
+                                                                            <label class="padding-l-10">Please select month / year of your {{ $index + 1}}-th occurrence</label>
+                                                                            <ul class="monthlist">
+                                                                                <li ng-repeat="currMonth in months24"  ng-click="customer.ArrearsDefaults.selectMonth24[itorator] = false; customer.ArrearsDefaults.arreas24Month[itorator] = currMonth;" ng-class="{'activeMonth':customer.ArrearsDefaults.arreas24Month[itorator] == currMonth}">
+                                                                                    <a href="javascript:;">
+                                                                                        {{currMonth}}
+                                                                                    </a>              
+                                                                                </li>
+                                                                            </ul>
+                                                                        </div>
+                                                                        <div ng-if="!customer.ArrearsDefaults.selectMonth24[itorator]">
+                                                                            <label class="padding-l-10">Please select date of your {{ $index + 1}}-th occurrence</label>
+                                                                            <ul  class="monthlist">                                                                               
+                                                                                <li ng-repeat="day in dayspermonth24[customer.ArrearsDefaults.arreas24Month[itorator]]" ng-click="customer.ArrearsDefaults.arreas24Day[itorator] = day; customer.ArrearsDefaults.arreas24[itorator] = day + ' / ' + customer.ArrearsDefaults.arreas24Month[itorator]" ng-class="{'activeDay':customer.ArrearsDefaults.arreas24Day[itorator] == day}">
+                                                                                    <a href="javascript:;">{{day}}</a>              
+                                                                                </li>
+                                                                            </ul>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>   
+                                                            </div>
+                                                        </div>   
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-lg-12">
+                                            <div class="form-group">
+                                                <label class="form-label">Do you have any occurrences in last 36 months ?</label>
+                                                <div>
+                                                    <span class="checkboxes">
+                                                        <div class="form-control radio-group">
+                                                            <div class="radio radio-info radio-inline">
+                                                                <input type="radio" id="isNumOccurence36_1" ng-value="1"ng-model="customer.ArrearsDefaults.Highest36" enter>
+                                                                <label for="isNumOccurence36_1"> Yes </label>
+                                                            </div>
+                                                            <div class="radio radio-info radio-inline">
+                                                                <input type="radio" id="isNumOccurence36_2" ng-value="0" ng-model="customer.ArrearsDefaults.Highest36" enter>
+                                                                <label for="isNumOccurence36_2"> No </label>
+                                                            </div>
+                                                        </div>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-12" ng-if="customer.ArrearsDefaults.Highest36">
+                                            <div class="row">
+                                                <div class="col-lg-4">
+                                                    <div class="form-group">
+                                                        <label class="form-label">Number of occurrences in last 36 months ?</label>
+                                                        <div>
+                                                            <span class="checkboxes">
+                                                                <input type="number" enter class="form-control"
+                                                                       max="12"
+                                                                       ng-model="customer.ArrearsDefaults.NumOccurence36"
+                                                                       ng-focus="setFieldTypingStatus('NumOccurence36', true)"
+                                                                       ng-blur="setFieldTypingStatus('NumOccurence36', false)"
+                                                                       ng-disabled="checkPartnerTyping('NumOccurence36')"
+                                                                       ng-change="changeTextFieldArrears('NumOccurence36');">
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                    <div ng-if="checkPartnerTyping('NumOccurence36')">
+                                                        <label class="typing">{{partner}} is typing ...</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-8">
+                                                    <div  ng-if="customer.ArrearsDefaults.NumOccurence36 > 0 && customer.ArrearsDefaults.NumOccurence36 < 13">
+                                                        <div  ng-repeat="itorator in occur36">
+                                                            <div ng-if=" $index < customer.ArrearsDefaults.NumOccurence36">
+                                                                <div ng-if="customer.ArrearsDefaults.arreas36[itorator]">
+                                                                    <label class="padding-l-10">{{ $index + 1}}-th occurrence = {{customer.ArrearsDefaults.arreas36[$index]}}</label>
+                                                                    <a href="javascript:;" ng-click="customer.ArrearsDefaults.arreas36[itorator] = setToMonthFormat(customer.ArrearsDefaults.arreas36[itorator]);"> 
+                                                                        <i class="fa fa-pencil" ></i>
+                                                                    </a> 
+                                                                </div>   
+                                                                <div ng-if="!customer.ArrearsDefaults.arreas36[itorator]">
+                                                                    <div ng-init="customer.ArrearsDefaults.selectMonth36[itorator] = true;"> 
+                                                                        <div ng-if="customer.ArrearsDefaults.selectMonth36[itorator]">
+                                                                            <label class="padding-l-10">Please select month / year of your {{ $index + 1}}-th occurrence</label>
+                                                                            <ul class="monthlist">
+                                                                                <li ng-repeat="currMonth in months36"  ng-click="customer.ArrearsDefaults.selectMonth36[itorator] = false; customer.ArrearsDefaults.arreas36Month[itorator] = currMonth;" ng-class="{'activeMonth':customer.ArrearsDefaults.arreas36Month[itorator] == currMonth}">
+                                                                                    <a href="javascript:;">
+                                                                                        {{currMonth}}
+                                                                                    </a>              
+                                                                                </li>
+                                                                            </ul>
+                                                                        </div>
+                                                                        <div ng-if="!customer.ArrearsDefaults.selectMonth36[itorator]">
+                                                                            <label class="padding-l-10">Please select date of your {{ $index + 1}}-th occurrence</label>
+                                                                            <ul  class="monthlist">                                                                               
+                                                                                <li ng-repeat="day in dayspermonth36[customer.ArrearsDefaults.arreas36Month[itorator]]" ng-click="customer.ArrearsDefaults.arreas36Day[itorator] = day; customer.ArrearsDefaults.arreas36[itorator] = day + ' / ' + customer.ArrearsDefaults.arreas36Month[itorator]" ng-class="{'activeDay':customer.ArrearsDefaults.arreas36Day[itorator] == day}">
+                                                                                    <a href="javascript:;">{{day}}</a>              
+                                                                                </li>
+                                                                            </ul>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>   
+                                                            </div>
+                                                        </div>   
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-lg-12">
+                                            <div class="form-group">
+                                                <label class="form-label">Do you have any occurrences in last 72 months ?</label>
+                                                <div>
+                                                    <span class="checkboxes">
+                                                        <div class="form-control radio-group">
+                                                            <div class="radio radio-info radio-inline">
+                                                                <input type="radio" id="isNumOccurence72_1" ng-value="1"ng-model="customer.ArrearsDefaults.Highest72" enter>
+                                                                <label for="isNumOccurence72_1"> Yes </label>
+                                                            </div>
+                                                            <div class="radio radio-info radio-inline">
+                                                                <input type="radio" id="isNumOccurence72_2" ng-value="0" ng-model="customer.ArrearsDefaults.Highest72" enter>
+                                                                <label for="isNumOccurence72_2"> No </label>
+                                                            </div>
+                                                        </div>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-12" ng-if="customer.ArrearsDefaults.Highest72">
+                                            <div class="row">
+                                                <div class="col-lg-4">
+                                                    <div class="form-group">
+                                                        <label class="form-label">Number of occurrences in last 72 months ?</label>
+                                                        <div>
+                                                            <span class="checkboxes">
+                                                                <input type="number" enter class="form-control"
+                                                                       max="36"
+                                                                       ng-model="customer.ArrearsDefaults.NumOccurence72"
+                                                                       ng-focus="setFieldTypingStatus('NumOccurence72', true)"
+                                                                       ng-blur="setFieldTypingStatus('NumOccurence72', false)"
+                                                                       ng-disabled="checkPartnerTyping('NumOccurence72')"
+                                                                       ng-change="changeTextFieldArrears('NumOccurence72');">
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                    <div ng-if="checkPartnerTyping('NumOccurence72')">
+                                                        <label class="typing">{{partner}} is typing ...</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-8">
+                                                    <div  ng-if="customer.ArrearsDefaults.NumOccurence72 > 0 && customer.ArrearsDefaults.NumOccurence72 < 37">
+                                                        <div  ng-repeat="itorator in occur72">
+                                                            <div ng-if=" $index < customer.ArrearsDefaults.NumOccurence72">
+                                                                <div ng-if="customer.ArrearsDefaults.arreas72[itorator]">
+                                                                    <label class="padding-l-10">{{ $index + 1}}-th occurrence = {{customer.ArrearsDefaults.arreas72[$index]}}</label>
+                                                                    <a href="javascript:;" ng-click="customer.ArrearsDefaults.arreas72[itorator] = setToMonthFormat(customer.ArrearsDefaults.arreas72[itorator]);"> 
+                                                                        <i class="fa fa-pencil" ></i>
+                                                                    </a> 
+                                                                </div>   
+                                                                <div ng-if="!customer.ArrearsDefaults.arreas72[itorator]">
+                                                                    <div ng-init="customer.ArrearsDefaults.selectMonth72[itorator] = true;"> 
+                                                                        <div ng-if="customer.ArrearsDefaults.selectMonth72[itorator]">
+                                                                            <label class="padding-l-10">Please select month / year of your {{ $index + 1}}-th occurrence</label>
+                                                                            <ul class="monthlist">
+                                                                                <li ng-repeat="currMonth in months72"  ng-click="customer.ArrearsDefaults.selectMonth72[itorator] = false; customer.ArrearsDefaults.arreas72Month[itorator] = currMonth;" ng-class="{'activeMonth':customer.ArrearsDefaults.arreas72Month[itorator] == currMonth}">
+                                                                                    <a href="javascript:;">
+                                                                                        {{currMonth}}
+                                                                                    </a>              
+                                                                                </li>
+                                                                            </ul>
+                                                                        </div>
+                                                                        <div ng-if="!customer.ArrearsDefaults.selectMonth72[itorator]">
+                                                                            <label class="padding-l-10">Please select date of your {{ $index + 1}}-th occurrence</label>
+                                                                            <ul  class="monthlist">                                                                               
+                                                                                <li ng-repeat="day in dayspermonth72[customer.ArrearsDefaults.arreas72Month[itorator]]" ng-click="customer.ArrearsDefaults.arreas72Day[itorator] = day; customer.ArrearsDefaults.arreas72[itorator] = day + ' / ' + customer.ArrearsDefaults.arreas72Month[itorator]" ng-class="{'activeDay':customer.ArrearsDefaults.arreas72Day[itorator] == day}">
+                                                                                    <a href="javascript:;">{{day}}</a>              
+                                                                                </li>
+                                                                            </ul>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>   
+                                                            </div>
+                                                        </div>   
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-12">
+                                            <button type="submit" class="btn btn-success float-r scroll-top">Save and Continue</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="col-lg-12" >
+                            <div class="form-group">
+                                <label class="form-label">Do you have any Defaults?</label>
+                                <div class="form-control radio-group" ng-if="!customer.Defaultlist && !customer.Defaultlist.length">
+                                    <div class="radio radio-info radio-inline">
+                                        <input type="radio" id="isDefaults_1" ng-value="true" ng-model="customer.Defaults.isDefault" enter>
+                                        <label for="isDefaults_1"> Yes </label>
+                                    </div>
+                                    <div class="radio radio-info radio-inline">
+                                        <input type="radio" id="isDefaults_2" ng-value="false" ng-model="customer.Defaults.isDefault" enter>
+                                        <label for="isDefaults_2"> No </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-12 padding-0 margin-b-10 panel-with-data" ng-repeat="(key,default) in customer.Defaultlist track by $index">
+                            <form name="updateDefaultDetails" novalidate ng-submit="updateDefaultDetails.$valid && updateDefault(default)">
+                                <div class="panel-title benifits_title" ng-click="default.show = !default.show;">Default / {{default.FullName}} / {{default.Amount}}</div>
+                                <input type="hidden" enter class="form-control"  ng-model="default.ArrDefID" />
+                                <div class="panel-body" ng-if="default.show">
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            <span class="step-heading step-heading-small">EDIT DEFAULT</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label class="form-label">Applicants</label>
+                                            <div ng-repeat="(key,applicant) in customer.applicants track by $index" ng-if="applicant.ClientID">
+                                                <div class="checkbox checkbox-primary" ng-class="{'checkbox-required': !(default.clientids && default.clientids.length)}">
+                                                    <input id="uxdefaultapp{{key}}_{{$index}}" enter type="checkbox"  checklist-value="applicant.ClientID" checklist-model="default.clientids" ng-required="!(default.clientids && default.clientids.length)" />
+                                                    <label for="uxdefaultapp{{key}}_{{$index}}">{{getApplicantTitle(applicant.eTitleID) + ' ' + applicant.Firstname + ' ' + applicant.Surname}}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label class="form-label">Amount</label>
+                                            <span class="checkboxes pound">
+                                                <input type="text" numbers-only enter class="form-control"  ng-model="default.Amount" ng-required="true" ng-change="changeKeyTextFieldDefaults(key, 'Amount')" 
+                                                       ng-focus="setFieldTypingStatus('DefaultsAmount', true)"
+                                                       ng-blur="setFieldTypingStatus('DefaultsAmount', false)"
+                                                       ng-disabled="checkPartnerTyping('DefaultsAmount')">
+                                            </span>
+                                        </div>
+                                        <div ng-if="checkPartnerTyping('DefaultsAmount')">
+                                            <label class="typing">{{partner}} is typing ...</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group" ng-class="{'has-error': hasNotValidErrorDate(default.ArrDefDate)}">
+                                            <label class="form-label">Incurred Date (dd/mm/yyyy)</label>
+                                            <div>
+                                                <span class="checkboxes">
+                                                    <input type="text" enter class="form-control" ng-datepicker  ng-model="default.ArrDefDate" ng-required="true" ng-change="changeKeyTextFieldDefaults(key, 'ArrDefDate')" 
+                                                           ng-focus="setFieldTypingStatus('DefaultsArrDefDate', true)"
+                                                           ng-blur="setFieldTypingStatus('DefaultsArrDefDate', false)"
+                                                           ng-disabled="checkPartnerTyping('DefaultsArrDefDate')">
+                                                </span>
+                                            </div>
+                                            <span ng-show="hasNotValidErrorDate(default.ArrDefDate)" class="help-block">Please enter Valid Date</span>
+                                        </div>
+                                        <div ng-if="checkPartnerTyping('DefaultsArrDefDate')">
+                                            <label class="typing">{{partner}} is typing ...</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6" >
+                                        <div class="form-group">
+                                            <label class="form-label">Is Satisfied</label>
+                                            <div>
+                                                <span class="checkboxes">
+                                                    <div class="form-control radio-group">
+
+                                                        <div class="radio radio-info radio-inline">
+                                                            <input type="radio" id="isSatisfied_1" ng-value="true" ng-model="default.Satisfied" enter >
+                                                            <label for="isSatisfied_1"> Yes </label>
+                                                        </div>
+                                                        <div class="radio radio-info radio-inline">
+                                                            <input type="radio" id="isSatisfied_2" ng-value="false" ng-model="default.Satisfied" enter >
+                                                            <label for="isSatisfied_2"> No </label>
+                                                        </div>
+                                                    </div>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6" ng-if="default.Satisfied">
+                                        <div class="form-group" ng-class="{'has-error': hasNotValidErrorDate(default.DateSatisfied)}">
+                                            <label class="form-label">Satisfied Date (dd/mm/yyyy)</label>
+                                            <div>
+                                                <span class="checkboxes">
+                                                    <input type="text" enter class="form-control" ng-datepicker ng-model="default.DateSatisfied" ng-required="true" ng-change="changeKeyTextFieldDefaults(key, 'DateSatisfied')"
+                                                           ng-focus="setFieldTypingStatus('DefaultsDateSatisfied', true)"
+                                                           ng-blur="setFieldTypingStatus('DefaultsDateSatisfied', false)"
+                                                           ng-disabled="checkPartnerTyping('DefaultsDateSatisfied')">
+                                                </span>
+                                            </div>
+                                            <span ng-show="hasNotValidErrorDate(default.DateSatisfied)" class="help-block">Please enter Valid Date</span>
+                                        </div>
+                                        <div ng-if="checkPartnerTyping('DefaultsDateSatisfied')">
+                                            <label class="typing">{{partner}} is typing ...</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <button type="button" ng-click="deleteCH(default, 'DeleteArrearsDefaults')" class="btn btn-danger float-r scroll-top">Delete</button>
+                                        <button type="submit" class="btn btn-success margin-r-10 float-r scroll-top">Update</button>
+
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="col-lg-12" style="padding-bottom: 10px; padding-left: 15px;" ng-if="customer.Defaultlist && customer.Defaultlist.length">
+                            <button type="button" class="btn btn-default float-r" ng-click="customer.Defaults.isDefault = !customer.Defaults.isDefault">Add More Default</button>
+                        </div>
+                        <div ng-if="customer.Defaults.isDefault">
+                            <form name="AddDefaultDetails" novalidate ng-submit="AddDefaultDetails.$valid && SaveDefault(customer.Defaults)">
+                                <div class="col-lg-12 padding-0 margin-b-10 panel-with-data">
+                                    <div class="panel-body">
+                                        <div class="col-sm-12">
+                                            <div class="form-group">
+                                                <span class="step-heading step-heading-small">ADD DEFAULT</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label class="form-label">Applicants</label>
+                                                <div ng-repeat="(key,applicant) in customer.applicants track by $index" ng-if="applicant.ClientID">
+                                                    <div class="checkbox checkbox-primary" ng-class="{'checkbox-required': !(customer.Defaults.clientids && customer.Defaults.clientids.length)}">
+                                                        <input id="xdefaultapp{{key}}" type="checkbox" enter checklist-value="applicant.ClientID" checklist-model="customer.Defaults.clientids" ng-required="!(customer.Defaults.clientids && customer.Defaults.clientids.length)" />
+                                                        <label for="xdefaultapp{{key}}">{{getApplicantTitle(applicant.eTitleID) + ' ' + applicant.Firstname + ' ' + applicant.Surname}}</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label class="form-label">Amount</label>
+                                                <span class="checkboxes pound">
+                                                    <input type="text" numbers-only enter class="form-control"  ng-model="customer.Defaults.Amount" ng-required="true" ng-change="changeTextFieldDefaults('Amount')"
+                                                           ng-focus="setFieldTypingStatus('DefaultsAmount', true)"
+                                                           ng-blur="setFieldTypingStatus('DefaultsAmount', false)"
+                                                           ng-disabled="checkPartnerTyping('DefaultsAmount')">
+                                                </span>
+                                            </div>
+                                            <div ng-if="checkPartnerTyping('DefaultsAmount')">
+                                                <label class="typing">{{partner}} is typing ...</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="form-group" ng-class="{'has-error': hasNotValidErrorDate(customer.Defaults.ArrDefDate)}">
+                                                <label class="form-label">Incurred Date (dd/mm/yyyy)</label>
+                                                <div>
+                                                    <span class="checkboxes">
+                                                        <input type="text" enter class="form-control" ng-datepicker  ng-model="customer.Defaults.ArrDefDate" ng-required="true" ng-change="changeTextFieldDefaults('ArrDefDate')"
+                                                               ng-focus="setFieldTypingStatus('DefaultsArrDefDate', true)"
+                                                               ng-blur="setFieldTypingStatus('DefaultsArrDefDate', false)"
+                                                               ng-disabled="checkPartnerTyping('DefaultsArrDefDate')">
+                                                    </span>
+                                                </div>
+                                                <span ng-show="hasNotValidErrorDate(customer.Defaults.ArrDefDate)" class="help-block">Please enter Valid Date</span>
+                                            </div>
+                                            <div ng-if="checkPartnerTyping('DefaultsArrDefDate')">
+                                                <label class="typing">{{partner}} is typing ...</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6" >
+                                            <div class="form-group">
+                                                <label class="form-label">Is Satisfied</label>
+                                                <div>
+                                                    <span class="checkboxes">
+                                                        <div class="form-control radio-group">
+                                                            <div class="radio radio-info radio-inline">
+                                                                <input type="radio" id="isSatisfied_1" ng-value="true" ng-model="customer.Defaults.Satisfied" enter>
+                                                                <label for="isSatisfied_1"> Yes </label>
+                                                            </div>
+                                                            <div class="radio radio-info radio-inline">
+                                                                <input type="radio" id="isSatisfied_2" ng-value="false" ng-model="customer.Defaults.Satisfied" enter>
+                                                                <label for="isSatisfied_2"> No </label>
+                                                            </div>
+                                                        </div>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6" ng-if="customer.Defaults.Satisfied">
+                                            <div class="form-group" ng-class="{'has-error': hasNotValidErrorDate(customer.Defaults.DateSatisfied)}">
+                                                <label class="form-label">Satisfied Date (dd/mm/yyyy)</label>
+                                                <div>
+                                                    <span class="checkboxes">
+                                                        <input type="text" enter class="form-control" ng-datepicker ng-model="customer.Defaults.DateSatisfied" ng-required="true" ng-change="changeTextFieldDefaults('DateSatisfied')"
+                                                               ng-focus="setFieldTypingStatus('DefaultsDateSatisfied', true)"
+                                                               ng-blur="setFieldTypingStatus('DefaultsDateSatisfied', false)"
+                                                               ng-disabled="checkPartnerTyping('DefaultsDateSatisfied')">
+                                                    </span>
+                                                </div>
+                                                <span ng-show="hasNotValidErrorDate(customer.Defaults.DateSatisfied)" class="help-block">Please enter Valid Date</span>
+                                            </div>
+                                            <div ng-if="checkPartnerTyping('DefaultsDateSatisfied')">
+                                                <label class="typing">{{partner}} is typing ...</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-12">
+                                            <button type="submit" class="btn btn-success float-r scroll-top">Save and Continue</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="col-lg-12" >
+                            <div class="form-group">
+                                <label class="form-label">Have you ever been Bankrupt?</label>
+                                <div class="form-control radio-group" ng-if="!customer.Bankruptlist && !customer.Bankruptlist.length">
+                                    <div class="radio radio-info radio-inline">
+                                        <input type="radio" id="isBankrupt_1" ng-value="true" ng-model="customer.Bankruptcy.isBankrupt" enter>
+                                        <label for="isBankrupt_1"> Yes </label>
+                                    </div>
+                                    <div class="radio radio-info radio-inline">
+                                        <input type="radio" id="isBankrupt_2" ng-value="false" ng-model="customer.Bankruptcy.isBankrupt" enter>
+                                        <label for="isBankrupt_2"> No </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-12 padding-0 margin-b-10 panel-with-data" ng-repeat="(key, bankruptcy) in customer.Bankruptlist track by $index">
+                            <form name="updateBankruptDetails" novalidate ng-submit="updateBankruptDetails.$valid && updateBankrupt(bankruptcy)">
+                                <div class="panel-title benifits_title" ng-click="bankruptcy.show = !bankruptcy.show;">Bankrupt / {{bankruptcy.FullName}}</div>
+                                <input type="hidden" enter class="form-control"  ng-model="bankruptcy.BankruptcyID" />
+                                <div class="panel-body" ng-if="bankruptcy.show">
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            <span class="step-heading step-heading-small">EDIT BANKRUPTCY</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label class="form-label">Applicants</label>
+                                            <div ng-if="applicant.ClientID" ng-repeat="(key,applicant) in customer.applicants track by $index">                                                    
+                                                <div class="checkbox checkbox-primary" ng-class="{'checkbox-required': !(bankruptcy.clientids && bankruptcy.clientids.length)}">
+                                                    <input id="ubankruptcyapp_{{key}}_{{$index}}" type="checkbox" enter checklist-value="applicant.ClientID" checklist-model="bankruptcy.clientids" ng-required="!(bankruptcy.clientids && bankruptcy.clientids.length)" />
+                                                    <label for="ubankruptcyapp_{{key}}_{{$index}}">{{getApplicantTitle(applicant.eTitleID) + ' ' + applicant.Firstname + ' ' + applicant.Surname}}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-6">
+                                        <div class="form-group" ng-class="{'has-error': hasNotValidErrorDate(bankruptcy.RegisteredDate)}">
+                                            <label class="form-label">Registered Date (dd/mm/yyyy)</label>
+                                            <div>
+                                                <span class="checkboxes">
+                                                    <input type="text" enter class="form-control"  ng-datepicker ng-model="bankruptcy.RegisteredDate" ng-required="true" ng-change="changeKeyTextFieldBankrupt(key, 'RegisteredDate')"
+                                                           ng-focus="setFieldTypingStatus('RegisteredDate', true)"
+                                                           ng-blur="setFieldTypingStatus('RegisteredDate', false)"
+                                                           ng-disabled="checkPartnerTyping('RegisteredDate')">
+                                                </span>
+                                            </div>
+                                            <span ng-show="hasNotValidErrorDate(bankruptcy.RegisteredDate)" class="help-block">Please enter Valid Date</span>
+                                        </div>
+                                        <div ng-if="checkPartnerTyping('RegisteredDate')">
+                                            <label class="typing">{{partner}} is typing ...</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label class="form-label">Is Discharged</label>
+                                            <div >
+                                                <div class="checkbox checkbox-primary">
+                                                    <input id="checkbox103" type="checkbox" ng-model="bankruptcy.Discharged" ng-value="true" enter>
+                                                    <label for="checkbox103">
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6" ng-if="bankruptcy.Discharged">
+                                        <div class="form-group" ng-class="{'has-error': hasNotValidErrorDate(bankruptcy.DischargeDate)}">
+                                            <label class="form-label">Discharged Date (dd/mm/yyyy)</label>
+                                            <div>
+                                                <span class="checkboxes">
+                                                    <input type="text" enter class="form-control"  ng-datepicker ng-model="bankruptcy.DischargeDate" ng-required="true" ng-change="changeKeyTextFieldBankrupt(key, 'DischargeDate')"
+                                                           ng-focus="setFieldTypingStatus('BankruptcyDischargeDate', true)"
+                                                           ng-blur="setFieldTypingStatus('BankruptcyDischargeDate', false)"
+                                                           ng-disabled="checkPartnerTyping('BankruptcyDischargeDate')">
+                                                </span>
+                                            </div>
+                                            <span ng-show="hasNotValidErrorDate(bankruptcy.DischargeDate)" class="help-block">Please enter Valid Date</span>
+                                        </div>
+                                        <div ng-if="checkPartnerTyping('BankruptcyDischargeDate')">
+                                            <label class="typing">{{partner}} is typing ...</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <button type="button" ng-click="deleteCH(bankruptcy, 'DeleteBankrupts')" class="btn btn-danger float-r scroll-top">Delete</button>
+                                        <button type="submit" class="btn btn-success margin-r-10 float-r scroll-top">Update</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="col-lg-12" style="padding-bottom: 10px; padding-left: 15px;" ng-if="customer.Bankruptlist && customer.Bankruptlist.length">
+                            <button type="button" class="btn btn-default float-r" ng-click="customer.Bankruptcy.isBankrupt = !customer.Bankruptcy.isBankrupt">Add More Bankrupt</button>
+                        </div>
+                        <div ng-if="customer.Bankruptcy.isBankrupt">
+                            <form name="AddBankruptDetails" novalidate ng-submit="AddBankruptDetails.$valid && SaveBankrupt(customer.Bankruptcy)">
+                                <div class="col-lg-12 padding-0 margin-b-10 panel-with-data">
+                                    <div class="panel-body">
+                                        <div class="col-sm-12">
+                                            <div class="form-group">
+                                                <span class="step-heading step-heading-small">ADD BANKRUPTCY</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label class="form-label">Applicants</label>
+                                                <div ng-if="applicant.ClientID" ng-repeat="(key,applicant) in customer.applicants track by $index">                                                    
+                                                    <div class="checkbox checkbox-primary" ng-class="{'checkbox-required': !(customer.Bankruptcy.clientids && customer.Bankruptcy.clientids.length)}">
+                                                        <input id="bankruptcyapp{{key}}" type="checkbox"  checklist-value="applicant.ClientID" checklist-model="customer.Bankruptcy.clientids" ng-required="!(customer.Bankruptcy.clientids && customer.Bankruptcy.clientids.length)" enter />
+                                                        <label for="bankruptcyapp{{key}}">{{getApplicantTitle(applicant.eTitleID) + ' ' + applicant.Firstname + ' ' + applicant.Surname}}</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-lg-6">
+                                            <div class="form-group" ng-class="{'has-error': hasNotValidErrorDate(customer.Bankruptcy.RegisteredDate)}">
+                                                <label class="form-label">Registered Date (dd/mm/yyyy)</label>
+                                                <div>
+                                                    <span class="checkboxes">
+                                                        <input type="text" enter class="form-control"  ng-datepicker ng-model="customer.Bankruptcy.RegisteredDate" ng-required="true" ng-change="changeTextFieldBankrupt('RegisteredDate')"
+                                                               ng-focus="setFieldTypingStatus('RegisteredDate', true)"
+                                                               ng-blur="setFieldTypingStatus('RegisteredDate', false)"
+                                                               ng-disabled="checkPartnerTyping('RegisteredDate')">
+                                                    </span>
+                                                </div>
+                                                <span ng-show="hasNotValidErrorDate(customer.Bankruptcy.RegisteredDate)" class="help-block">Please enter Valid Date</span>
+                                            </div>
+                                            <div ng-if="checkPartnerTyping('RegisteredDate')">
+                                                <label class="typing">{{partner}} is typing ...</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label class="form-label">Is Discharged</label>
+                                                <div >
+                                                    <div class="checkbox checkbox-primary">
+                                                        <input id="checkbox1011" type="checkbox" ng-model="customer.Bankruptcy.Discharged" ng-value="true" enter>
+                                                        <label for="checkbox1011">
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6" ng-if="customer.Bankruptcy.Discharged">
+                                            <div class="form-group" ng-class="{'has-error': hasNotValidErrorDate(customer.Bankruptcy.DischargeDate)}">
+                                                <label class="form-label">Discharged Date (dd/mm/yyyy)</label>
+                                                <div>
+                                                    <span class="checkboxes">
+                                                        <input type="text" enter class="form-control"  ng-datepicker ng-model="customer.Bankruptcy.DischargeDate" ng-required="true" ng-change="changeTextFieldBankrupt('DischargeDate')"
+                                                               ng-focus="setFieldTypingStatus('BankruptcyDischargeDate', true)"
+                                                               ng-blur="setFieldTypingStatus('BankruptcyDischargeDate', false)"
+                                                               ng-disabled="checkPartnerTyping('BankruptcyDischargeDate')">
+                                                    </span>
+                                                </div>
+                                                <span ng-show="hasNotValidErrorDate(customer.Bankruptcy.DischargeDate)" class="help-block">Please enter Valid Date</span>
+                                            </div>
+                                            <div ng-if="checkPartnerTyping('BankruptcyDischargeDate')">
+                                                <label class="typing">{{partner}} is typing ...</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-12">
+                                            <button type="submit" class="btn btn-success float-r scroll-top">Save and Continue</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="col-lg-12" >
+                            <div class="form-group">
+                                <label class="form-label">Have you ever had an IVA?</label>
+                                <div class="form-control radio-group" ng-if="!customer.IVAlist && !customer.IVAlist.length">
+                                    <div class="radio radio-info radio-inline">
+                                        <input type="radio" id="isIVA_1" ng-value="true"ng-model="customer.IVAs.isIVA" enter>
+                                        <label for="isIVA_1"> Yes </label>
+                                    </div>
+                                    <div class="radio radio-info radio-inline">
+                                        <input type="radio" id="isIVA_2" ng-value="false" ng-model="customer.IVAs.isIVA" enter>
+                                        <label for="isIVA_2"> No </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-12 padding-0 margin-b-10 panel-with-data" ng-repeat="(key,iva) in customer.IVAlist track by $index">
+                            <form name="updateIVADetails" novalidate ng-submit="updateIVADetails.$valid && updateIVA(iva)">
+                                <div class="panel-title benifits_title" ng-click="iva.show = !iva.show;">IVA / {{iva.FullName}}</div>
+                                <input type="hidden" enter class="form-control"  ng-model="iva.IVAID" />
+                                <div class="panel-body" ng-if="iva.show">
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            <span class="step-heading step-heading-small">EDIT IVA</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label class="form-label">Applicants</label>
+                                            <div ng-if="applicant.ClientID" ng-repeat="(key,applicant) in customer.applicants track by $index">                                                    
+                                                <div class="checkbox checkbox-primary" ng-class="{'checkbox-required': !(iva.clientids && iva.clientids.length)}">
+                                                    <input id="uivaapp{{key}}_{{$index}}" type="checkbox" enter checklist-value="applicant.ClientID" checklist-model="iva.clientids" ng-required="!(iva.clientids && iva.clientids.length)" />
+                                                    <label for="uivaapp{{key}}_{{$index}}">{{getApplicantTitle(applicant.eTitleID) + ' ' + applicant.Firstname + ' ' + applicant.Surname}}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label class="form-label">Is Discharged</label>
+                                            <div >
+                                                <div class="checkbox checkbox-primary">
+                                                    <input id="IsCompleted_IV" type="checkbox" ng-model="iva.IsCompleted" ng-value="true" enter>
+                                                    <label for="IsCompleted_IV"></label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group" ng-class="{'has-error': hasNotValidErrorDate(iva.DateStarted)}">
+                                            <label class="form-label">Registered Date (dd/mm/yyyy)</label>
+                                            <div>
+                                                <span class="checkboxes">
+                                                    <input type="text" enter class="form-control" ng-datepicker ng-model="iva.DateStarted" ng-required="true" ng-change="changeKeyTextFieldIVA(key, 'DateStarted')"
+                                                           ng-focus="setFieldTypingStatus('IVAsDateStarted', true)"
+                                                           ng-blur="setFieldTypingStatus('IVAsDateStarted', false)"
+                                                           ng-disabled="checkPartnerTyping('IVAsDateStarted')">
+                                                </span>
+                                            </div>
+                                            <span ng-show="hasNotValidErrorDate(iva.DateStarted)" class="help-block">Please enter Valid Date</span>
+                                        </div>
+                                        <div ng-if="checkPartnerTyping('IVAsDateStarted')">
+                                            <label class="typing">{{partner}} is typing ...</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label class="form-label">Is Satisfactorily Conducted?</label>
+                                            <div >
+                                                <div class="checkbox checkbox-primary">
+                                                    <input id="checkbox104" type="checkbox" ng-model="iva.IsSatisfactorilyConducted" enter>
+                                                    <label for="checkbox104"></label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6"  ng-if="iva.IsCompleted">
+                                        <div class="form-group" ng-class="{'has-error': hasNotValidErrorDate(iva.DateCompleted)}">
+                                            <label class="form-label">Discharged Date (dd/mm/yyyy)</label>
+                                            <div>
+                                                <span class="checkboxes">
+                                                    <input type="text" enter class="form-control" ng-datepicker ng-model="iva.DateCompleted" ng-required="true" ng-change="changeKeyTextFieldIVA(key, 'DateCompleted')"
+                                                           ng-focus="setFieldTypingStatus('IVAsDateCompleted', true)"
+                                                           ng-blur="setFieldTypingStatus('IVAsDateCompleted', false)"
+                                                           ng-disabled="checkPartnerTyping('IVAsDateCompleted')">
+                                                </span>
+                                            </div>
+                                            <span ng-show="hasNotValidErrorDate(iva.DateCompleted)" class="help-block">Please enter Valid Date</span>
+                                        </div>
+                                        <div ng-if="checkPartnerTyping('IVAsDateCompleted')">
+                                            <label class="typing">{{partner}} is typing ...</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <button type="button" ng-click="deleteCH(iva, 'DeleteIVA')" class="btn btn-danger float-r scroll-top">Delete</button>
+                                        <button type="submit" class="btn btn-success margin-r-10 float-r scroll-top">Update</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="col-lg-12" style="padding-bottom: 10px; padding-left: 15px;" ng-if="customer.IVAlist && customer.IVAlist.length">
+                            <button type="button" class="btn btn-default float-r" ng-click="customer.IVAs.isIVA = !customer.IVAs.isIVA">Add More IVA</button>
+                        </div>
+                        <div ng-if="customer.IVAs.isIVA">
+                            <form name="AddIVADetails" novalidate ng-submit="AddIVADetails.$valid && SaveIVA(customer.IVAs)">
+                                <div class="col-lg-12 padding-0 margin-b-10 panel-with-data">
+                                    <div class="panel-body">
+                                        <div class="col-sm-12">
+                                            <div class="form-group">
+                                                <span class="step-heading step-heading-small">ADD IVA</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label class="form-label">Applicants</label>
+                                                <div ng-if="applicant.ClientID" ng-repeat="(key,applicant) in customer.applicants track by $index">                                                    
+                                                    <div class="checkbox checkbox-primary" ng-class="{'checkbox-required': !(customer.IVAs.clientids && customer.IVAs.clientids.length)}">
+                                                        <input id="ivaapp_{{key}}_{{$index}}" type="checkbox" enter checklist-value="applicant.ClientID" checklist-model="customer.IVAs.clientids" ng-required="!(customer.IVAs.clientids && customer.IVAs.clientids.length)" />
+                                                        <label for="ivaapp_{{key}}_{{$index}}">{{getApplicantTitle(applicant.eTitleID) + ' ' + applicant.Firstname + ' ' + applicant.Surname}}</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label class="form-label">Is Discharged</label>
+                                                <div >
+                                                    <div class="checkbox checkbox-primary">
+                                                        <input id="IsCompleted_IV" type="checkbox" ng-model="customer.IVAs.IsCompleted" ng-value="true">
+                                                        <label for="IsCompleted_IV">
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6" >
+                                            <div class="form-group" ng-class="{'has-error': hasNotValidErrorDate(customer.IVAs.DateStarted)}">
+                                                <label class="form-label">Registered Date (dd/mm/yyyy)</label>
+                                                <div>
+                                                    <span class="checkboxes">
+                                                        <input type="text" enter class="form-control" ng-datepicker ng-model="customer.IVAs.DateStarted" ng-required="true" ng-change="changeTextFieldIVA('DateStarted')"
+                                                               ng-focus="setFieldTypingStatus('IVAsDateStarted', true)"
+                                                               ng-blur="setFieldTypingStatus('IVAsDateStarted', false)"
+                                                               ng-disabled="checkPartnerTyping('IVAsDateStarted')">
+                                                    </span>
+                                                </div>
+                                                <span ng-show="hasNotValidErrorDate(customer.IVAs.DateStarted)" class="help-block">Please enter Valid Date</span>
+                                            </div>
+                                            <div ng-if="checkPartnerTyping('IVAsDateStarted')">
+                                                <label class="typing">{{partner}} is typing ...</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label class="form-label">Is Satisfactorily Conducted?</label>
+                                                <div >
+                                                    <div class="checkbox checkbox-primary">
+                                                        <input id="checkbox_IVa" type="checkbox" ng-model="customer.IVAs.IsSatisfactorilyConducted" enter>
+                                                        <label for="checkbox_IVa"></label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6" ng-if="customer.IVAs.IsCompleted">
+                                            <div class="form-group" ng-class="{'has-error': hasNotValidErrorDate(customer.IVAs.DateCompleted)}">
+                                                <label class="form-label">Discharged Date (dd/mm/yyyy)</label>
+                                                <div>
+                                                    <span class="checkboxes">
+                                                        <input type="text" enter class="form-control" ng-datepicker ng-model="customer.IVAs.DateCompleted" ng-required="true" ng-change="changeTextFieldIVA('DateCompleted')"
+                                                               ng-focus="setFieldTypingStatus('IVAsDateCompleted', true)"
+                                                               ng-blur="setFieldTypingStatus('IVAsDateCompleted', false)"
+                                                               ng-disabled="checkPartnerTyping('IVAsDateCompleted')">
+                                                    </span>
+                                                </div>
+                                                <span ng-show="hasNotValidErrorDate(customer.IVAs.DateCompleted)" class="help-block">Please enter Valid Date</span>
+                                            </div>
+                                            <div ng-if="checkPartnerTyping('IVAsDateCompleted')">
+                                                <label class="typing">{{partner}} is typing ...</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-12">
+                                            <button type="submit" class="btn btn-success float-r scroll-top">Save and Continue</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="col-lg-12" >
+                            <div class="form-group">
+                                <label class="form-label">Have your ever had any property Re-possessed?</label>
+                                <div class="form-control radio-group" ng-if="!customer.Repossessionslist && !customer.Repossessionslist.length">
+                                    <div class="radio radio-info radio-inline">
+                                        <input type="radio" id="isRepossessed_1" ng-value="true"ng-model="customer.Repossessions.isRepossessed" enter>
+                                        <label for="isRepossessed_1"> Yes </label>
+                                    </div>
+                                    <div class="radio radio-info radio-inline">
+                                        <input type="radio" id="isRepossessed_2" ng-value="false" ng-model="customer.Repossessions.isRepossessed" enter>
+                                        <label for="isRepossessed_2"> No </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-12 padding-0 margin-b-10 panel-with-data" ng-repeat="(key, repossessions) in customer.Repossessionslist track by $index">
+                            <form name="updateRepossessionsDetails" novalidate ng-submit="updateRepossessionsDetails.$valid && updateRepossessions(repossessions)">
+                                <div class="panel-title benifits_title" ng-click="repossessions.show = !repossessions.show;">Repossessions / {{repossessions.FullName}} / {{repossessions.OutstandingAmount}}</div>
+                                <input type="hidden" enter class="form-control"  ng-model="repossessions.RepoID" />
+                                <div class="panel-body" ng-if="repossessions.show">
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            <span class="step-heading step-heading-small">EDIT REPOSSESSION</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label class="form-label">Applicants</label>
+                                            <div ng-if="applicant.ClientID" ng-repeat="(key,applicant) in customer.applicants track by $index">                                                    
+                                                <div class="checkbox checkbox-primary" ng-class="{'checkbox-required': !(repossessions.clientids && repossessions.clientids.length)}">
+                                                    <input id="urepossessionsapp{{key}}_{{$index}}" type="checkbox" enter checklist-value="applicant.ClientID" checklist-model="repossessions.clientids" ng-required="!(repossessions.clientids && repossessions.clientids.length)" />
+                                                    <label for="urepossessionsapp{{key}}_{{$index}}">{{getApplicantTitle(applicant.eTitleID) + ' ' + applicant.Firstname + ' ' + applicant.Surname}}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label class="form-label">Lender</label>
+                                            <div>
+                                                <span class="checkboxes">
+                                                    <ui-select dropdownenter ng-model="repossessions.eLenderID" ng-required="true">
+                                                        <ui-select-match placeholder="Please Select">{{$select.selected.name}}</ui-select-match>
+                                                        <ui-select-choices repeat="value.val as value in LenderType| filter:$select.search">
+                                                            <div ng-bind-html="value.name | highlight: $select.search"></div>
+                                                        </ui-select-choices>
+                                                    </ui-select>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label class="form-label">Is Liability Settled</label>
+                                            <div>
+                                                <span class="checkboxes">
+                                                    <div class="form-control radio-group">
+                                                        <div class="radio radio-info radio-inline">
+                                                            <input type="radio" id="IsLiabilitySettled_1" ng-value="true" ng-model="repossessions.IsLiabilitySettled" enter>
+                                                            <label for="IsLiabilitySettled_1"> Yes </label>
+                                                        </div>
+                                                        <div class="radio radio-info radio-inline">
+                                                            <input type="radio" id="IsLiabilitySettled_2" ng-value="false" ng-model="repossessions.IsLiabilitySettled" enter>
+                                                            <label for="IsLiabilitySettled_2"> No </label>
+                                                        </div>
+                                                    </div>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label class="form-label">Outstanding Amount</label>
+                                            <div>
+                                                <span class="checkboxes">
+                                                    <input type="text" numbers-only enter class="form-control"  ng-model="repossessions.OutstandingAmount" ng-required="true" ng-change="changeKeyTextFieldRepossessions(key, 'OutstandingAmount')"
+                                                           ng-focus="setFieldTypingStatus('OutstandingAmount', true)"
+                                                           ng-blur="setFieldTypingStatus('OutstandingAmount', false)"
+                                                           ng-disabled="checkPartnerTyping('OutstandingAmount')">
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div ng-if="checkPartnerTyping('OutstandingAmount')">
+                                            <label class="typing">{{partner}} is typing ...</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group" ng-class="{'has-error': hasNotValidErrorDate(repossessions.RepoDate)}">
+                                            <label class="form-label">Repossession Date (dd/mm/yyyy) </label>
+                                            <div>
+                                                <span class="checkboxes">
+                                                    <input type="text" enter class="form-control" ng-datepicker ng-model="repossessions.RepoDate" ng-required="true" ng-change="changeKeyTextFieldRepossessions(key, 'RepoDate')"
+                                                           ng-focus="setFieldTypingStatus('RepossessionsRepoDate', true)"
+                                                           ng-blur="setFieldTypingStatus('RepossessionsRepoDate', false)"
+                                                           ng-disabled="checkPartnerTyping('RepossessionsRepoDate')">
+                                                </span>
+                                            </div>
+                                            <span ng-show="hasNotValidErrorDate(repossessions.RepoDate)" class="help-block">Please enter Valid Date</span>
+                                        </div>
+                                        <div ng-if="checkPartnerTyping('RepossessionsRepoDate')">
+                                            <label class="typing">{{partner}} is typing ...</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group" ng-class="{'has-error': hasNotValidErrorDate(repossessions.DateLiabilitySettled)}">
+                                            <label class="form-label">Liability settlement Date (dd/mm/yyyy) </label>
+                                            <div>
+                                                <span class="checkboxes">
+                                                    <input type="text" enter class="form-control" ng-datepicker ng-model="repossessions.DateLiabilitySettled" ng-change="changeKeyTextFieldRepossessions(key, 'DateLiabilitySettled')"
+                                                           ng-focus="setFieldTypingStatus('DateLiabilitySettled', true)"
+                                                           ng-blur="setFieldTypingStatus('DateLiabilitySettled', false)"
+                                                           ng-disabled="checkPartnerTyping('DateLiabilitySettled')">
+                                                </span>
+                                            </div>
+                                            <span ng-show="hasNotValidErrorDate(repossessions.DateLiabilitySettled)" class="help-block">Please enter Valid Date</span>
+                                        </div>
+                                        <div ng-if="checkPartnerTyping('DateLiabilitySettled')">
+                                            <label class="typing">{{partner}} is typing ...</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <button type="button" ng-click="deleteCH(repossessions, 'DeleteReposessions')" class="btn btn-danger float-r scroll-top">Delete</button>
+                                        <button type="submit" class="btn btn-success margin-r-10 float-r scroll-top">Update</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="col-lg-12" style="padding-bottom: 10px; padding-left: 15px;" ng-if="customer.Repossessionslist && customer.Repossessionslist.length">
+                            <button type="button" class="btn btn-default float-r" ng-click="customer.Repossessions.isRepossessed = !customer.Repossessions.isRepossessed">Add More Repossession</button>
+                        </div>
+                        <div ng-if="customer.Repossessions.isRepossessed">
+                            <form name="AddRepossessionsDetails" novalidate ng-submit="AddRepossessionsDetails.$valid && SaveRepossessions(customer.Repossessions)">
+                                <div class="col-lg-12 padding-0 margin-b-10 panel-with-data">
+                                    <div class="panel-body">
+                                        <div class="col-sm-12">
+                                            <div class="form-group">
+                                                <span class="step-heading step-heading-small">ADD REPOSSESSION</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label class="form-label">Applicants</label>
+                                                <div ng-if="applicant.ClientID" ng-repeat="(key,applicant) in customer.applicants track by $index">                                                    
+                                                    <div class="checkbox checkbox-primary" ng-class="{'checkbox-required': !(customer.Repossessions.clientids && customer.Repossessions.clientids.length)}">
+                                                        <input id="repossessionsapp{{key}}_{{$index}}" type="checkbox" enter checklist-value="applicant.ClientID" checklist-model="customer.Repossessions.clientids" ng-required="!(customer.Repossessions.clientids && customer.Repossessions.clientids.length)" />
+                                                        <label for="repossessionsapp{{key}}_{{$index}}">{{getApplicantTitle(applicant.eTitleID) + ' ' + applicant.Firstname + ' ' + applicant.Surname}}</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label class="form-label">Lender</label>
+                                                <div>
+                                                    <span class="checkboxes">
+                                                        <ui-select dropdownenter ng-model="customer.Repossessions.eLenderID" ng-required="true">
+                                                            <ui-select-match placeholder="Please Select">{{$select.selected.name}}</ui-select-match>
+                                                            <ui-select-choices repeat="value.val as value in LenderType| filter:$select.search">
+                                                                <div ng-bind-html="value.name | highlight: $select.search"></div>
+                                                            </ui-select-choices>
+                                                        </ui-select>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label class="form-label">Is Liability Settled</label>
+                                                <div>
+                                                    <span class="checkboxes">
+                                                        <div class="form-control radio-group">
+                                                            <div class="radio radio-info radio-inline">
+                                                                <input type="radio" id="IsLiabilitySettled_1" ng-value="true" ng-model="customer.Repossessions.IsLiabilitySettled" enter>
+                                                                <label for="IsLiabilitySettled_1"> Yes </label>
+                                                            </div>
+                                                            <div class="radio radio-info radio-inline">
+                                                                <input type="radio" id="IsLiabilitySettled_2" ng-value="false" ng-model="customer.Repossessions.IsLiabilitySettled" enter>
+                                                                <label for="IsLiabilitySettled_2"> No </label>
+                                                            </div>
+                                                        </div>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label class="form-label">Outstanding Amount</label>
+                                                <div>
+                                                    <span class="checkboxes">
+                                                        <input type="text" numbers-only enter class="form-control"  ng-model="customer.Repossessions.OutstandingAmount" ng-required="true" ng-change="changeTextFieldRepossessions('OutstandingAmount')"
+                                                               ng-focus="setFieldTypingStatus('OutstandingAmount', true)"
+                                                               ng-blur="setFieldTypingStatus('OutstandingAmount', false)"
+                                                               ng-disabled="checkPartnerTyping('OutstandingAmount')">
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div ng-if="checkPartnerTyping('OutstandingAmount')">
+                                                <label class="typing">{{partner}} is typing ...</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="form-group" ng-class="{'has-error': hasNotValidErrorDate(customer.Repossessions.RepoDate)}">
+                                                <label class="form-label">Repossession Date (dd/mm/yyyy)</label>
+                                                <div>
+                                                    <span class="checkboxes">
+                                                        <input type="text" enter class="form-control" ng-datepicker ng-model="customer.Repossessions.RepoDate" ng-required="true" ng-change="changeTextFieldRepossessions('RepoDate')"
+                                                               ng-focus="setFieldTypingStatus('RepossessionsRepoDate', true)"
+                                                               ng-blur="setFieldTypingStatus('RepossessionsRepoDate', false)"
+                                                               ng-disabled="checkPartnerTyping('RepossessionsRepoDate')">
+                                                    </span>
+                                                </div>
+                                                <span ng-show="hasNotValidErrorDate(customer.Repossessions.RepoDate)" class="help-block">Please enter Valid Date</span>
+                                            </div>
+                                            <div ng-if="checkPartnerTyping('RepossessionsRepoDate')">
+                                                <label class="typing">{{partner}} is typing ...</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="form-group" ng-class="{'has-error': hasNotValidErrorDate(customer.Repossessions.DateLiabilitySettled)}">
+                                                <label class="form-label">Liability settlement Date (dd/mm/yyyy) </label>
+                                                <div>
+                                                    <span class="checkboxes">
+                                                        <input type="text" enter class="form-control" ng-datepicker ng-model="customer.Repossessions.DateLiabilitySettled" ng-change="changeTextFieldRepossessions('DateLiabilitySettled')"
+                                                               ng-focus="setFieldTypingStatus('DateLiabilitySettled', true)"
+                                                               ng-blur="setFieldTypingStatus('DateLiabilitySettled', false)"
+                                                               ng-disabled="checkPartnerTyping('DateLiabilitySettled')">
+                                                    </span>
+                                                </div>
+                                                <span ng-show="hasNotValidErrorDate(customer.Repossessions.DateLiabilitySettled)" class="help-block">Please enter Valid Date</span>
+                                            </div>
+                                            <div ng-if="checkPartnerTyping('DateLiabilitySettled')">
+                                                <label class="typing">{{partner}} is typing ...</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-12">
+                                            <button type="submit" class="btn btn-success float-r scroll-top">Save and Continue</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-12 padding-t-5">
+            <button type="button" class="btn scroll-top" ng-click="backButtonAction();">Back</button>
+            <button type="button" class="btn btn-primary scroll-top" ng-click="goNext()">Save and Continue</button>
+        </div>
+    </div>  
+</div>

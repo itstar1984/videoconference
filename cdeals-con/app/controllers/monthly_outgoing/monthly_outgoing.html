@@ -1,0 +1,297 @@
+<!-- Start Page Loading -->
+<div class="loading" ng-if="!customer.activeApplicant"><img src="assets/img/loading.gif" alt="loading-img"></div>
+<!-- End Page Loading -->
+<div ng-if="customer.activeApplicant">
+    <div class="page-header">
+        <h1 class="title">Monthly Outgoing</h1>
+        <h4>[Leave blank if not applicable]</h4>
+    </div>
+    <div class="container-widget">
+        <div class="row">
+            <div class="col-md-12 col-lg-12">
+                <div class="panel panel-default">
+                    <!--                    <div class="panel-head">
+                                            <div class="panel-heading">Monthly Outgoing </div>
+                                        </div>-->
+                    <div class="panel-body">
+                        <div class="col-lg-12 padding-0">
+                            <form class="form" name="monthlyOutgoingForm" ng-submit="saveForm(customer)" novalidate>
+                                <div class="col-lg-10 padding-b-20">                                    
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <label class="form-label">Council Tax </label>
+                                            <span class="checkboxes pound">
+                                                <input type="text" enter only-digits class="form-control" ng-model="customer.ExpenditureDetails.CouncilTax" ng-change="changeTextField('CouncilTax')"
+                                                       ng-focus="setFieldTypingStatus('CouncilTax', true)" 
+                                                       ng-blur="setFieldTypingStatus('CouncilTax', false)"
+                                                       ng-disabled="checkPartnerTyping('CouncilTax')" >
+
+                                            </span>
+                                        </div>
+                                        <div ng-if="checkPartnerTyping('CouncilTax')">
+                                            <label class="typing">{{partner}} is typing ...</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <label class="form-label">Internet Bills </label>
+                                            <span class="checkboxes pound">
+                                                <input type="text" enter only-digits class="form-control" ng-model="customer.ExpenditureDetails.InternetBills" ng-change="changeTextField('InternetBills')"
+                                                       ng-focus="setFieldTypingStatus('InternetBills', true)" 
+                                                       ng-blur="setFieldTypingStatus('InternetBills', false)"
+                                                       ng-disabled="checkPartnerTyping('InternetBills')" >
+
+                                            </span>
+                                        </div>
+                                        <div ng-if="checkPartnerTyping('InternetBills')">
+                                            <label class="typing">{{partner}} is typing ...</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <label class="form-label">Telephone Bills</label>
+                                            <span class="checkboxes pound">
+                                                <input type="text" enter only-digits class="form-control" ng-model="customer.ExpenditureDetails.TelephoneBills" ng-change="changeTextField('TelephoneBills')"
+                                                       ng-focus="setFieldTypingStatus('TelephoneBills', true)" 
+                                                       ng-blur="setFieldTypingStatus('TelephoneBills', false)"
+                                                       ng-disabled="checkPartnerTyping('TelephoneBills')" >
+
+                                            </span>
+                                        </div>
+                                        <div ng-if="checkPartnerTyping('TelephoneBills')">
+                                            <label class="typing">{{partner}} is typing ...</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-10 padding-b-20"> 
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <label class="form-label">Car/Travel Bills</label>
+                                            <span class="checkboxes pound">
+                                                <input type="text" enter only-digits class="form-control" ng-model="customer.ExpenditureDetails.CarBills" ng-change="changeTextField('CarBills')"
+                                                       ng-focus="setFieldTypingStatus('CarBills', true)" 
+                                                       ng-blur="setFieldTypingStatus('CarBills', false)"
+                                                       ng-disabled="checkPartnerTyping('CarBills')" >
+
+                                            </span>
+                                        </div>
+                                        <div ng-if="checkPartnerTyping('CarBills')">
+                                            <label class="typing">{{partner}} is typing ...</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <label class="form-label">TV Licence </label>
+                                            <span class="checkboxes pound">
+                                                <input type="text" enter only-digits class="form-control" ng-model="customer.ExpenditureDetails.TVLicence" ng-change="changeTextField('TVLicence')"
+                                                       ng-focus="setFieldTypingStatus('TVLicence', true)" 
+                                                       ng-blur="setFieldTypingStatus('TVLicence', false)"
+                                                       ng-disabled="checkPartnerTyping('TVLicence')" >
+
+                                            </span>
+                                        </div>
+                                        <div ng-if="checkPartnerTyping('TVLicence')">
+                                            <label class="typing">{{partner}} is typing ...</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <label class="form-label">Utilities </label>
+                                            <span class="checkboxes pound">
+                                                <input type="text" enter only-digits class="form-control" ng-model="customer.ExpenditureDetails.Utilities" ng-change="changeTextField('Utilities')"
+                                                       ng-focus="setFieldTypingStatus('Utilities', true)" 
+                                                       ng-blur="setFieldTypingStatus('Utilities', false)"
+                                                       ng-disabled="checkPartnerTyping('Utilities')" >
+
+                                            </span>
+                                        </div>
+                                        <div ng-if="checkPartnerTyping('Utilities')">
+                                            <label class="typing">{{partner}} is typing ...</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-10 padding-b-20"> 
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <label class="form-label">Food Bills </label>
+                                            <span class="checkboxes pound">
+                                                <input type="text" enter only-digits class="form-control" ng-model="customer.ExpenditureDetails.FoodBills" ng-change="changeTextField('FoodBills')"
+                                                       ng-focus="setFieldTypingStatus('FoodBills', true)" 
+                                                       ng-blur="setFieldTypingStatus('FoodBills', false)"
+                                                       ng-disabled="checkPartnerTyping('FoodBills')">
+
+                                            </span>
+                                        </div>
+                                        <div ng-if="checkPartnerTyping('FoodBills')">
+                                            <label class="typing">{{partner}} is typing ...</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <label class="form-label">Protection </label>
+                                            <span class="checkboxes pound">
+                                                <input type="text" enter only-digits class="form-control" ng-model="customer.ExpenditureDetails.Protection" ng-change="changeTextField('Protection')"
+                                                       ng-focus="setFieldTypingStatus('Protection', true)" 
+                                                       ng-blur="setFieldTypingStatus('Protection', false)"
+                                                       ng-disabled="checkPartnerTyping('Protection')">
+
+                                            </span>
+                                        </div>
+                                        <div ng-if="checkPartnerTyping('Protection')">
+                                            <label class="typing">{{partner}} is typing ...</label>
+                                        </div>
+                                    </div>                                    
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <label class="form-label">Life Insurance </label>
+                                            <span class="checkboxes pound">
+                                                <input type="text" enter only-digits class="form-control" ng-model="customer.ExpenditureDetails.LifeInsurance" ng-change="changeTextField('LifeInsurance')"
+                                                       ng-focus="setFieldTypingStatus('LifeInsurance', true)" 
+                                                       ng-blur="setFieldTypingStatus('LifeInsurance', false)"
+                                                       ng-disabled="checkPartnerTyping('LifeInsurance')" >
+
+                                            </span>
+                                        </div>
+                                        <div ng-if="checkPartnerTyping('LifeInsurance')">
+                                            <label class="typing">{{partner}} is typing ...</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-10 padding-b-20"> 
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <label class="form-label">Pension Policy </label>
+                                            <span class="checkboxes pound">
+                                                <input type="text" enter only-digits class="form-control" ng-model="customer.ExpenditureDetails.Pension" ng-change="changeTextField('Pension')"
+                                                       ng-focus="setFieldTypingStatus('Pension', true)" 
+                                                       ng-blur="setFieldTypingStatus('Pension', false)"
+                                                       ng-disabled="checkPartnerTyping('Pension')" >
+
+                                            </span>
+                                        </div>
+                                        <div ng-if="checkPartnerTyping('Pension')">
+                                            <label class="typing">{{partner}} is typing ...</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <label class="form-label">Critical Illness Policies</label>
+                                            <span class="checkboxes pound">
+                                                <input type="text" enter only-digits class="form-control" ng-model="customer.ExpenditureDetails.CriticalIllnessPolicies" ng-change="changeTextField('CriticalIllnessPolicies')"
+                                                       ng-focus="setFieldTypingStatus('CriticalIllnessPolicies', true)" 
+                                                       ng-blur="setFieldTypingStatus('CriticalIllnessPolicies', false)"
+                                                       ng-disabled="checkPartnerTyping('CriticalIllnessPolicies')" >
+
+                                            </span>
+                                        </div>
+                                        <div ng-if="checkPartnerTyping('CriticalIllnessPolicies')">
+                                            <label class="typing">{{partner}} is typing ...</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <label class="form-label">Regular Savings</label>
+                                            <span class="checkboxes pound">
+                                                <input type="text" enter only-digits class="form-control" ng-model="customer.ExpenditureDetails.RegularSavings" ng-change="changeTextField('RegularSavings')"
+                                                       ng-focus="setFieldTypingStatus('RegularSavings', true)" 
+                                                       ng-blur="setFieldTypingStatus('RegularSavings', false)"
+                                                       ng-disabled="checkPartnerTyping('RegularSavings')" >
+
+                                            </span>
+                                        </div>
+                                        <div ng-if="checkPartnerTyping('RegularSavings')">
+                                            <label class="typing">{{partner}} is typing ...</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-10 padding-b-20"> 
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <label class="form-label">Home Insurance</label>
+                                            <span class="checkboxes pound">
+                                                <input type="text" enter only-digits class="form-control" ng-model="customer.ExpenditureDetails.HomeInsurance" ng-change="changeTextField('HomeInsurance')"
+                                                       ng-focus="setFieldTypingStatus('HomeInsurance', true)" 
+                                                       ng-blur="setFieldTypingStatus('HomeInsurance', false)"
+                                                       ng-disabled="checkPartnerTyping('HomeInsurance')" >
+
+                                            </span>
+                                        </div>
+                                        <div ng-if="checkPartnerTyping('HomeInsurance')">
+                                            <label class="typing">{{partner}} is typing ...</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <label class="form-label">Maintenance Payments</label>
+                                            <span class="checkboxes pound">
+                                                <input type="text" enter only-digits class="form-control" ng-model="customer.ExpenditureDetails.MaintenancePayments" ng-change="changeTextField('MaintenancePayments')"
+                                                       ng-focus="setFieldTypingStatus('MaintenancePayments', true)" 
+                                                       ng-blur="setFieldTypingStatus('MaintenancePayments', false)"
+                                                       ng-disabled="checkPartnerTyping('MaintenancePayments')" >
+
+                                            </span>
+                                        </div>
+                                        <div ng-if="checkPartnerTyping('MaintenancePayments')">
+                                            <label class="typing">{{partner}} is typing ...</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <label class="form-label">Others </label>
+                                            <span class="checkboxes pound">
+                                                <input type="text" enter only-digits class="form-control" ng-model="customer.ExpenditureDetails.Other" ng-change="changeTextField('Other')"
+                                                       ng-focus="setFieldTypingStatus('Other', true)" 
+                                                       ng-blur="setFieldTypingStatus('Other', false)"
+                                                       ng-disabled="checkPartnerTyping('Other')">
+
+                                            </span>
+                                        </div>
+                                        <div ng-if="checkPartnerTyping('Other')">
+                                            <label class="typing">{{partner}} is typing ...</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-10 padding-b-20"> 
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <label class="form-label">Continuing rent</label>
+                                            <span class="checkboxes pound">
+                                                <input type="text" enter only-digits class="form-control" ng-model="customer.ExpenditureDetails.Continuing_rent" ng-change="changeTextField('Continuing_rent')"
+                                                       ng-focus="setFieldTypingStatus('Continuing_rent', true)" 
+                                                       ng-blur="setFieldTypingStatus('Continuing_rent', false)"
+                                                       ng-disabled="checkPartnerTyping('Continuing_rent')">
+
+                                            </span>
+                                        </div>
+                                        <div ng-if="checkPartnerTyping('Continuing_rent')">
+                                            <label class="typing">{{partner}} is typing ...</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <label class="form-label">Student Loan</label>
+                                            <span class="checkboxes pound">
+                                                <input type="text" enter only-digits class="form-control" ng-model="customer.ExpenditureDetails.StudentLoan" ng-change="changeTextField('StudentLoan')"
+                                                       ng-focus="setFieldTypingStatus('StudentLoan', true)" 
+                                                       ng-blur="setFieldTypingStatus('StudentLoan', false)"
+                                                       ng-disabled="checkPartnerTyping('StudentLoan')">
+
+                                            </span>
+                                        </div>
+                                        <div ng-if="checkPartnerTyping('StudentLoan')">
+                                            <label class="typing">{{partner}} is typing ...</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12 ">
+                                    <button type="button" class="btn scroll-top" ng-click="backButtonAction();">Back</button>
+                                    <button type="submit" class="btn btn-primary scroll-top">Save and Continue</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

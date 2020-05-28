@@ -1,0 +1,88 @@
+<div class="chat-box" ng-controller="chatController" chat-control>
+    <div class="video-controll hide" style="position: absolute;right: 260px;bottom: 0;">
+        <div class="panel panel-default padding-0 margin-b-0 video-audio-panel" >
+            <div class="panel-title margin-0 padding-10">
+                Video/voice chat
+                <ul class="panel-tools">
+                    <li><a class="icon minimise-tool" ng-click="endVideoVoiceChat()"><i class="fa fa-times"></i></a></li>
+                </ul>
+            </div>
+            <div class="panel-body ">
+                <iframe allow="geolocation; microphone; camera" src=""></iframe>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-12 padding-0">
+        <div class="panel panel-default chat-panel padding-0 margin-b-0">
+            <div class="panel-title margin-0 padding-10" >
+                Chat
+                <ul class="panel-tools">
+                    <li><a class="icon minimise-tool" id="drag-title" tooltip="Drag Chat Window" tooltip-placement="left"><i class="fa fa-arrows-alt"></i></a></li>
+                    <li>
+                        <a class="icon expand-tool" ng-click="urgentCall()" tooltip="Urgent Call" tooltip-placement="left">
+                            <!--                            <i class="fa fa-headphones"></i>-->
+                            <img src="assets/img/phone-icon.png" width="18px" alt=""/>
+                        </a>
+                    </li>
+                    <li><a class="icon expand-tool" ng-click="voiceCall()" tooltip="Voice Call" tooltip-placement="left"><i class="fa fa-phone"></i></a></li>
+                    <li><a class="icon expand-tool" ng-click="videoCall()" tooltip="Video Call" tooltip-placement="left"><i class="fa fa-video-camera"></i></a></li>
+                    <li><a class="icon minimise-tool" id="chat-panel-title" onclick="toggleChatPanel(this)"><i class="fa fa-minus"></i></a></li>
+                </ul>
+            </div>
+            <div class="panel-body margin-t-15" style="display: none;" id="chat-panel-body">
+                <div class="msg_div" >
+                    <div class="message-div col-sm-12 margin-b-10" ng-repeat="msg in msgList">
+                        <p ng-if="msg.from.type === 'consultant'">
+                            <span class="con-msg margin-b-0" ng-if="msg.from.from_ad === 1">
+                                <span class="font-600 float-l">{{msg.from.name}}</span><br/>
+                                <span>{{msg.message}} </span><br/>
+                                <span class="chat-text-time">{{msg.dateTime|date:'yyyy-MMM-dd, hh:mm a'}}</span>
+                            </span>
+                            <span class="con-msg margin-b-0" ng-if="msg.from.from_ad === 2">
+                                <span class="font-600 float-l">Voice Call From {{msg.from.name}}</span><br/>
+<!--                                <button class="btn btn-sm float-l" ng-if="msg.isCallRequest" ng-click="cancelVoiceCallReq($event, msg)">Cancel</button>
+                                <button class="btn btn-sm btn-success float-l" ng-if="msg.isCallRequest" ng-click="acceptVoiceCallReq($event, msg)">Accept</button>-->
+                                <span class="chat-text-time" ng-if="!msg.isCallRequest" >{{msg.dateTime|date:'yyyy-MMM-dd, hh:mm a'}}</span>
+                            </span>
+                            <span class="con-msg margin-b-0"  ng-if="msg.from.from_ad === 3">
+                                <span class="font-600 float-l">Video Call From {{msg.from.name}}</span><br/>
+<!--                                <button class="btn btn-sm float-l" ng-if="msg.isCallRequest" ng-click="cancelVideoCallReq($event, msg)">Cancel</button>
+                                <button class="btn btn-sm btn-success float-l" ng-if="msg.isCallRequest" ng-click="acceptVideoCallReq($event, msg)">Accept</button>-->
+                                <span class="chat-text-time" ng-if="!msg.isCallRequest" >{{msg.dateTime|date:'yyyy-MMM-dd, hh:mm a'}}</span>
+                            </span>
+                        </p>
+                        <p ng-if="msg.from.type === 'client'">
+                            <span class="own-msg margin-b-0" ng-if="msg.from.from_ad === 1">
+                                <span class="font-600 float-l">Me</span><br/>
+                                <span>{{msg.message}} </span><br/>
+                                <span class="chat-text-time">{{msg.dateTime|date:'yyyy-MMM-dd, hh:mm a'}}</span>
+                            </span>
+                            <span class="con-msg margin-b-0" ng-if="msg.from.from_ad === 2">
+                                <span class="font-600 float-l">Voice Call To {{msg.to.name}}</span><br/>
+                                <span class="chat-text-time">{{msg.dateTime|date:'yyyy-MMM-dd, hh:mm a'}}</span>
+                            </span>
+                            <span class="con-msg margin-b-0"  ng-if="msg.from.from_ad === 3">
+                                <span class="font-600 float-l">Video Call To {{msg.to.name}}</span><br/>
+                                <span class="chat-text-time">{{msg.dateTime|date:'yyyy-MMM-dd, hh:mm a'}}</span>
+                            </span>
+                            <span class="con-msg margin-b-0"  ng-if="msg.from.from_ad === 4">
+                                <span class="font-600 float-l">Urgent Call To {{msg.to.name}}</span><br/>
+                                <span class="chat-text-time">{{msg.dateTime|date:'yyyy-MMM-dd, hh:mm a'}}</span>
+                            </span>
+                            <span class="con-msg margin-b-0"  ng-if="msg.from.from_ad === 'welcome'">
+                                <span>{{msg.message}} </span><br/>
+                            </span>
+                        </p>
+                    </div>
+                </div>
+                <form name="chatMessageForm">
+                    <div class="col-lg-12 margin-t-15 margin-b-5 padding-l-5 padding-r-5">
+                        <div class="col-sm-12 padding-0">
+                            <textarea class="form-control" placeholder="Write Message Here" ng-model="messageDetails.message" ng-keyup="sendMessage($event, messageDetails.message)" ng-required="true"></textarea>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

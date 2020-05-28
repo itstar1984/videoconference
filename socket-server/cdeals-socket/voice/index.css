@@ -1,0 +1,62 @@
+html, body {
+    padding: 0;
+    margin: 0;
+
+    height: 100%;
+    width: 100%;
+
+    background: #ffffff;
+
+    color: #fff;
+    font-family: Consolas, monospace;
+}
+
+input, button {
+    font-family: Consolas, monospace;
+}
+
+#mainVideo {
+
+
+    position: relative;
+    width: 99%;
+    height: 1%;
+
+}
+#container_mainVideo {
+
+
+    position:fixed;
+    border: solid #ffffff 1px;
+
+
+}
+.videos{
+
+    position:fixed;
+    border:1px white solid;
+
+}
+
+.name-label{
+
+    width:74%;
+    cursor: pointer;
+    z-index:1000;
+    background:black;
+    border:none;
+    color: white;
+    text-align:center;
+}
+.UserIco{
+    position:relative;
+    height:80%;
+    left: 10%;
+}
+
+
+
+
+
+
+

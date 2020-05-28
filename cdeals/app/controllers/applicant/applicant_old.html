@@ -1,0 +1,661 @@
+<!-- Start Page Loading -->
+<div class="loading"
+     ng-if="!customer.activeApplicant">
+    <img src="assets/img/loading.gif"
+         alt="loading-img"> </div>
+<!-- End Page Loading -->
+<div ng-if="customer.activeApplicant">
+    <div class="page-header">
+        <h1 class="title">Applicant</h1>
+    </div>
+    <div class="container-widget">
+        <div class="row">
+            <div class="col-md-12 col-lg-12">
+                <div class="panel-default chart-with-stats clearfix">
+                    <div class="form-group padding-20 margin-b-0">
+                        <label class="form-label">Choose how many applicants want to create ?</label>
+                        <br/>
+                        <div class="radio radio-info radio-inline">
+                            <input enter
+                                   type="radio"
+                                   id="inlineRadio1"
+                                   ng-value="1"
+                                   ng-model="customer.no_of_applicants"
+                                   ng-change="applicantCountChange()">
+                            <label for="inlineRadio1"> 1 </label>
+                        </div>
+                        <div class="radio radio-info radio-inline">
+                            <input enter
+                                   type="radio"
+                                   id="inlineRadio2"
+                                   ng-value="2"
+                                   ng-model="customer.no_of_applicants"
+                                   ng-change="applicantCountChange()">
+                            <label for="inlineRadio2"> 2 </label>
+                        </div>
+                        <div class="radio radio-info radio-inline">
+                            <input enter
+                                   type="radio"
+                                   id="inlineRadio3"
+                                   ng-value="3"
+                                   ng-model="customer.no_of_applicants"
+                                   ng-change="applicantCountChange()">
+                            <label for="inlineRadio3"> 3 </label>
+                        </div>
+                        <div class="radio radio-info radio-inline">
+                            <input enter
+                                   type="radio"
+                                   id="inlineRadio4"
+                                   ng-value="4"
+                                   ng-model="customer.no_of_applicants"
+                                   ng-change="applicantCountChange()">
+                            <label for="inlineRadio4"> 4 </label>
+                        </div>
+                    </div>
+                    <div role="tabpanel"
+                         style="border-top: 5px solid #f5f5f5;">
+                        <div class="tabs-left">
+                            <ul class="nav nav-tabs nav-tabs-custom">
+                                <li role="presentation"
+                                    ng-if="customer.no_of_applicants>=1"
+                                    ng-class="{'active': isTabActive(1)}">
+                                    <a ng-click="changeTab(1)"
+                                       aria-controls="applicant1"
+                                       role="tab"
+                                       data-toggle="tab">{{customer.applicants[1]['Firstname'] || 'Applicant 1'}}</a>
+                                </li>
+                                <li role="presentation"
+                                    ng-if="customer.no_of_applicants>=2"
+                                    ng-class="{'active': isTabActive(2)}">
+                                    <a ng-click="changeTab(2)"
+                                       aria-controls="applicant2"
+                                       role="tab"
+                                       data-toggle="tab">{{customer.applicants[2]['Firstname'] || 'Applicant 2'}}</a>
+                                </li>
+                                <li role="presentation"
+                                    ng-if="customer.no_of_applicants>=3">
+                                    <a ng-click="changeTab(3)"
+                                       aria-controls="applicant3"
+                                       role="tab"
+                                       data-toggle="tab">{{customer.applicants[3]['Firstname'] || 'Applicant 3'}}</a>
+                                </li>
+                                <li role="presentation"
+                                    ng-if="customer.no_of_applicants > 3"
+                                    ng-class="{'active': isTabActive(4)}">
+                                    <a ng-click="changeTab(4)"
+                                       aria-controls="applicant4"
+                                       role="tab"
+                                       data-toggle="tab">{{customer.applicants[4]['Firstname'] || 'Applicant 4'}}</a>
+                                </li>
+                            </ul>
+                            <div class="clearfix"></div>
+                            <div class="tab-content"
+                                 style="padding-bottom: 0px;">
+                                <div class="panel-default chart-with-stats clearfix">
+                                    <div role="tabpanel"
+                                         class="tab-pane"
+                                         ng-repeat="applicant in applicants"
+                                         ng-class="{'active': isTabActive(applicant.id)}">
+                                        <div class="col-lg-10 col-md-10 tab-data"
+                                             ng-if="isTabActive(applicant.id)">
+                                            <div class="col-lg-12 padding-0">
+                                                <form class="form"
+                                                      name="applicantForm"
+                                                      ng-submit="applicantForm.$valid && saveApplicant(customer.applicants[applicant.id], applicant.id)"
+                                            
+                                                      novalidate
+                                                      ng-class="{'ng-invalid ng-invalid-required': hasErrorDOB(customer.applicants[applicant.id]['DOB'])}">
+                                                    <input type="hidden"
+                                                           class="form-control"
+                                                           ng-model="customer.applicants[applicant.id]['ClientID']">
+                                                    <div class="col-lg-10">
+                                                        <div class="col-lg-6">
+                                                            <div class="form-group">
+                                                                <label class="form-label">Title</label>
+                                                                <div>
+                                                                    <span class="checkboxes">
+                                                                        <ui-select search-enabled="false"
+                                                                                   ui-select-open-on-focus
+                                                                                   dropdownenter
+                                                                                   ng-model="customer.applicants[applicant.id]['eTitleID']"
+                                                                    
+                                                                                   ng-required="true">
+                                                                            <ui-select-match placeholder="Please Select">{{$select.selected.name}}</ui-select-match>
+                                                                            <ui-select-choices
+                                                                            repeat="value.val as value in titleList| filter:$select.search">
+                                                                                <div ng-bind-html="value.name | highlight: $select.search"></div>
+                                                                            </ui-select-choices>
+                                                                        </ui-select>
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-6">
+                                                            <div class="form-group">
+                                                                <label class="form-label">Forename</label>
+                                                                <div>
+                                                                    <span class="checkboxes">
+                                                                        <input name="Firstname"
+                                                                               type="text"
+                                                                               ng-blur="setFieldTypingStatus('Firstname', false)"
+                                                                    
+                                                                               ng-disabled="checkPartnerTyping('Firstname')"
+                                                                               class="form-control"
+                                                                               ng-model="customer.applicants[applicant.id]['Firstname']"
+                                                                    
+                                                                               ng-required="true"
+                                                                               enter
+                                                                               ng-change="changeTextField(applicant.id, 'Firstname')"
+                                                                        /> </span>
+                                                                </div>
+                                                            </div>
+                                                            <div ng-if="checkPartnerTyping('Firstname')">
+                                                                <label class="typing">{{partner}} is typing ...</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-6">
+                                                            <div class="form-group">
+                                                                <label class="form-label">Middle Name (s)</label>
+                                                                <div>
+                                                                    <span class="checkboxes">
+                                                                        <input type="text"
+                                                                               class="form-control"
+                                                                               ng-model="customer.applicants[applicant.id]['Middlenames']"
+                                                                    
+                                                                               ng-focus="setFieldTypingStatus('Middlenames', true)"
+                                                                    
+                                                                               ng-blur="setFieldTypingStatus('Middlenames', false)"
+                                                                    
+                                                                               ng-disabled="checkPartnerTyping('Middlenames')"
+                                                                               enter
+                                                                               ng-change="changeTextField(applicant.id, 'Middlenames')"> </span>
+                                                                </div>
+                                                            </div>
+                                                            <div ng-if="checkPartnerTyping('Middlenames')">
+                                                                <label class="typing">{{partner}} is typing ...</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-6">
+                                                            <div class="form-group">
+                                                                <label class="form-label">Surname</label>
+                                                                <div>
+                                                                    <span class="checkboxes">
+                                                                        <input type="text"
+                                                                               class="form-control"
+                                                                               ng-model="customer.applicants[applicant.id]['Surname']"
+                                                                    
+                                                                               ng-focus="setFieldTypingStatus('Surname', true)"
+                                                                    
+                                                                               ng-blur="setFieldTypingStatus('Surname', false)"
+                                                                    
+                                                                               ng-disabled="checkPartnerTyping('Surname')"
+                                                                               ng-required="true"
+                                                                               enter
+                                                                               ng-change="changeTextField(applicant.id, 'Surname')"> </span>
+                                                                </div>
+                                                            </div>
+                                                            <div ng-if="checkPartnerTyping('Surname')">
+                                                                <label class="typing">{{partner}} is typing ...</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-6">
+                                                            <div class="form-group"
+                                                                 ng-class="{'has-error': hasErrorDOB(customer.applicants[applicant.id]['DOB']) || hasNotValidErrorDate(customer.applicants[applicant.id]['DOB'])}">
+                                                                <label class="form-label">Date of Birth (dd/mm/yyyy)</label>
+                                                                <div>
+                                                                    <span class="checkboxes">
+                                                                        <input type="text"
+                                                                               class="form-control"
+                                                                               ng-datepicker
+                                                                               ng-model="customer.applicants[applicant.id]['DOB']"
+                                                                    
+                                                                               ng-focus="setFieldTypingStatus('DOB', true)"
+                                                                               ng-blur="setFieldTypingStatus('DOB', false)"
+                                                                               ng-disabled="checkPartnerTyping('DOB')"
+                                                                               ng-required="true"
+                                                                               enter
+                                                                               ng-change="changeTextField(applicant.id, 'DOB')"> </span>
+                                                                </div>
+                                                                <span ng-show="hasErrorDOB(customer.applicants[applicant.id]['DOB'])"
+                                                            
+                                                                      class="help-block">Please enter age above 18 !</span>
+                                                                <span ng-show="hasNotValidErrorDate(customer.applicants[applicant.id]['DOB'])"
+                                                            
+                                                                      class="help-block">Please enter Valid Date</span>
+                                                            </div>
+                                                            <div ng-if="checkPartnerTyping('DOB')">
+                                                                <label class="typing">{{partner}} is typing ...</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-6">
+                                                            <div class="form-group">
+                                                                <label class="form-label">Residency Proof</label>
+                                                                <div>
+                                                                    <span class="checkboxes">
+                                                                        <ui-select search-enabled="false"
+                                                                                   ui-select-open-on-focus
+                                                                                   dropdownenter
+                                                                                   ng-model="customer.applicants[applicant.id]['eProofResDurationID']"
+                                                                    
+                                                                                   ng-change="changeResideProof(customer.applicants[applicant.id]['eProofResDurationID'], applicant.id)"
+                                                                    
+                                                                                   ng-required="true">
+                                                                            <ui-select-match placeholder="Please Select">{{$select.selected.name}}</ui-select-match>
+                                                                            <ui-select-choices
+                                                                            repeat="value.val as value in recidentMonth| filter:$select.search">
+                                                                                <div ng-bind-html="value.name | highlight: $select.search"></div>
+                                                                            </ui-select-choices>
+                                                                        </ui-select>
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-6">
+                                                            <div class="form-group">
+                                                                <label class="form-label">Nationality</label>
+                                                                <div>
+                                                                    <span class="checkboxes">
+                                                                        <ui-select search-enabled="false"
+                                                                                   ui-select-open-on-focus
+                                                                                   dropdownenter
+                                                                                   ng-model="customer.applicants[applicant.id]['eNationalityID']"
+                                                                    
+                                                                                   class="form-control"
+                                                                                   ng-required="true">
+                                                                            <ui-select-match placeholder="Please Select">{{$select.selected.name}}</ui-select-match>
+                                                                            <ui-select-choices
+                                                                            repeat="value.val as value in nationList| filter:$select.search">
+                                                                                <div ng-bind-html="value.name | highlight: $select.search"></div>
+                                                                            </ui-select-choices>
+                                                                        </ui-select>
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-6">
+                                                            <div class="form-group">
+                                                                <label class="form-label">Gender</label>
+                                                                <div>
+                                                                    <span class="checkboxes">
+                                                                        <ui-select search-enabled="false"
+                                                                                   ui-select-open-on-focus
+                                                                                   dropdownenter
+                                                                                   ng-model="customer.applicants[applicant.id]['eGenderID']"
+                                                                    
+                                                                                   class="form-control"
+                                                                                   ng-required="true">
+                                                                            <ui-select-match placeholder="Please Select">{{$select.selected.name}}</ui-select-match>
+                                                                            <ui-select-choices
+                                                                            repeat="value.val as value in GenderList| filter:$select.search">
+                                                                                <div ng-bind-html="value.name | highlight: $select.search"></div>
+                                                                            </ui-select-choices>
+                                                                        </ui-select>
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-6">
+                                                            <div class="form-group">
+                                                                <label class="form-label">Marital Status</label>
+                                                                <div>
+                                                                    <span class="checkboxes">
+                                                                        <ui-select search-enabled="false"
+                                                                                   ui-select-open-on-focus
+                                                                                   dropdownenter
+                                                                                   ng-model="customer.applicants[applicant.id]['eMaritalStatusID']"
+                                                                    
+                                                                                   class="form-control"
+                                                                                   ng-required="true">
+                                                                            <ui-select-match placeholder="Please Select">{{$select.selected.name}}</ui-select-match>
+                                                                            <ui-select-choices
+                                                                            repeat="value.val as value in maritalStatus| filter:$select.search">
+                                                                                <div ng-bind-html="value.name | highlight: $select.search"></div>
+                                                                            </ui-select-choices>
+                                                                        </ui-select>
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-6"
+                                                             ng-if="customer.applicants[applicant.id]['eNationalityID'] === 5">
+                                                            <div class="form-group">
+                                                                <label class="form-label">Other Nationality details</label>
+                                                                <div>
+                                                                    <span class="checkboxes">
+                                                                        <input type="text"
+                                                                               class="form-control"
+                                                                               ng-model="customer.applicants[applicant.id]['AppOtherNationality']"
+                                                                    
+                                                                               ng-focus="setFieldTypingStatus('AppOtherNationality', true)"
+                                                                    
+                                                                               ng-blur="setFieldTypingStatus('AppOtherNationality', false)"
+                                                                    
+                                                                               ng-disabled="checkPartnerTyping('AppOtherNationality')"
+                                                                    
+                                                                               ng-required="true"
+                                                                               enter
+                                                                               ng-change="changeTextField(applicant.id, 'AppOtherNationality')"> </span>
+                                                                </div>
+                                                            </div>
+                                                            <div ng-if="checkPartnerTyping('AppOtherNationality')">
+                                                                <label class="typing">{{partner}} is typing ...</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-6">
+                                                            <div class="form-group">
+                                                                <label class="form-label">Are you an expat?</label>
+                                                                <div>
+                                                                    <span class="checkboxes">
+                                                                        <div class="form-control radio-group">
+                                                                            <div class="radio radio-info radio-inline">
+                                                                                <input enter
+                                                                                       type="radio"
+                                                                                       id="isExpat1"
+                                                                                       ng-value="true"
+                                                                                       ng-model="customer.applicants[applicant.id]['IsExpat']">
+                                                                                <label for="isExpat1"> Yes </label>
+                                                                            </div>
+                                                                            <div class="radio radio-info radio-inline">
+                                                                                <input enter
+                                                                                       type="radio"
+                                                                                       id="isExpat2"
+                                                                                       ng-value="false"
+                                                                                       ng-model="customer.applicants[applicant.id]['IsExpat']">
+                                                                                <label for="isExpat2"> No </label>
+                                                                            </div>
+                                                                        </div>
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-6">
+                                                            <div class="form-group">
+                                                                <label class="form-label">Do you have permanent rights to reside in UK?</label>
+                                                                <div>
+                                                                    <span class="checkboxes">
+                                                                        <div class="form-control radio-group">
+                                                                            <div class="radio radio-info radio-inline">
+                                                                                <input enter
+                                                                                       type="radio"
+                                                                                       id="permenantResideInUK1"
+                                                                                       ng-value="true"
+                                                                                       ng-model="customer.applicants[applicant.id]['RightToResideUK']">
+                                                                                <label for="permenantResideInUK1"> Yes </label>
+                                                                            </div>
+                                                                            <div class="radio radio-info radio-inline">
+                                                                                <input enter
+                                                                                       type="radio"
+                                                                                       id="permenantResideInUK"
+                                                                                       ng-value="false"
+                                                                                       ng-model="customer.applicants[applicant.id]['RightToResideUK']">
+                                                                                <label for="permenantResideInUK"> No </label>
+                                                                            </div>
+                                                                        </div>
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-10">
+                                                        <div class="col-lg-12">
+                                                            <div class="col-lg-6">
+                                                                <div class="form-group">
+                                                                    <label class="form-label">
+                                                                        <b>Enter your Current Address :</b>
+                                                                    </label>
+                                                                    <br/> </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-12">
+                                                            <div class="col-lg-6"
+                                                                 ng-if="applicant.id > 1">
+                                                                <div class="checkbox checkbox-primary">
+                                                                    <input id="checkbox1"
+                                                                           type="checkbox"
+                                                                           ng-model="customer.copyAddress"
+                                                                           ng-change="copyAddress()">
+                                                                    <label for="checkbox1"> Copy Address of First Applicant ? </label>
+                                                                </div>
+                                                            </div>
+                                                        </div>&nbsp;
+                                                        <div class="col-lg-12">
+                                                            <div class="col-lg-6">
+                                                                <div class="form-group">
+                                                                    <label class="form-label">Search Post Code </label>
+                                                                    <div>
+                                                                        <span class="checkboxes">
+                                                                            <input enter
+                                                                                   type="text"
+                                                                                   class="form-control"
+                                                                                   placeholder="Post code"
+                                                                                   ng-model="customer.applicants[applicant.id]['postCodeTerm']"
+                                                                        
+                                                                                   ng-change="changeTextField(applicant.id, 'postCodeTerm')"
+                                                                        
+                                                                                   ng-focus="setFieldTypingStatus('postCodeTerm', true)"
+                                                                        
+                                                                                   ng-blur="setFieldTypingStatus('postCodeTerm', false)"
+                                                                        
+                                                                                   ng-disabled="checkPartnerTyping('postCodeTerm')"> </span>
+                                                                    </div>
+                                                                </div>
+                                                                <div ng-if="checkPartnerTyping('postCodeTerm')">
+                                                                    <label class="typing">{{partner}} is typing ...</label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-6">
+                                                                <div class="form-group margin-t-5">
+                                                                    <br/>
+                                                                    <a href="javascript:void(0)"
+                                                                       class="btn btn-success"
+                                                                       ng-click="searchPostCode(customer.applicants[applicant.id]['postCodeTerm'], applicant.id)">Search</a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-12"
+                                                             ng-show="customer.applicants[applicant.id]['addressList'] && customer.applicants[applicant.id]['addressList'].length">
+                                                            <div class="col-lg-12">
+                                                                <div class="form-group">
+                                                                    <label class="form-label">
+                                                                        <b>Choose from Below Address</b>
+                                                                    </label>
+                                                                    <br/> </div>
+                                                            </div>
+                                                            <div class="addressListDiv">
+                                                                <ul>
+                                                                    <li ng-repeat="address in customer.applicants[applicant.id]['addressList']"
+                                                                
+                                                                        ng-click="selectPostalCode(address.Id, applicant.id)">
+                                                                        <a href="javascript:void(0)">{{address.Description}}</a>
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-10">
+                                                        <div class="col-lg-6">
+                                                            <div class="form-group">
+                                                                <label class="form-label">Address1</label>
+                                                                <div>
+                                                                    <span class="checkboxes">
+                                                                        <input enter
+                                                                               type="text"
+                                                                               class="form-control"
+                                                                               ng-model="customer.applicants[applicant.id]['address']['Address1']"
+                                                                    
+                                                                               ng-change="changeAddressTextField(applicant.id, 'Address1')"
+                                                                    
+                                                                               ng-focus="setFieldTypingStatus('Address1', true)"
+                                                                    
+                                                                               ng-blur="setFieldTypingStatus('Address1', false)"
+                                                                    
+                                                                               ng-disabled="checkPartnerTyping('Address1')"
+                                                                               ng-required="true"> </span>
+                                                                </div>
+                                                            </div>
+                                                            <div ng-if="checkPartnerTyping('Address1')">
+                                                                <label class="typing">{{partner}} is typing ...</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-6">
+                                                            <div class="form-group">
+                                                                <label class="form-label">Address2</label>
+                                                                <div>
+                                                                    <span class="checkboxes">
+                                                                        <input enter
+                                                                               type="text"
+                                                                               class="form-control"
+                                                                               ng-model="customer.applicants[applicant.id]['address']['Address2']"
+                                                                    
+                                                                               ng-change="changeAddressTextField(applicant.id, 'Address2')"
+                                                                    
+                                                                               ng-focus="setFieldTypingStatus('Address2', true)"
+                                                                    
+                                                                               ng-blur="setFieldTypingStatus('Address2', false)"
+                                                                    
+                                                                               ng-disabled="checkPartnerTyping('Address2')"
+                                                                               ng-required="true"> </span>
+                                                                </div>
+                                                            </div>
+                                                            <div ng-if="checkPartnerTyping('Address2')">
+                                                                <label class="typing">{{partner}} is typing ...</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-6">
+                                                            <div class="form-group">
+                                                                <label class="form-label">Address3</label>
+                                                                <div>
+                                                                    <span class="checkboxes">
+                                                                        <input enter
+                                                                               type="text"
+                                                                               class="form-control"
+                                                                               ng-model="customer.applicants[applicant.id]['address']['Address3']"
+                                                                    
+                                                                               ng-change="changeAddressTextField(applicant.id, 'Address3')"
+                                                                    
+                                                                               ng-focus="setFieldTypingStatus('Address3', true)"
+                                                                    
+                                                                               ng-blur="setFieldTypingStatus('Address3', false)"
+                                                                    
+                                                                               ng-disabled="checkPartnerTyping('Address3')"> </span>
+                                                                </div>
+                                                            </div>
+                                                            <div ng-if="checkPartnerTyping('Address3')">
+                                                                <label class="typing">{{partner}} is typing ...</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-6">
+                                                            <div class="form-group">
+                                                                <label class="form-label">Town/City</label>
+                                                                <div>
+                                                                    <span class="checkboxes">
+                                                                        <input enter
+                                                                               type="text"
+                                                                               class="form-control"
+                                                                               ng-model="customer.applicants[applicant.id]['address']['Town']"
+                                                                    
+                                                                               ng-change="changeAddressTextField(applicant.id, 'Town')"
+                                                                    
+                                                                               ng-focus="setFieldTypingStatus('Town', true)"
+                                                                               ng-blur="setFieldTypingStatus('Town', false)"
+                                                                               ng-disabled="checkPartnerTyping('Town')"
+                                                                               ng-required="true"> </span>
+                                                                </div>
+                                                            </div>
+                                                            <div ng-if="checkPartnerTyping('Town')">
+                                                                <label class="typing">{{partner}} is typing ...</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-6">
+                                                            <div class="form-group">
+                                                                <label class="form-label">County</label>
+                                                                <div>
+                                                                    <span class="checkboxes">
+                                                                        <input enter
+                                                                               type="text"
+                                                                               class="form-control"
+                                                                               ng-model="customer.applicants[applicant.id]['address']['County']"
+                                                                    
+                                                                               ng-change="changeAddressTextField(applicant.id, 'County')"
+                                                                    
+                                                                               ng-focus="setFieldTypingStatus('County', true)"
+                                                                               ng-blur="setFieldTypingStatus('County', false)"
+                                                                               ng-disabled="checkPartnerTyping('County')"
+                                                                               ng-required="true"> </span>
+                                                                </div>
+                                                            </div>
+                                                            <div ng-if="checkPartnerTyping('County')">
+                                                                <label class="typing">{{partner}} is typing ...</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-6">
+                                                            <div class="form-group">
+                                                                <label class="form-label">Country</label>
+                                                                <div>
+                                                                    <span class="checkboxes">
+                                                                        <input enter
+                                                                               type="text"
+                                                                               class="form-control"
+                                                                               ng-model="customer.applicants[applicant.id]['address']['Country']"
+                                                                    
+                                                                               ng-change="changeAddressTextField(applicant.id, 'Country')"
+                                                                    
+                                                                               ng-focus="setFieldTypingStatus('Country', true)"
+                                                                    
+                                                                               ng-blur="setFieldTypingStatus('Country', false)"
+                                                                    
+                                                                               ng-disabled="checkPartnerTyping('Country')"
+                                                                               ng-required="true"> </span>
+                                                                </div>
+                                                            </div>
+                                                            <div ng-if="checkPartnerTyping('Country')">
+                                                                <label class="typing">{{partner}} is typing ...</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-6">
+                                                            <div class="form-group">
+                                                                <label class="form-label">Postcode</label>
+                                                                <div>
+                                                                    <span class="checkboxes">
+                                                                        <input enter
+                                                                               type="text"
+                                                                               class="form-control"
+                                                                               ng-model="customer.applicants[applicant.id]['address']['PostCode']"
+                                                                    
+                                                                               ng-change="changeAddressTextField(applicant.id, 'PostCode')"
+                                                                    
+                                                                               ng-focus="setFieldTypingStatus('PostCode', true)"
+                                                                    
+                                                                               ng-blur="setFieldTypingStatus('PostCode', false)"
+                                                                    
+                                                                               ng-disabled="checkPartnerTyping('PostCode')"
+                                                                               ng-required="true"> </span>
+                                                                </div>
+                                                            </div>
+                                                            <div ng-if="checkPartnerTyping('PostCode')">
+                                                                <label class="typing">{{partner}} is typing ...</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-12 float-r">
+                                                        <!--                                                        <button type="submit" ng-disabled="applicantForm.$invalid" class="btn btn-primary">Submit</button>-->
+                                                        <button type="button"
+                                                                class="btn scroll-top"
+                                                                ng-click="backButtonAction($index + 1);"
+                                                                ng-if="!$first">Back</button>
+                                                        <button type="submit"
+                                                                class="btn btn-primary scroll-top">Save and Continue</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

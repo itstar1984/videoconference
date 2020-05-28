@@ -1,0 +1,78 @@
+<div class="modal-header">
+    <h4 class="modal-title">Consultant Chat History</h4>
+</div>
+<div class="modal-body min-h-10">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="transaction-head padding-t-0 border-none">
+                <div class="msg_div">
+                    <div class="message-div col-sm-12 margin-b-10" ng-repeat="msg in msgList">
+                        <p ng-if="msg.from.type === 'client'">
+                            <span class="con-msg margin-b-0" ng-if="msg.from.from_ad === 1">
+                                <span class="font-600 float-l">{{msg.from.name}}</span><br/>
+                                <span>{{msg.message}} </span><br/>
+                                <span class="chat-text-time">{{msg.dateTime|date:'yyyy-MMM-dd, hh:mm a'}}</span>
+                            </span>
+                            <span class="con-msg margin-b-0" ng-if="msg.from.from_ad === 2">
+                                <span class="font-600 float-l">Voice Call From {{msg.from.name}}</span><br/>
+                                <span class="chat-text-time" ng-if="!msg.isCallRequest">{{msg.dateTime|date:'yyyy-MMM-dd, hh:mm a'}}</span>
+                            </span>
+                            <span class="con-msg margin-b-0"  ng-if="msg.from.from_ad === 3">
+                                <span class="font-600 float-l">Video Call From {{msg.from.name}}</span><br/>
+                                <span class="chat-text-time" ng-if="!msg.isCallRequest">{{msg.dateTime|date:'yyyy-MMM-dd, hh:mm a'}}</span>
+                            </span>                                    
+                        </p>
+                        <p ng-if="msg.from.type === 'consultant'">
+                            <span class="own-msg margin-b-0" ng-if="msg.from.from_ad === 1">
+                                <span class="font-600 float-l">Me</span><br/>
+                                <span>{{msg.message}} </span><br/>
+                                <span class="chat-text-time">{{msg.dateTime|date:'yyyy-MMM-dd, hh:mm a'}}</span>
+                            </span>
+                            <span class="con-msg margin-b-0" ng-if="msg.from.from_ad === 2">
+                                <span class="font-600 float-l">Voice Call To {{msg.to.name}}</span><br/>
+                                <span class="chat-text-time">{{msg.dateTime|date:'yyyy-MMM-dd, hh:mm a'}}</span>
+                            </span>
+                            <span class="con-msg margin-b-0"  ng-if="msg.from.from_ad === 3">
+                                <span class="font-600 float-l">Video Call To {{msg.to.name}}</span><br/>
+                                <span class="chat-text-time">{{msg.dateTime|date:'yyyy-MMM-dd, hh:mm a'}}</span>
+                            </span>
+                        </p>
+                        <!--                        <p ng-if="msg.from.type === 'client'">
+                                                    <span class="con-msg margin-b-0" ng-if="msg.from.from_ad === 1">
+                                                        <span class="font-600 float-l">{{msg.from.name}}</span><br/>
+                                                        <span>{{msg.message}} </span><br/>
+                                                        <span class="chat-text-time">{{msg.dateTime|date:'yyyy-MMM-dd, hh:mm a'}}</span>
+                                                    </span>
+                                                    <span class="con-msg margin-b-0" ng-if="msg.from.from_ad === 2">
+                                                        <span class="font-600 float-l">Voice Call From {{msg.from.name}}</span><br/>
+                                                        <button class="btn btn-sm float-l" ng-click="cancelVoiceCallReq($event, msg)" tooltip="Cancel Voice Call" tooltip-placement="left">Cancel</button>
+                                                        <button class="btn btn-sm btn-success float-l" ng-click="acceptVoiceCallReq($event, msg)" tooltip="Accept Voice Call" tooltip-placement="left">Accept</button>
+                                                    </span>
+                                                    <span class="con-msg margin-b-0"  ng-if="msg.from.from_ad === 3">
+                                                        <span class="font-600 float-l">Video Call From {{msg.from.name}}</span><br/>
+                                                        <button class="btn btn-sm float-l" ng-click="cancelVideoCallReq($event, msg)" tooltip="Cancel Video Call" tooltip-placement="left">Cancel</button>
+                                                        <button class="btn btn-sm btn-success float-l" ng-click="acceptVideoCallReq($event, msg)" tooltip="Accept Video Call" tooltip-placement="left">Accept</button>
+                                                    </span>
+                                                </p>
+                                                <p ng-if="msg.from.type === 'consultant'">
+                                                    <span class="own-msg margin-b-0" ng-if="msg.from.from_ad === 1">
+                                                        <span class="font-600 float-l">Me</span><br/>
+                                                        <span>{{msg.message}} </span><br/>
+                                                        <span class="chat-text-time">{{msg.dateTime|date:'yyyy-MMM-dd, hh:mm a'}}</span>
+                                                    </span>
+                                                    <span class="con-msg margin-b-0" ng-if="msg.from.from_ad === 2">
+                                                        <span class="font-600 float-l">Voice Call To {{clientInfo.name}}</span><br/>
+                                                    </span>
+                                                    <span class="con-msg margin-b-0"  ng-if="msg.from.from_ad === 3">
+                                                        <span class="font-600 float-l">Video Call To {{clientInfo.name}}</span><br/>
+                                                    </span>
+                                                </p>-->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <input type="button" class="btn btn-primary" value="Close" ng-click="$dismiss()"/>
+</div>

@@ -1,0 +1,66 @@
+<div class="login-form login">
+    <alert ng-repeat="alert in alerts"
+           class="alert-danger"
+           close="closeAlert($index)">{{alert.msg}}</alert>
+    <form name="loginForm"
+          ng-submit="login()"
+          novalidate>
+        <div class="top">
+            <img src="assets/img/logo.png"
+                 alt="icon"
+                 class="icon">
+            <!--            <h1>cdeals</h1>-->
+            <h1>Client Log In</h1>
+        </div>
+        <div class="form-area">
+            <div class="group"
+                 ng-class="{'has-error': loginForm.Email.$dirty && loginForm.Email.$error.pattern}">
+                <input type="text"
+                       name="username"
+                       class="form-control"
+                       placeholder="Email Address"
+                       ng-model="user.Email"
+                       ng-blur="visibleEdit=true"
+                       ng-focus="visibleEdit=false"
+                       ng-pattern="/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/"
+                       required="true" />
+                <i class="fa fa-user"></i>
+                <div ng-show="visibleEdit">
+                    <p ng-show="loginForm.Email.$dirty && loginForm.Email.$error.pattern"
+                       class="help-block">Please Enter Valid Email !</p>
+                </div>
+            </div>
+            <div class="group">
+                <input type="password"
+                       class="form-control"
+                       placeholder="Password"
+                       ng-model="user.Password"
+                       required="true">
+                <i class="fa fa-key"></i>
+            </div>
+            <button type="submit"
+                    ng-disabled="loginForm.$invalid"
+                    class="btn btn-primary btn-block">Log In</button>
+        </div>
+        <div class="text-center font-600"> Or </div>
+        <div class="social-logins">
+            <button g-login
+                    type="button"
+                    class="btn btn-primary google-login">Google Login</button>
+            <button fb-login
+                    type="button"
+                    class="btn btn-primary facebook-login">facebook Login</button>
+        </div>
+    </form>
+    <div class="footer-links row">
+        <div class="col-xs-6">
+            <a ui-sref="register">
+                <i class="fa fa-external-link"></i> Register Now</a>
+        </div>
+        <div class="col-xs-6 text-right">
+            <a ui-sref="forgetPassword">
+                <i class="fa fa-lock"></i> Forgot password</a>
+        </div>
+    </div>
+    <!--    <button type="button" class="btn btn-primary btn-block" ng-click="sendMail()">Send Mail</button>-->
+</div>

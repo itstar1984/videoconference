@@ -1,0 +1,668 @@
+<!-- Start Page Loading -->
+<div class="loading" ng-if="!customer.activeApplicant"><img src="assets/img/loading.gif" alt="loading-img"></div>
+<!-- End Page Loading -->
+<div ng-if="customer.activeApplicant">
+    <div class="page-header">
+        <h1 class="title">Employment & Income</h1>
+    </div>
+    <div class="container-widget" ng-if="customer.applicants && customer.applicants.length">
+        <div class="row">
+            <div class="col-md-12 col-lg-12">
+                <div class="panel-default chart-with-stats clearfix">
+                    <div role="tabpanel" style="border-top: 5px solid #f5f5f5;">
+                        <div class="tabs-left">
+                            <ul class="nav nav-tabs nav-tabs-custom">
+                                <li role="presentation" ng-if="customer.no_of_applicants == 1 || customer.no_of_applicants == 2 || customer.no_of_applicants == 3 || customer.no_of_applicants == 4" ng-class="{'active': isTabActive(1)}"><a ng-click="changeTab(1)" aria-controls="applicant1" role="tab" data-toggle="tab">{{(customer.applicants[1]['Firstname'])?customer.applicants[1]['Firstname']: 'Applicant 1'}}</a></li>
+                                <li role="presentation" ng-if="customer.no_of_applicants == 2 || customer.no_of_applicants == 3 || customer.no_of_applicants == 4" ng-class="{'active': isTabActive(2)}"><a ng-click="changeTab(2)" aria-controls="applicant2" role="tab" data-toggle="tab">{{(customer.applicants[2]['Firstname'])?customer.applicants[2]['Firstname']: 'Applicant 2'}}</a></li>
+                                <li role="presentation" ng-if="customer.no_of_applicants == 3 || customer.no_of_applicants == 4" ng-class="{'active': isTabActive(3)}"><a ng-click="changeTab(3)" aria-controls="applicant3" role="tab" data-toggle="tab">{{(customer.applicants[3]['Firstname'])?customer.applicants[3]['Firstname']: 'Applicant 3'}}</a></li>
+                                <li role="presentation" ng-if="customer.no_of_applicants == 4" ng-class="{'active': isTabActive(4)}"><a ng-click="changeTab(4)" aria-controls="applicant4" role="tab" data-toggle="tab">{{(customer.applicants[4]['Firstname'])?customer.applicants[4]['Firstname']: 'Applicant 4'}}</a></li>
+                            </ul>
+                            <div class="tab-content" style="padding-bottom: 0px;">
+                                <div class="panel-default chart-with-stats clearfix">
+                                    <div role="tabpanel" class="tab-pane active">
+                                        <div class="col-lg-10 col-md-10 tab-data">
+                                            <div class="col-lg-12 padding-0">
+                                                <ul id="fact-form-breadcrumb">
+                                                    <li>
+                                                        <a ng-class="{'active' : isEmploymentActiveTab('employment')}" href="javascript:;" ng-click="setEmploymentTab('employment');" >Employment</a>
+                                                    </li>
+                                                    <li ng-show="customer.applicants[customer.activeApplicant]['Employment']['eEmploymentStatusID'] != 5 && customer.applicants[customer.activeApplicant]['Employment']['eEmploymentStatusID'] != 6">
+                                                        <a ng-class="{'active' : isEmploymentActiveTab('incomeEmployed') && (customer.applicants[customer.activeApplicant]['Employment']['eEmploymentStatusID'] != '5' || customer.applicants[customer.activeApplicant]['Employment']['eEmploymentStatusID'] != '6')}" href="javascript:;" ng-click="setEmploymentTab('incomeEmployed');" >Income Employed  </a>
+                                                    </li>
+                                                    <li>
+                                                        <a ng-class="{'active' : isEmploymentActiveTab('additionalIncome')}" href="javascript:;" ng-click="setEmploymentTab('additionalIncome');" >Additional Income </a>
+                                                    </li>
+                                                    <li>
+                                                        <a ng-class="{'active' : isEmploymentActiveTab('benifits')}" href="javascript:;" ng-click="setEmploymentTab('benifits');" >Benefits</a>
+                                                    </li>
+                                                </ul>
+                                                <div ng-if="isEmploymentActiveTab('employment')">
+                                                    <form name="employmentForm" novalidate  ng-submit="!employmentForm.$invalid && saveEmployment(customer.applicants[customer.activeApplicant], customer.activeApplicant);">
+                                                        <input type="hidden" ng-model="customer.applicants[customer.activeApplicant].EmploymentID" class="form-control">
+                                                        <input type="hidden" ng-model="customer.applicants[customer.activeApplicant].EmploymentHeaderID" class="form-control">
+                                                        <input type="hidden" ng-model="customer.applicants[customer.activeApplicant].KeyWorker" class="form-control" ng-init="customer.applicants[customer.activeApplicant].KeyWorker = 1"/>
+                                                        <div class="col-sm-12">
+                                                            <div class="form-group">
+                                                                <span class="step-heading ">Employment</span>
+                                                            </div>
+                                                        </div>                                                
+                                                        <div class="col-lg-10">
+                                                            <div class="col-lg-5">
+                                                                <div class="form-group">
+                                                                    <label class="form-label">Employment Type</label>
+                                                                    <div>
+                                                                        <span class="checkboxes">
+                                                                            <ui-select dropdownenter ng-model="customer.applicants[customer.activeApplicant]['Employment']['eEmploymentStatusID']" ng-required="true">
+                                                                                <ui-select-match placeholder="Please Select">{{$select.selected.name}}</ui-select-match>
+                                                                                <ui-select-choices repeat="value.val as value in employList| filter:$select.search">
+                                                                                    <div ng-bind-html="value.name | highlight: $select.search"></div>
+                                                                                </ui-select-choices>
+                                                                            </ui-select>
+                                                                        </span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-7">
+                                                                <div class="form-group">
+                                                                    <label class="form-label">How long have you been in continuous employment? [in months]</label>
+                                                                    <div>
+                                                                        <span class="checkboxes">
+                                                                            <ui-select dropdownenter ng-model="customer.applicants[customer.activeApplicant]['EmploymentHeader']['MinEmployment']" ng-required="true">
+                                                                                <ui-select-match placeholder="Please Select">{{$select.selected.name}}</ui-select-match>
+                                                                                <ui-select-choices repeat="value.val as value in monthList| filter:$select.search">
+                                                                                    <div ng-bind-html="value.name | highlight: $select.search"></div>
+                                                                                </ui-select-choices>
+                                                                            </ui-select>
+                                                                        </span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-5">
+                                                                <div class="form-group">
+                                                                    <label class="form-label">Employment Status</label>
+                                                                    <div>
+                                                                        <span class="checkboxes">
+                                                                            <div class="form-control radio-group">
+                                                                                <div class="radio radio-info radio-inline">
+                                                                                    <input enter type="radio" id="EmpFullStatus1" ng-value="true" ng-model="customer.applicants[customer.activeApplicant]['EmploymentHeader']['EmpFullStatus']">
+                                                                                    <label for="EmpFullStatus1"> Full </label>
+                                                                                </div>
+                                                                                <div class="radio radio-info radio-inline">
+                                                                                    <input enter type="radio" id="EmpFullStatus2" ng-value="false" ng-model="customer.applicants[customer.activeApplicant]['EmploymentHeader']['EmpFullStatus']">
+                                                                                    <label for="EmpFullStatus2"> Part Time </label>
+                                                                                </div>
+                                                                            </div>
+                                                                        </span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-7" ng-if="customer.applicants[customer.activeApplicant]['Employment']['eEmploymentStatusID'] <= 4 || !customer.applicants[customer.activeApplicant]['Employment']['eEmploymentStatusID']">
+                                                                <div class="form-group">
+                                                                    <label class="form-label">Is this your current employment?</label>
+                                                                    <div>
+                                                                        <span class="checkboxes">
+                                                                            <div class="form-control radio-group">
+                                                                                <div class="radio radio-info radio-inline">
+                                                                                    <input enter type="radio" id="CurrentEmployment1" ng-value="true" ng-model="customer.applicants[customer.activeApplicant]['Employment']['CurrentEmployment']">
+                                                                                    <label for="CurrentEmployment1"> Yes </label>
+                                                                                </div>
+                                                                                <div class="radio radio-info radio-inline">
+                                                                                    <input enter type="radio" id="CurrentEmployment2" ng-value="false" ng-model="customer.applicants[customer.activeApplicant]['Employment']['CurrentEmployment']">
+                                                                                    <label for="CurrentEmployment2"> No </label>
+                                                                                </div>
+                                                                            </div>
+                                                                        </span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-5" ng-if="customer.applicants[customer.activeApplicant]['Employment']['eEmploymentStatusID'] <= 4">
+                                                                <div class="form-group" ng-class="{'has-error': hasNotValidErrorDate(customer.applicants[customer.activeApplicant]['Employment']['StartDate'])}">
+                                                                    <label class="form-label">Start Date (dd/mm/yyyy)</label>
+                                                                    <div>
+                                                                        <span class="checkboxes">
+                                                                            <input type="text" enter class="form-control" ng-datepicker ng-model="customer.applicants[customer.activeApplicant]['Employment']['StartDate']" ng-required="true" ng-change="changeTextField(customer.activeApplicant, 'Employment', 'StartDate')" 
+                                                                                   ng-focus="setFieldTypingStatus('StartDate', true)"
+                                                                                   ng-blur="setFieldTypingStatus('StartDate', false)"
+                                                                                   ng-disabled="checkPartnerTyping('StartDate')">
+                                                                        </span>
+                                                                    </div>
+                                                                    <span ng-show="hasNotValidErrorDate(customer.applicants[customer.activeApplicant]['Employment']['StartDate'])" class="help-block">Please enter Valid Date</span>
+                                                                </div>
+                                                                <div ng-if="checkPartnerTyping('StartDate')">
+                                                                    <label class="typing">{{partner}} is typing ...</label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-7" ng-if="!customer.applicants[customer.activeApplicant]['Employment']['CurrentEmployment']">
+                                                                <div class="form-group" ng-class="{'has-error': hasNotValidErrorDate(customer.applicants[customer.activeApplicant]['Employment']['EndDate'])}">
+                                                                    <label class="form-label">End Date (dd/mm/yyyy)</label>
+                                                                    <div>
+                                                                        <span class="checkboxes">
+                                                                            <input type="text" enter class="form-control" ng-datepicker ng-model="customer.applicants[customer.activeApplicant]['Employment']['EndDate']" ng-change="changeTextField(customer.activeApplicant, 'Employment', 'EndDate')"
+                                                                                   ng-focus="setFieldTypingStatus('EndDate', true)"
+                                                                                   ng-blur="setFieldTypingStatus('EndDate', false)"
+                                                                                   ng-disabled="checkPartnerTyping('EndDate')">
+                                                                        </span>
+                                                                    </div>
+                                                                    <span ng-show="hasNotValidErrorDate(customer.applicants[customer.activeApplicant]['Employment']['EndDate'])" class="help-block">Please enter Valid Date</span>
+                                                                </div>
+                                                                <div ng-if="checkPartnerTyping('EndDate')">
+                                                                    <label class="typing">{{partner}} is typing ...</label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-6" ng-if="customer.applicants[customer.activeApplicant]['Employment']['eEmploymentStatusID'] >= 5">
+                                                                <div class="form-group">
+                                                                    <label class="form-label">Total Net Monthly Income</label>
+                                                                    <span class="checkboxes pound">
+                                                                        <input type="text" enter class="form-control" ng-model="customer.applicants[customer.activeApplicant]['EmploymentHeader']['TotalNetMonthlyIncome']" ng-change="changeTextField(customer.activeApplicant, 'EmploymentHeader', 'TotalNetMonthlyIncome')" numbers-only
+                                                                               ng-focus="setFieldTypingStatus('TotalNetMonthlyIncome', true)"
+                                                                               ng-blur="setFieldTypingStatus('TotalNetMonthlyIncome', false)"
+                                                                               ng-disabled="checkPartnerTyping('TotalNetMonthlyIncome')">
+                                                                    </span>
+                                                                </div>
+                                                                <div ng-if="checkPartnerTyping('TotalNetMonthlyIncome')">
+                                                                    <label class="typing">{{partner}} is typing ...</label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-5" style="margin-bottom: 23px;" ng-if="customer.applicants[customer.activeApplicant]['Employment']['eEmploymentStatusID'] <= 4">
+                                                                <div class="form-group">
+                                                                    <label class="form-label">Occupation</label>
+                                                                    <div>
+                                                                        <span class="checkboxes">
+                                                                            <input enter type="text" class="form-control" ng-model="customer.applicants[customer.activeApplicant]['Employment']['eOccupationDescription']" ng-keyup="occupationSearch(customer.applicants[customer.activeApplicant]['Employment']['eOccupationDescription'])"
+                                                                                   ng-focus="setFieldTypingStatus('eOccupationDescription', true)"
+                                                                                   ng-blur="setFieldTypingStatus('eOccupationDescription', false)"
+                                                                                   ng-disabled="checkPartnerTyping('eOccupationDescription')" ng-required="true">
+                                                                                <ul class="list-group" ng-class="{'occupationStyle':occupationStatus == true,'occupationStyle1':occupationStatus == false}">
+                                                                                    <li class="occupationLi" ng-repeat="oc in occupations" ng-click="fillTextbox(oc.eOccupationDescription,oc.eOccupationID)">{{oc.eOccupationDescription}}</li>
+                                                                                </ul>
+                                                                        </span>
+                                                                    </div>
+                                                                </div>
+                                                                <div ng-if="checkPartnerTyping('EndDate')">
+                                                                    <label class="typing">{{partner}} is typing ...</label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <!-- <div class="row"> -->
+                                                            <div class="col-lg-12">
+                                                                <button type="button" class="btn scroll-top" ng-click="backButtonAction(customer.activeApplicant);">Back</button>
+                                                                <button type="submit" class="btn btn-primary scroll-top">Save and Continue</button>
+                                                            </div>
+                                                        <!-- </div> -->
+                                                        
+                                                    </form>
+                                                </div>
+                                                <div ng-if="isEmploymentActiveTab('incomeEmployed') && (customer.applicants[customer.activeApplicant]['Employment']['eEmploymentStatusID'] != 5 || customer.applicants[customer.activeApplicant]['Employment']['eEmploymentStatusID'] != 6)">
+                                                    <form name="incomeEmployedForm" novalidate ng-submit="incomeEmployedForm.$valid && incomeSelfEmployed(customer.applicants[customer.activeApplicant], customer.activeApplicant);">
+                                                        <div class="col-sm-12">
+                                                            <div class="form-group">
+                                                                <span class="step-heading step-heading-small" ng-if="customer.applicants[customer.activeApplicant]['Employment']['eEmploymentStatusID'] === 1 || customer.applicants[customer.activeApplicant]['Employment']['eEmploymentStatusID'] === 3">Income Employed (Leave blank if not applicable)</span>
+                                                                <span class="step-heading step-heading-small" ng-if="customer.applicants[customer.activeApplicant]['Employment']['eEmploymentStatusID'] === 2 || customer.applicants[customer.activeApplicant]['Employment']['eEmploymentStatusID'] === 4">Main Employment Income (If Self Employed)</span>
+                                                            </div>
+                                                        </div>                                                
+                                                        <div class="col-lg-10" ng-if="customer.applicants[customer.activeApplicant]['Employment']['eEmploymentStatusID'] === 1 || customer.applicants[customer.activeApplicant]['Employment']['eEmploymentStatusID'] === 3">
+                                                            <div class="col-lg-6">
+                                                                <div class="form-group">
+                                                                    <label class="form-label">Annual Basic Salary</label>
+                                                                    <span class="checkboxes pound">
+                                                                        <input type="text" enter class="form-control" ng-model="customer.applicants[customer.activeApplicant]['IncomeEmpDetail']['BasicAnnualGuaranteed']"  ng-required="true" ng-change="changeIncomeTextField(customer.activeApplicant, 'IncomeEmpDetail', 'BasicAnnualGuaranteed')" numbers-only
+                                                                               ng-focus="setFieldTypingStatus('BasicAnnualGuaranteed', true)"
+                                                                               ng-blur="setFieldTypingStatus('BasicAnnualGuaranteed', false)"
+                                                                               ng-disabled="checkPartnerTyping('BasicAnnualGuaranteed')" ng-change="calculateGrossAnnual(customer.applicants[customer.activeApplicant]['IncomeEmpDetail'])">
+                                                                    </span>
+                                                                </div>
+                                                                <div ng-if="checkPartnerTyping('BasicAnnualGuaranteed')">
+                                                                    <label class="typing">{{partner}} is typing ...</label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-6">
+                                                                <div class="form-group">
+                                                                    <label class="form-label">Irregular Commission</label>
+                                                                    <span class="checkboxes pound">
+                                                                        <input  type="text" numbers-only enter class="form-control" ng-model="customer.applicants[customer.activeApplicant]['IncomeEmpDetail']['IrregularIncome']" ng-change="changeIncomeTextField(customer.activeApplicant, 'IncomeEmpDetail', 'IrregularIncome')" 
+                                                                               ng-focus="setFieldTypingStatus('IrregularIncome', true)"
+                                                                               ng-blur="setFieldTypingStatus('IrregularIncome', false)"
+                                                                               ng-disabled="checkPartnerTyping('IrregularIncome')">
+                                                                    </span>
+                                                                </div>
+                                                                <div ng-if="checkPartnerTyping('IrregularIncome')">
+                                                                    <label class="typing">{{partner}} is typing ...</label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-6">
+                                                                <div class="form-group">
+                                                                    <label class="form-label">Annual Guaranteed Bonus</label>
+                                                                    <span class="checkboxes pound">
+                                                                        <input type="text" numbers-only enter class="form-control" ng-model="customer.applicants[customer.activeApplicant]['IncomeEmpDetail']['GuaranteedBonus']" ng-change="changeIncomeTextField(customer.activeApplicant, 'IncomeEmpDetail', 'GuaranteedBonus')" 
+                                                                               ng-focus="setFieldTypingStatus('GuaranteedBonus', true)"
+                                                                               ng-blur="setFieldTypingStatus('GuaranteedBonus', false)"
+                                                                               ng-disabled="checkPartnerTyping('GuaranteedBonus')">
+                                                                    </span>
+                                                                </div>
+                                                                <div ng-if="checkPartnerTyping('GuaranteedBonus')">
+                                                                    <label class="typing">{{partner}} is typing ...</label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-6">
+                                                                <div class="form-group">
+                                                                    <label class="form-label">Annual Guaranteed Overtime</label>
+                                                                    <span class="checkboxes pound">   
+                                                                        <input type="text" numbers-only enter class="form-control" ng-model="customer.applicants[customer.activeApplicant]['IncomeEmpDetail']['GuaranteedOvertime']" ng-change="changeIncomeTextField(customer.activeApplicant, 'IncomeEmpDetail', 'GuaranteedOvertime')" 
+                                                                               ng-focus="setFieldTypingStatus('GuaranteedOvertime', true)"
+                                                                               ng-blur="setFieldTypingStatus('GuaranteedOvertime', false)"
+                                                                               ng-disabled="checkPartnerTyping('GuaranteedOvertime')">
+                                                                    </span>
+                                                                </div>
+                                                                <div ng-if="checkPartnerTyping('GuaranteedOvertime')">
+                                                                    <label class="typing">{{partner}} is typing ...</label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-6">
+                                                                <div class="form-group">
+                                                                    <label class="form-label">Annual Regular Bonus/Overtime</label>
+                                                                    <span class="checkboxes pound">
+                                                                        <input type="text" numbers-only enter class="form-control" ng-model="customer.applicants[customer.activeApplicant]['IncomeEmpDetail']['RegularBonus']" ng-change="changeIncomeTextField(customer.activeApplicant, 'IncomeEmpDetail', 'RegularBonus')" 
+                                                                               ng-focus="setFieldTypingStatus('RegularBonus', true)"
+                                                                               ng-blur="setFieldTypingStatus('RegularBonus', false)"
+                                                                               ng-disabled="checkPartnerTyping('RegularBonus')" >
+                                                                    </span>
+                                                                </div>
+                                                                <div ng-if="checkPartnerTyping('RegularBonus')">
+                                                                    <label class="typing">{{partner}} is typing ...</label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-6">
+                                                                <div class="form-group">
+                                                                    <label class="form-label">Rental/Living Allowance</label>
+                                                                    <span class="checkboxes pound">
+                                                                        <input type="text" numbers-only enter class="form-control" ng-model="customer.applicants[customer.activeApplicant]['IncomeEmpDetail']['RentalAllowance']" ng-change="changeIncomeTextField(customer.activeApplicant, 'IncomeEmpDetail', 'RentalAllowance')" 
+                                                                               ng-focus="setFieldTypingStatus('RentalAllowance', true)"
+                                                                               ng-blur="setFieldTypingStatus('RentalAllowance', false)"
+                                                                               ng-disabled="checkPartnerTyping('RentalAllowance')">
+                                                                    </span>
+                                                                </div>
+                                                                <div ng-if="checkPartnerTyping('RentalAllowance')">
+                                                                    <label class="typing">{{partner}} is typing ...</label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-6">
+                                                                <div class="form-group">
+                                                                    <label class="form-label">Gross Annual Income</label>
+                                                                    <span class="checkboxes pound">
+                                                                        <input type="text" numbers-only enter class="form-control" ng-model="customer.applicants[customer.activeApplicant]['IncomeEmpDetail']['GrossAnnualIncome']"  ng-disabled="true">
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-6">
+                                                                <div class="form-group">
+                                                                    <label class="form-label">Total Net Monthly Income</label>
+                                                                    <span class="checkboxes pound">
+                                                                        <input type="text" numbers-only enter class="form-control" ng-model="customer.applicants[customer.activeApplicant]['EmploymentHeader']['TotalNetMonthlyIncome']" ng-change="changeTextField(customer.activeApplicant, 'EmploymentHeader', 'TotalNetMonthlyIncome')" 
+                                                                               ng-focus="setFieldTypingStatus('TotalNetMonthlyIncome', true)"
+                                                                               ng-blur="setFieldTypingStatus('TotalNetMonthlyIncome', false)"
+                                                                               ng-disabled="checkPartnerTyping('TotalNetMonthlyIncome')" ng-required="true">
+                                                                    </span>
+                                                                </div>
+                                                                <div ng-if="checkPartnerTyping('TotalNetMonthlyIncome')">
+                                                                    <label class="typing">{{partner}} is typing ...</label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-10" ng-if="customer.applicants[customer.activeApplicant]['Employment']['eEmploymentStatusID'] === 2 || customer.applicants[customer.activeApplicant]['Employment']['eEmploymentStatusID'] === 4">
+                                                            <div class="col-lg-6">
+                                                                <div class="form-group">
+                                                                    <label class="form-label">Projection for current year?</label>
+                                                                    <div>
+                                                                        <span class="checkboxes">
+                                                                            <div class="form-control radio-group">
+                                                                                <div class="radio radio-info radio-inline">
+                                                                                    <input enter type="radio" id="eSelfEmpYearID1" ng-value="1" ng-model="customer.applicants[customer.activeApplicant]['IncomeSelfEmpDetail']['eSelfEmpYearID']">
+                                                                                    <label for="eSelfEmpYearID1"> Yes </label>
+                                                                                </div>
+                                                                                <div class="radio radio-info radio-inline">
+                                                                                    <input enter type="radio" id="eSelfEmpYearID2" ng-value="2" ng-model="customer.applicants[customer.activeApplicant]['IncomeSelfEmpDetail']['eSelfEmpYearID']">
+                                                                                    <label for="eSelfEmpYearID2"> No </label>
+                                                                                </div>
+                                                                            </div>
+                                                                        </span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-6">
+                                                                <div class="form-group">
+                                                                    <label class="form-label">Accounts</label>
+                                                                    <div>
+                                                                        <span class="checkboxes">
+                                                                            <ui-select dropdownenter ng-model="customer.applicants[customer.activeApplicant]['EmploymentHeader']['eAccountsAvailableID']">
+                                                                                <ui-select-match placeholder="Please Select">{{$select.selected.name}}</ui-select-match>
+                                                                                <ui-select-choices repeat="value.val as value in accountList| filter:$select.search">
+                                                                                    <div ng-bind-html="value.name | highlight: $select.search"></div>
+                                                                                </ui-select-choices>
+                                                                            </ui-select>
+                                                                        </span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-6">
+                                                                <div class="form-group">
+                                                                    <label class="form-label">Total Net Monthly Income</label>
+                                                                    <span class="checkboxes pound">
+                                                                        <input type="text" numbers-only enter class="form-control" ng-model="customer.applicants[customer.activeApplicant]['EmploymentHeader']['TotalNetMonthlyIncome']" ng-change="changeTextField(customer.activeApplicant, 'EmploymentHeader', 'TotalNetMonthlyIncome')" 
+                                                                               ng-focus="setFieldTypingStatus('TotalNetMonthlyIncome', true)"
+                                                                               ng-blur="setFieldTypingStatus('TotalNetMonthlyIncome', false)"
+                                                                               ng-disabled="checkPartnerTyping('TotalNetMonthlyIncome')">
+                                                                    </span>
+                                                                </div>
+                                                                <div ng-if="checkPartnerTyping('TotalNetMonthlyIncome')">
+                                                                    <label class="typing">{{partner}} is typing ...</label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-6" ng-if="customer.applicants[customer.activeApplicant]['IncomeSelfEmpDetail']['eSelfEmpYearID'] === 1">
+                                                                <div class="form-group">
+                                                                    <label class="form-label">Current Year Projection</label>
+                                                                    <span class="checkboxes pound">
+                                                                        <input type="text" numbers-only enter class="form-control" ng-model="customer.applicants[customer.activeApplicant]['IncomeSelfEmpDetail']['currentYearProjection']" ng-change="changeTextField(customer.activeApplicant, 'IncomeSelfEmpDetail', 'currentYearProjection')"
+                                                                               ng-focus="setFieldTypingStatus('currentYearProjection', true)"
+                                                                               ng-blur="setFieldTypingStatus('currentYearProjection', false)"
+                                                                               ng-disabled="checkPartnerTyping('currentYearProjection')">
+                                                                    </span>
+                                                                </div>
+                                                                <div ng-if="checkPartnerTyping('currentYearProjection')">
+                                                                    <label class="typing">{{partner}} is typing ...</label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-6" ng-if="customer.applicants[customer.activeApplicant]['EmploymentHeader']['eAccountsAvailableID'] == 3">
+                                                                <div class="form-group">
+                                                                    <label class="form-label">Net Profit 2 year Back</label>
+                                                                    <span class="checkboxes pound">
+                                                                        <input type="text" numbers-only enter class="form-control" ng-model="customer.applicants[customer.activeApplicant]['IncomeSelfEmpDetail']['NetProfit2YearBack']" ng-change="changeTextField(customer.activeApplicant, 'IncomeSelfEmpDetail', 'NetProfit2YearBack')" 
+                                                                               ng-focus="setFieldTypingStatus('NetProfit2YearBack', true)"
+                                                                               ng-blur="setFieldTypingStatus('NetProfit2YearBack', false)"
+                                                                               ng-disabled="checkPartnerTyping('NetProfit2YearBack')">
+                                                                    </span>
+                                                                </div>
+                                                                <div ng-if="checkPartnerTyping('NetProfit2YearBack')">
+                                                                    <label class="typing">{{partner}} is typing ...</label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-6" ng-if="customer.applicants[customer.activeApplicant]['EmploymentHeader']['eAccountsAvailableID'] == 3 || customer.applicants[customer.activeApplicant]['EmploymentHeader']['eAccountsAvailableID'] == 2">
+                                                                <div class="form-group">
+                                                                    <label class="form-label">Net Profit 1 year Back</label>
+                                                                    <span class="checkboxes pound">
+                                                                        <input type="text" numbers-only enter class="form-control" ng-model="customer.applicants[customer.activeApplicant]['IncomeSelfEmpDetail']['NetProfit1YearBack']" ng-change="changeTextField(customer.activeApplicant, 'IncomeSelfEmpDetail', 'NetProfit1YearBack')" 
+                                                                               ng-focus="setFieldTypingStatus('NetProfit1YearBack', true)"
+                                                                               ng-blur="setFieldTypingStatus('NetProfit1YearBack', false)"
+                                                                               ng-disabled="checkPartnerTyping('NetProfit1YearBack')">
+                                                                    </span>
+                                                                </div>
+                                                                <div ng-if="checkPartnerTyping('NetProfit1YearBack')">
+                                                                    <label class="typing">{{partner}} is typing ...</label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-6" ng-if="customer.applicants[customer.activeApplicant]['EmploymentHeader']['eAccountsAvailableID'] == 3 || customer.applicants[customer.activeApplicant]['EmploymentHeader']['eAccountsAvailableID'] == 2 || customer.applicants[customer.activeApplicant]['EmploymentHeader']['eAccountsAvailableID'] == 1">
+                                                                <div class="form-group">
+                                                                    <label class="form-label">Net Profit Last Year</label>
+                                                                    <span class="checkboxes pound">
+                                                                        <input type="text" numbers-only enter class="form-control" ng-model="customer.applicants[customer.activeApplicant]['IncomeSelfEmpDetail']['NetProfitOrLoss']" ng-change="changeTextField(customer.activeApplicant, 'IncomeSelfEmpDetail', 'NetProfitOrLoss')" 
+                                                                               ng-focus="setFieldTypingStatus('NetProfitOrLoss', true)"
+                                                                               ng-blur="setFieldTypingStatus('NetProfitOrLoss', false)"
+                                                                               ng-disabled="checkPartnerTyping('NetProfitOrLoss')">
+                                                                    </span>
+                                                                </div>
+                                                                <div ng-if="checkPartnerTyping('NetProfitOrLoss')">
+                                                                    <label class="typing">{{partner}} is typing ...</label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-12 ">
+                                                            <input type="hidden" ng-model="customer.applicants[customer.activeApplicant]['IncomeSelfEmpDetailID']" class="form-control"> 
+                                                            <button type="button" class="btn scroll-top" ng-click="backButtonActionForTabs('incomeEmployed');">Back</button>
+                                                            <button type="submit" class="btn btn-primary scroll-top" >Save and Continue</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                                <div ng-if="isEmploymentActiveTab('additionalIncome')">
+                                                    <form  name="additionalIncomeForm" novalidate ng-submit="additionalIncomeForm.$valid && otherAdditionIncome(customer.applicants[customer.activeApplicant], customer.activeApplicant);">
+                                                        <div class="col-lg-12">
+                                                            <div class="form-group">
+                                                                <label class="form-label">Is there additional income?</label>
+                                                                <div>
+                                                                    <span class="checkboxes">
+                                                                        <div class="form-control radio-group">
+                                                                            <div class="radio radio-info radio-inline">
+                                                                                <input enter type="radio" id="isAdditionalIncome1" ng-value="true" ng-model="customer.applicants[customer.activeApplicant]['isAdditionalIncome']">
+                                                                                <label for="isAdditionalIncome1"> Yes </label>
+                                                                            </div>
+                                                                            <div class="radio radio-info radio-inline">
+                                                                                <input enter type="radio" id="isAdditionalIncome2" ng-value="false" ng-model="customer.applicants[customer.activeApplicant]['isAdditionalIncome']">
+                                                                                <label for="isAdditionalIncome2"> No </label>
+                                                                            </div>
+                                                                        </div>
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div ng-if="customer.applicants[customer.activeApplicant]['isAdditionalIncome']">
+                                                            <div class="col-sm-12">
+                                                                <div class="form-group">
+                                                                    <span class="step-heading step-heading-small">ADDITIONAL INCOME DETAILS (ANNUAL)</span>
+                                                                </div>
+                                                            </div>                                                
+                                                            <div class="col-lg-10">
+                                                                <div class="col-lg-6">
+                                                                    <div class="form-group">
+                                                                        <label class="form-label">Pension</label>
+                                                                        <span class="checkboxes pound">
+                                                                            <input type="text" numbers-only enter class="form-control" ng-model="customer.applicants[customer.activeApplicant]['IncomeOther']['Pension']" ng-change="changeTextField(customer.activeApplicant, 'IncomeOther', 'Pension')"
+                                                                                   ng-focus="setFieldTypingStatus('Pension', true)"
+                                                                                   ng-blur="setFieldTypingStatus('Pension', false)"
+                                                                                   ng-disabled="checkPartnerTyping('Pension')">
+                                                                        </span>
+                                                                    </div>
+                                                                    <div ng-if="checkPartnerTyping('Pension')">
+                                                                        <label class="typing">{{partner}} is typing ...</label>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-6">
+                                                                    <div class="form-group">
+                                                                        <label class="form-label">Bedroom Rental</label>
+                                                                        <span class="checkboxes pound">
+                                                                            <input type="text" numbers-only enter class="form-control" ng-model="customer.applicants[customer.activeApplicant]['IncomeOther']['BedroomRental']" ng-change="changeTextField(customer.activeApplicant, 'IncomeOther', 'BedroomRental')"
+                                                                                   ng-focus="setFieldTypingStatus('BedroomRental', true)"
+                                                                                   ng-blur="setFieldTypingStatus('BedroomRental', false)"
+                                                                                   ng-disabled="checkPartnerTyping('BedroomRental')">
+                                                                        </span>
+                                                                    </div>
+                                                                    <div ng-if="checkPartnerTyping('BedroomRental')">
+                                                                        <label class="typing">{{partner}} is typing ...</label>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-6">
+                                                                    <div class="form-group">
+                                                                        <label class="form-label">Investments</label>
+                                                                        <span class="checkboxes pound">
+                                                                            <input type="text" numbers-only enter class="form-control" ng-model="customer.applicants[customer.activeApplicant]['IncomeOther']['Investments']" ng-change="changeTextField(customer.activeApplicant, 'IncomeOther', 'Investments')"
+                                                                                   ng-focus="setFieldTypingStatus('Investments', true)"
+                                                                                   ng-blur="setFieldTypingStatus('Investments', false)"
+                                                                                   ng-disabled="checkPartnerTyping('Investments')" />
+
+                                                                        </span>
+                                                                        <div ng-if="checkPartnerTyping('Investments')">
+                                                                            <label class="typing">{{partner}} is typing ...</label>
+                                                                        </div>
+
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="col-lg-6">
+                                                                    <div class="form-group">
+                                                                        <label class="form-label">Other</label>
+                                                                        <span class="checkboxes pound">
+                                                                            <input type="text" numbers-only enter class="form-control" ng-model="customer.applicants[customer.activeApplicant]['IncomeOther']['Other']" ng-change="changeTextField(customer.activeApplicant, 'IncomeOther', 'Other')"
+                                                                                   ng-focus="setFieldTypingStatus('Other', true)"
+                                                                                   ng-blur="setFieldTypingStatus('Other', false)"
+                                                                                   ng-disabled="checkPartnerTyping('Other')">
+                                                                        </span>
+                                                                    </div>
+                                                                    <div ng-if="checkPartnerTyping('Other')">
+                                                                        <label class="typing">{{partner}} is typing ...</label>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-6">
+                                                                    <div class="form-group">
+                                                                        <label class="form-label">Second Job</label>
+                                                                        <span class="checkboxes pound">
+                                                                            <input type="text" numbers-only enter class="form-control" ng-model="customer.applicants[customer.activeApplicant]['IncomeOther']['SecondJob']" ng-change="changeTextField(customer.activeApplicant, 'IncomeOther', 'SecondJob')"
+                                                                                   ng-focus="setFieldTypingStatus('SecondJob', true)"
+                                                                                   ng-blur="setFieldTypingStatus('SecondJob', false)"
+                                                                                   ng-disabled="checkPartnerTyping('SecondJob')">
+                                                                        </span>
+                                                                    </div>
+                                                                    <div ng-if="checkPartnerTyping('SecondJob')">
+                                                                        <label class="typing">{{partner}} is typing ...</label>
+                                                                    </div>
+                                                                </div>
+
+                                                            </div>
+                                                            <div class="col-lg-12 ">
+                                                                <button type="button" class="btn scroll-top" ng-click="backButtonActionForTabs('additionalIncome');">Back</button>
+                                                                <button type="submit" class="btn btn-primary scroll-top" >Save and Continue</button>                                                                
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-12 " ng-if="!customer.applicants[customer.activeApplicant]['isAdditionalIncome']">
+                                                            <button type="button" class="btn scroll-top" ng-click="backButtonActionForTabs('additionalIncome');">Back</button>
+                                                            <button type="submit" class="btn btn-primary scroll-top" >Save and Continue</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                                <div ng-if="isEmploymentActiveTab('benifits')">
+                                                    <div class="col-lg-12" ng-if="!customer.applicants[customer.activeApplicant]['benifits'] && !customer.applicants[customer.activeApplicant]['benifits'].length">
+                                                        <div class="form-group">
+                                                            <label class="form-label">Do you have any benefits?</label>
+                                                            <div>
+                                                                <span class="checkboxes">
+                                                                    <div class="form-control radio-group">
+                                                                        <div class="radio radio-info radio-inline">
+                                                                            <input enter type="radio" id="isExpat1" ng-value="true" ng-model="customer.applicants[customer.activeApplicant]['isAnyBenifits']">
+                                                                            <label for="isExpat1"> Yes </label>
+                                                                        </div>
+                                                                        <div class="radio radio-info radio-inline">
+                                                                            <input enter type="radio" id="isExpat2" ng-value="false" ng-model="customer.applicants[customer.activeApplicant]['isAnyBenifits']">
+                                                                            <label for="isExpat2"> No </label>
+                                                                        </div>
+                                                                    </div>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-12" ng-if="customer.applicants[customer.activeApplicant]['benifits'] && customer.applicants[customer.activeApplicant]['benifits'].length">
+                                                        <div class="panel panel-default panel-with-data" ng-repeat="benifit in customer.applicants[customer.activeApplicant]['benifits'] track by $index">
+                                                            <form class="form" name="editBenifitForm" ng-submit="editBenifitForm.$valid && updateBenifit(benifit, customer.activeApplicant)" novalidate>
+                                                                <div class="panel-title benifits_title" ng-click="benifit.show = !benifit.show">Benifits/{{benifit.eBenefitTypeDesc}}/{{benifit.Amount}}</div>
+                                                                <input type="hidden" enter class="form-control" ng-model="benifit.IncomeBenefitID">
+                                                                <div class="panel-body" ng-if="benifit.show">
+                                                                    <div class="col-lg-10">
+                                                                        <div class="col-lg-6 padding-l-0">
+                                                                            <div class="form-group">
+                                                                                <label class="form-label">Benefit</label>
+                                                                                <div>
+                                                                                    <span class="checkboxes">
+                                                                                        <ui-select dropdownenter ng-model="benifit.eBenefitTypeID">
+                                                                                            <ui-select-match placeholder="Please Select">{{$select.selected.name}}</ui-select-match>
+                                                                                            <ui-select-choices repeat="value.val as value in benifitsList| filter:$select.search">
+                                                                                                <div ng-bind-html="value.name | highlight: $select.search"></div>
+                                                                                            </ui-select-choices>
+                                                                                        </ui-select>
+                                                                                    </span>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-lg-6">
+                                                                            <div class="form-group">
+                                                                                <label class="form-label">Amount (£)</label>
+                                                                                <div>
+                                                                                    <span class="checkboxes">
+                                                                                        <input type="text" numbers-only enter class="form-control" ng-model="benifit.Amount" ng-change="changeBenifitTextField(benifit)"
+                                                                                               ng-focus="setFieldTypingStatus('Amount', true)"
+                                                                                               ng-blur="setFieldTypingStatus('Amount', false)"
+                                                                                               ng-disabled="checkPartnerTyping('Amount')">
+                                                                                    </span>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-lg-12 ">
+                                                                            <button type="submit" class="btn btn-success scroll-top">Update</button>
+                                                                            <button type="button" class="btn btn-danger margin-r-10 scroll-top" ng-click="deleteBenift(benifit)"> Delete</button>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-12 margin-b-10" ng-if="customer.applicants[customer.activeApplicant]['benifits'] && customer.applicants[customer.activeApplicant]['benifits'].length">
+                                                        <button type="button" class="btn btn-default float-r" ng-click="customer.applicants[customer.activeApplicant]['isAnyBenifits'] = !customer.applicants[customer.activeApplicant]['isAnyBenifits']">Add More Benifits</button>
+                                                    </div>
+                                                    <div ng-if="customer.applicants[customer.activeApplicant]['isAnyBenifits']">
+                                                        <div class="col-sm-12">
+                                                            <div class="form-group">
+                                                                <span class="step-heading step-heading-small">BENEFITS</span>
+                                                            </div>
+                                                        </div>         
+                                                        <div class="col-sm-12 padding-b-10">
+                                                            <form class="form" name="benifitForm" ng-submit="saveBenifit(customer.applicants[customer.activeApplicant]['IncomeBenefits'], customer.activeApplicant)" novalidate>
+                                                                <div class="col-lg-10">
+                                                                    <div class="col-lg-6">
+                                                                        <div class="form-group">
+                                                                            <label class="form-label">Benefit</label>
+                                                                            <div>
+                                                                                <span class="checkboxes">
+                                                                                    <ui-select dropdownenter ng-model="customer.applicants[customer.activeApplicant]['IncomeBenefits']['eBenefitTypeID']" ng-required="true">
+                                                                                        <ui-select-match placeholder="Please Select">{{$select.selected.name}}</ui-select-match>
+                                                                                        <ui-select-choices repeat="value.val as value in benifitsList| filter:$select.search">
+                                                                                            <div ng-bind-html="value.name | highlight: $select.search"></div>
+                                                                                        </ui-select-choices>
+                                                                                    </ui-select>
+                                                                                </span>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-lg-6">
+                                                                        <div class="form-group">
+                                                                            <label class="form-label">Amount (£)</label>
+                                                                            <div>
+                                                                                <span class="checkboxes">
+                                                                                    <input type="text" numbers-only enter class="form-control" ng-model="customer.applicants[customer.activeApplicant]['IncomeBenefits']['Amount']" ng-change="changeTextField(customer.activeApplicant, 'IncomeBenefits', 'Amount')"
+                                                                                           ng-focus="setFieldTypingStatus('Amount', true)"
+                                                                                           ng-blur="setFieldTypingStatus('Amount', false)"
+                                                                                           ng-disabled="checkPartnerTyping('Amount')" ng-required="true">
+                                                                                </span>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div ng-if="checkPartnerTyping('Amount')">
+                                                                            <label class="typing">{{partner}} is typing ...</label>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-12 ">
+                                                                    <button type="submit" ng-disabled="benifitForm.$invalid" class="btn btn-success float-r scroll-top">Save and Continue</button>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-12">
+                                                        <button type="button" class="btn" ng-click="backButtonActionForTabs('benifits');">Back</button>
+                                                        <button type="button" class="btn btn-primary" ng-click="benifitTab()">Save and Continue</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>  
+                </div>
+            </div>
+        </div>  
+    </div>
+</div>

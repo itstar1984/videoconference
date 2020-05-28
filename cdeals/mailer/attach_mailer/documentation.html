@@ -1,0 +1,58 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>Attachment Mailer documentation</title></head>
+
+<body>
+<h2>Attachment Mailer documentation <span style="font-size:12px;">ver. 1.2 / nov. 2006</span></h2>
+<p>Use this class if you need to send attachments and/or html messages inside your application. I wrote this class to use it togther with classes like <a href="http://www.finalwebsites.com/snippets.php?id=10">Access_user Class</a> or<a href="http://www.finalwebsites.com/snippets.php?id=32" title="This universal shopping cart script is powered by MySQL and works with external customer and product data."> DB_cart Class (shopping cart)</a>. If you need some upload functionality than the <a href="http://www.finalwebsites.com/snippets.php?id=7" title="Easy to use upload functions for (multiple) file upload with validation.">Easy PHP Upload</a> should be good for you.</p>
+<h3>Features</h3>
+<ul>
+  <li>e-mail address check (regex and MX record)</li>
+  <li>Internet form mail spam prevention</li>
+  <li>Multiple attachments</li>
+  <li>html mail with inline attachments</li>
+  <li>alternative text mail version  </li>
+  <li>Cc and Bcc addresses are possible</li>
+</ul>
+<p>For a first test unpack all files into a directory, and modify this row inside the example file (the example attachment files are an image and an image inside a zip file):</p>
+<p><b>require($_SERVER['DOCUMENT_ROOT'].&quot;/classes/attach_mailer/attach_mailer_class.php&quot;);</b> </p>
+<h3>Variables</h3>
+<p><b>define(&quot;LIBR&quot;, &quot;\n&quot;);</b><br>
+This is a very important variable, in some cases you have to switch between &quot;\r\n&quot; and &quot;\n&quot;. </p>
+<p><b>define(&quot;PRIORITY&quot;, 3);</b><br>
+The mail priority, possible values are: 3 = normal, 2 = high, 4 = low (or others be carefull)</p>
+<p><b>define(&quot;TRANS_ENC&quot;,	&quot;7bit&quot;);</b><br>
+The encoding style for the text mimeparts, use &quot;7bit&quot; for the most western languages.</p>
+<p> <b>define(&quot;ENCODING&quot;, &quot;iso-8859-1&quot;);</b><br>
+The encoding style for your text presentation, use it the same way then in html documents.</p>
+<p><i><b>var $text_body;</b></i><br>
+the text part of the mail message </p>
+<p><i><b>var $html_body; </b></i><br>
+the html part of the mail message </p>
+<h3>Public methods</h3>
+<p><b>attach_mailer($name = "", $from, $to, $cc = "", $bcc = "", $subject = "")</b><br>
+The counstructor method, the attributes "$from" and "$to" (the subject is not required to send an e-mail but you should define a clear subject for all e-mails) are required. While creating an object only the input (e-mail addresses) is validated and if all data is OK a boolean is set. Only if the boolean ($valid_mail_adresses) is "true" a mail will be send.</p>
+<p><b>add_attach_file($file, $encoding = &quot;base64&quot;, $dispo = &quot;attachment&quot;, $type = &quot;application/octet-stream&quot;)</b><br>
+Use this method for every (non inline) attachment you want to send, inside a loop its very easy to handle a dynamic number of files.</p>
+<p><b>add_html_image($img_name)</b><br>
+Add with this method the images used inside the html code if you want to embed the images in the mail (there is no need to link to external images). The will create the internal link inside the email to show the images &quot;inline&quot; of the html. </p>
+<p><b>process_mail()</b><br>
+This method wil send the mail if the boolean ($valid_mail_adresses) is "true". You have to know that its also possible to send an empty mail with only the "from" and "to" e-mail addresses.</p>
+<p><b>get_msg_str()</b><br>
+This method is used to output all messages (from the array $msg) created while using the class.</p>
+<h3><b>Example code</b></h3>
+<p>
+  <textarea cols="100" rows="7" style="font-family:'Courier New', Courier, monospace;color:#0000FF;font-weight:bold;">$test = new attach_mailer("Olaf Lederer", "me@mail.com", "you@gmail.com", "copy@provider.com", "blind@copy.org", "Test mime email class subject");
+$test->text_body = "...Some body text\n\n the admin"; 
+$test->add_attach_file("example.zip");
+$test->add_attach_file("image.gif");
+$test->process_mail();</textarea>
+</p>
+<p>This example will send a short text type e-mail with to attachments to three e-mail addresses (to, Cc and Bcc). </p>
+<p><b>Check the other example files for more advanced e-mail examples. </b></p>
+<p>&nbsp;</p>
+</body>
+</html>

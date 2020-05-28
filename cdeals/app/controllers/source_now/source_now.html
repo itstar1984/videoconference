@@ -1,0 +1,444 @@
+<div class="loading" ng-if="customer.initalSourceLoading">
+    <img src="assets/img/loading.gif" alt="loading-img">
+    <div class="loading-msg">sourcing please wait.... </div>
+</div>
+<div class="page-header">
+    <h1 class="title">Initial Source</h1>
+    <div ng-if="customer.intialsourceNowTab == 'PassedProducts'">
+        <div class="page-sub-header" ng-if="successList.length == $root.total">
+            <h2 class="product_label">Whole of the Market Products</h2>
+        </div>
+        <div class="page-sub-header" ng-if="successList.length != $root.total">
+            <h2 class="product_label">Filtered Market Products</h2>
+        </div>
+    </div>
+    <div ng-if="customer.intialsourceNowTab == 'FailedProducts'">
+        <div class="page-sub-header" ng-if="failedList.length == $root.total">
+            <h2 class="product_label">Whole of the Market Failed Products</h2>
+        </div>
+        <div class="page-sub-header" ng-if="failedList.length != $root.total">
+            <h2 class="product_label">Filtered Market Failed Products</h2>
+        </div>
+    </div>
+</div>
+<div class="container-widget">
+    <div class="row">
+        <div class="col-sm-12">
+            <h4 class="display-inline">These are the Initial Products sourced based on the information provided, Please click Next to continue</h4>
+            <button type="button" class="btn btn-primary float-r scroll-top" ng-click="nextButtonAction();">Next</button>
+        </div>
+        <div class="col-md-12 col-lg-12">
+            <div class="panel panel-transparent padding-0">
+                <div class="panel-body">
+                    <div role="tabpanel">
+                        <!-- Nav tabs -->
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li role="presentation" ng-class="{'active' : getActiveSourceNowTab('PassedProducts')}">
+                                <a href="javascript:void(0)" ng-click="setSourceNowTab('PassedProducts')" data-toggle="tab">Passed Products ( {{successList.length}} )</a>
+                            </li>
+                            <li role="presentation" ng-class="{'active' : getActiveSourceNowTab('FailedProducts')}">
+                                <a href="javascript:void(0)" ng-click="setSourceNowTab('FailedProducts')" data-toggle="tab">Failed Products ( {{failedList.length}} )</a>
+                            </li>
+                        </ul>
+                        <!-- Tab panes -->
+                        <div class="tab-content">
+                            <div role="tabpanel" class="tab-pane" ng-class="{'active' : getActiveSourceNowTab('PassedProducts')}">
+                                <div class="row padding-0 soruceNowDiv">
+                                    <div class="col-md-3 FilterCol">
+                                        <div class="col-md-12 padding-0 margin-b-10" ng-if="customer.showLenderIntialSourceClient">
+                                            <div class="filter-header">Filter Product By Lender
+                                                <i class="fa fa-refresh float-r pointer-arrow" ng-click="customer.successFilter = {};changeFilter();"></i>
+                                            </div>
+                                            <div class="filter-body">
+                                                <ui-select dropdownenter ng-model="customer.successFilter.lender" ng-change="changeFilter()">
+                                                    <ui-select-match allow-clear="true" placeholder="Please Select">{{$select.selected}}</ui-select-match>
+                                                    <ui-select-choices repeat="value as value in lenderList| filter:$select.search">
+                                                        <div ng-bind-html="value | highlight: $select.search"></div>
+                                                    </ui-select-choices>
+                                                </ui-select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12 padding-0 margin-b-10">
+                                            <div class="filter-header">Rates</div>
+                                            <div class="filter-body col-md-12">
+                                                <div class="col-md-6 ">
+                                                    <div class="checkbox checkbox-primary">
+                                                        <input enter id="checkbox1" type="checkbox" checklist-value="'Fix'" checklist-model="customer.successFilter.ProductType"
+                                                            ng-disabled="disableProductType('fix')" ng-change="changeFilter()">
+                                                        <label for="checkbox1">
+                                                            Fixed
+                                                        </label>
+                                                    </div>
+                                                    <div class="checkbox checkbox-primary">
+                                                        <input enter id="checkbox2" type="checkbox" checklist-value="'disc'" checklist-model="customer.successFilter.ProductType"
+                                                            ng-disabled="disableProductType('disc')" ng-change="changeFilter()">
+                                                        <label for="checkbox2">
+                                                            Discounted
+                                                        </label>
+                                                    </div>
+                                                    <div class="checkbox checkbox-primary">
+                                                        <input enter id="checkbox3" type="checkbox" checklist-value="'Track'" checklist-model="customer.successFilter.ProductType"
+                                                            ng-disabled="disableProductType('Track')" ng-change="changeFilter()">
+                                                        <label for="checkbox3">
+                                                            Tracker
+                                                        </label>
+                                                    </div>
+                                                    <div class="checkbox checkbox-primary">
+                                                        <input enter id="checkbox4" type="checkbox" checklist-value="'Capped'" checklist-model="customer.successFilter.ProductType"
+                                                            ng-disabled="disableProductType('Capped')" ng-change="changeFilter()">
+                                                        <label for="checkbox4">
+                                                            Capped
+                                                        </label>
+                                                    </div>
+                                                    <div class="checkbox checkbox-primary">
+                                                        <input enter id="checkbox5" type="checkbox" checklist-value="'Var'" checklist-model="customer.successFilter.ProductType"
+                                                            ng-disabled="disableProductType('Var')" ng-change="changeFilter()">
+                                                        <label for="checkbox5">
+                                                            Variable
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="checkbox checkbox-primary">
+                                                        <input enter id="checkbox11" type="checkbox" checklist-value="'1 Years'" checklist-model="customer.successFilter.Term" ng-disabled="disableTerm('1 Year')"
+                                                            ng-change="changeFilter()" />
+                                                        <label for="checkbox11">
+                                                            1 Year
+                                                        </label>
+                                                    </div>
+                                                    <div class="checkbox checkbox-primary">
+                                                        <input enter id="checkbox12" type="checkbox" checklist-value="'2 Years'" checklist-model="customer.successFilter.Term" ng-disabled="disableTerm('2 Year')"
+                                                            ng-change="changeFilter()" />
+                                                        <label for="checkbox12">
+                                                            2 Year
+                                                        </label>
+                                                    </div>
+                                                    <div class="checkbox checkbox-primary">
+                                                        <input enter id="checkbox13" type="checkbox" checklist-value="'3 Years'" checklist-model="customer.successFilter.Term" ng-disabled="disableTerm('3 Year')"
+                                                            ng-change="changeFilter()" />
+                                                        <label for="checkbox13">
+                                                            3 Year
+                                                        </label>
+                                                    </div>
+                                                    <div class="checkbox checkbox-primary">
+                                                        <input enter id="checkbox14" type="checkbox" checklist-value="'5 Years'" checklist-model="customer.successFilter.Term" ng-disabled="disableTerm('5 Year')"
+                                                            ng-change="changeFilter()" />
+                                                        <label for="checkbox14">
+                                                            5 Year
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12 padding-0 margin-b-10">
+                                            <div class="filter-header">Choose My Mortgage</div>
+                                            <div class="filter-body">Interest Calculation Method
+                                                <div class="checkbox checkbox-primary">
+                                                    <input enter id="filter1" type="checkbox" checklist-value="'Offset'" checklist-model="customer.successFilter.ProductName"
+                                                        ng-change="changeFilter()">
+                                                    <label for="filter1">
+                                                        Offset Mortgages
+                                                    </label>
+                                                </div>
+                                                <div class="checkbox checkbox-primary">
+                                                    <input enter id="filter2" type="checkbox" checklist-value="'Not Allowed'" checklist-model="customer.successFilter.Overpayments"
+                                                        ng-change="changeFilter()">
+                                                    <label for="filter2">
+                                                        Overpayment Facility
+                                                    </label>
+                                                </div>
+                                                <div class="checkbox checkbox-primary">
+                                                    <input enter id="filter3" type="checkbox" checklist-value="'£0'" checklist-model="customer.successFilter.BookingFee" ng-change="changeFilter()">
+                                                    <label for="filter3">
+                                                        No Booking Fee
+                                                    </label>
+                                                </div>
+                                                <div class="checkbox checkbox-primary">
+                                                    <input enter id="filter4" type="checkbox" checklist-value="'£0'" checklist-model="customer.successFilter.ArrangementFee"
+                                                        ng-change="changeFilter()">
+                                                    <label for="filter4">
+                                                        No Arrangement Fee
+                                                    </label>
+                                                </div>
+                                                <div class="checkbox checkbox-primary">
+                                                    <input enter id="filter5" type="checkbox" checklist-value="'£0'" checklist-model="customer.successFilter.HLC" ng-change="changeFilter()">
+                                                    <label for="filter5">
+                                                        No Higher Lending Charge
+                                                    </label>
+                                                </div>
+                                                <div class="checkbox checkbox-primary">
+                                                    <input enter id="filter6" type="checkbox" checklist-value="'£0'" checklist-model="customer.successFilter.Cashback" ng-change="changeFilter()">
+                                                    <label for="filter6">
+                                                        Cash back Required
+                                                    </label>
+                                                </div>
+                                                <div class="checkbox checkbox-primary">
+                                                    <input enter id="filter9" type="checkbox" checklist-value="'Free Legal'" checklist-model="customer.successFilter.Incentives"
+                                                        ng-change="changeFilter()">
+                                                    <label for="filter9">
+                                                        Free Legal
+                                                    </label>
+                                                </div>
+                                                <div class="checkbox checkbox-primary">
+                                                    <input enter id="filter7" type="checkbox" checklist-value="'(none)'" checklist-model="customer.successFilter.ERC" ng-change="changeFilter()">
+                                                    <label for="filter7">
+                                                        No Early Repayment Charges
+                                                    </label>
+                                                </div>
+                                                <div class="checkbox checkbox-primary">
+                                                    <input enter id="filter8" type="checkbox" checklist-value="'0'" checklist-model="customer.successFilter.ERCOverHang" ng-change="changeFilter()">
+                                                    <label for="filter8">
+                                                        No Early Repayment Charge Overhang
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-9 DataCol" ng-if="successList && successList.length">
+                                        <dir-pagination-controls boundary-links="true" pagination-id="original" on-page-change="pageChangeHandler(newPageNumber)"
+                                            template-url="app/directives/dirPagination/dirPagination.tpl.html"></dir-pagination-controls>
+                                        <table class="table table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <td ng-if="customer.showLenderIntialSourceClient">Lender Name</td>
+                                                    <td>Product Description</td>
+                                                    <td>Term</td>
+                                                    <td>Rate</td>
+                                                    <td>Initial Payment</td>
+                                                    <td>Rev. Rate</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr dir-paginate="product in filtered = successList| filterMultiple: { LenderName : customer.successFilter.lender}| filterMultiple: {Term: customer.successFilter.Term}|filterMultiple: {ProductType: customer.successFilter.ProductType}|
+                                                    filterMultiple: {BookingFee : customer.successFilter.BookingFee}|filterMultiple: {ArrangementFee : customer.successFilter.ArrangementFee}|filterMultiple: {ERCOverHang : customer.successFilter.ERCOverHang}|filterMultiple: {ERC : customer.successFilter.ERC}|
+                                                   filterMultiple: {HLC : customer.successFilter.HLC}|filterMultiple: {Incentives : customer.successFilter.Incentives}|filterMultiple: {ProductName : customer.successFilter.ProductName}|filterMultiple: {Overpayments : customer.successFilter.Overpayments}| itemsPerPage: pageSize: 'original'"
+                                                    current-page="currentPage" pagination-id="original">
+                                                    <!--                                                <tr dir-paginate="product in filtered = successList| filterMultiple: { LenderName : customer.successFilter.lender, ProductType : customer.successFilter.ProductType , Term : customer.successFilter.Term, BookingFee : customer.successFilter.BookingFee , ArrangementFee : customer.successFilter.ArrangementFee, ERCOverHang : customer.successFilter.ERCOverHang, ERC : customer.successFilter.ERC,
+                                                    HLC : customer.successFilter.HLC, Incentives : customer.successFilter.Incentives, ProductName : customer.successFilter.ProductName, Overpayments : '!' + customer.successFilter.Overpayments} : true | itemsPerPage: pageSize: 'original'" current-page="currentPage" pagination-id="original">-->
+                                                    <td ng-if="customer.showLenderIntialSourceClient">{{product.LenderName}}</td>
+                                                    <td>{{product.ProductName}}</td>
+                                                    <td>{{product.Term}}</td>
+                                                    <td>{{product.LenderRate}}</td>
+                                                    <td>{{product.InitialPayment}}</td>
+                                                    <td>{{product.RevertionRate}}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <button type="button" class="btn" ng-click="backButtonAction();">Back</button>
+                                    <button type="button" class="btn btn-primary" ng-click="nextButtonAction();">Next</button>
+                                </div>
+                            </div>
+                            <div role="tabpanel" class="tab-pane" ng-class="{'active' : getActiveSourceNowTab('FailedProducts')}">
+                                <div class="row padding-0 soruceNowDiv" ng-if="getActiveSourceNowTab('FailedProducts')">
+                                    <div class="col-md-3 FilterCol">
+                                        <div class="col-md-12 padding-0 margin-b-10">
+                                            <div class="filter-header">Failed Reasons </div>
+                                            <div class="filter-body col-sm-12 padding-0">
+                                                <div class="col-sm-12 failed-product-row" ng-repeat="reason in failedResons" ng-click="moveback(reason)">
+                                                    <div class="col-sm-9 padding-l-0">
+                                                        <p class="font-600 margin-b-0">{{reason}}</p>
+                                                    </div>
+                                                    <div class="col-sm-3 padding-r-0">
+                                                        <p class="float-r margin-b-0">{{getFiledLength(reason)}}</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12 padding-0 margin-b-10" ng-if="customer.showLenderIntialSourceClient">
+                                            <div class="filter-header">Filter Product By Lender
+                                                <i class="fa fa-refresh float-r pointer-arrow" ng-click="customer.failedFilter = {};changeFilter();"></i>
+                                            </div>
+                                            <div class="filter-body">
+                                                <ui-select dropdownenter ng-model="customer.failedFilter.lender" ng-change="changeFilter()">
+                                                    <ui-select-match allow-clear="true" placeholder="Please Select">{{$select.selected}}</ui-select-match>
+                                                    <ui-select-choices repeat="value as value in lenderList| filter:$select.search">
+                                                        <div ng-bind-html="value | highlight: $select.search"></div>
+                                                    </ui-select-choices>
+                                                </ui-select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12 padding-0 margin-b-10">
+                                            <div class="filter-header">Rates</div>
+                                            <div class="filter-body col-md-12">
+                                                <div class="col-md-6 ">
+                                                    <div class="checkbox checkbox-primary">
+                                                        <input enter id="falid_rate1" type="checkbox" checklist-value="'Fix'" checklist-model="customer.failedFilter.ProductType"
+                                                            ng-disabled="disableFailedProductType('fix')" ng-change="changeFilter()">
+                                                        <label for="falid_rate1">
+                                                            Fixed
+                                                        </label>
+                                                    </div>
+                                                    <div class="checkbox checkbox-primary">
+                                                        <input enter id="falid_rate2" type="checkbox" checklist-value="'disc'" checklist-model="customer.failedFilter.ProductType"
+                                                            ng-disabled="disableFailedProductType('disc')" ng-change="changeFilter()">
+                                                        <label for="falid_rate2">
+                                                            Discounted
+                                                        </label>
+                                                    </div>
+                                                    <div class="checkbox checkbox-primary">
+                                                        <input enter id="falid_rate3" type="checkbox" checklist-value="'Track'" checklist-model="customer.failedFilter.ProductType"
+                                                            ng-disabled="disableFailedProductType('Track')" ng-change="changeFilter()">
+                                                        <label for="falid_rate3">
+                                                            Tracker
+                                                        </label>
+                                                    </div>
+                                                    <div class="checkbox checkbox-primary">
+                                                        <input enter id="falid_rate4" type="checkbox" checklist-value="'Capped'" checklist-model="customer.failedFilter.ProductType"
+                                                            ng-disabled="disableFailedProductType('Capped')" ng-change="changeFilter()">
+                                                        <label for="falid_rate4">
+                                                            Capped
+                                                        </label>
+                                                    </div>
+                                                    <div class="checkbox checkbox-primary">
+                                                        <input enter id="falid_rate5" type="checkbox" checklist-value="'Var'" checklist-model="customer.failedFilter.ProductType"
+                                                            ng-disabled="disableFailedProductType('Var')" ng-change="changeFilter()">
+                                                        <label for="falid_rate5">
+                                                            Variable
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="checkbox checkbox-primary">
+                                                        <input enter id="falid_year1" type="checkbox" checklist-value="'1 Years'" checklist-model="customer.failedFilter.Term" ng-disabled="disableFailedTerm('1 Year')"
+                                                            ng-change="changeFilter()" />
+                                                        <label for="falid_year1">
+                                                            1 Year
+                                                        </label>
+                                                    </div>
+                                                    <div class="checkbox checkbox-primary">
+                                                        <input enter id="falid_year2" type="checkbox" checklist-value="'2 Years'" checklist-model="customer.failedFilter.Term" ng-disabled="disableFailedTerm('2 Year')"
+                                                            ng-change="changeFilter()" />
+                                                        <label for="falid_year2">
+                                                            2 Year
+                                                        </label>
+                                                    </div>
+                                                    <div class="checkbox checkbox-primary">
+                                                        <input enter id="falid_year3" type="checkbox" checklist-value="'3 Years'" checklist-model="customer.failedFilter.Term" ng-disabled="disableFailedTerm('3 Year')"
+                                                            ng-change="changeFilter()" />
+                                                        <label for="falid_year3">
+                                                            3 Year
+                                                        </label>
+                                                    </div>
+                                                    <div class="checkbox checkbox-primary">
+                                                        <input enter id="falid_year4" type="checkbox" checklist-value="'5 Years'" checklist-model="customer.failedFilter.Term" ng-disabled="disableFailedTerm('5 Year')"
+                                                            ng-change="changeFilter()" />
+                                                        <label for="falid_year4">
+                                                            5 Year
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12 padding-0 margin-b-10">
+                                            <div class="filter-header">Choose My Mortgage</div>
+                                            <div class="filter-body">Interest Calculation Method
+                                                <div class="checkbox checkbox-primary">
+                                                    <input enter id="falid_filt1" type="checkbox" checklist-value="'Offset'" checklist-model="customer.failedFilter.ProductName"
+                                                        ng-change="changeFilter()">
+                                                    <label for="falid_filt1">
+                                                        Offset Mortgages
+                                                    </label>
+                                                </div>
+                                                <div class="checkbox checkbox-primary">
+                                                    <input enter id="falid_filt2" type="checkbox" checklist-value="'Not Allowed'" checklist-model="customer.failedFilter.Overpayments"
+                                                        ng-change="changeFilter()">
+                                                    <label for="falid_filt2">
+                                                        Overpayment Facility
+                                                    </label>
+                                                </div>
+                                                <div class="checkbox checkbox-primary">
+                                                    <input enter id="falid_filt3" type="checkbox" checklist-value="'£0'" checklist-model="customer.failedFilter.BookingFee" ng-change="changeFilter()">
+                                                    <label for="falid_filt3">
+                                                        No Booking Fee
+                                                    </label>
+                                                </div>
+                                                <div class="checkbox checkbox-primary">
+                                                    <input enter id="falid_filt4" type="checkbox" checklist-value="'£0'" checklist-model="customer.failedFilter.ArrangementFee"
+                                                        ng-change="changeFilter()">
+                                                    <label for="falid_filt4">
+                                                        No Arrangement Fee
+                                                    </label>
+                                                </div>
+                                                <div class="checkbox checkbox-primary">
+                                                    <input enter id="falid_filt5" type="checkbox" checklist-value="'£0'" checklist-model="customer.failedFilter.HLC" ng-change="changeFilter()">
+                                                    <label for="falid_filt5">
+                                                        No Higher Lending Charge
+                                                    </label>
+                                                </div>
+                                                <div class="checkbox checkbox-primary">
+                                                    <input enter id="falid_filt6" type="checkbox" checklist-value="'£0'" checklist-model="customer.failedFilter.Cashback" ng-change="changeFilter()">
+                                                    <label for="falid_filt6">
+                                                        Cash back Required
+                                                    </label>
+                                                </div>
+                                                <div class="checkbox checkbox-primary">
+                                                    <input enter id="falid_filt7" type="checkbox" checklist-value="'Free Legal'" checklist-model="customer.failedFilter.Incentives"
+                                                        ng-change="changeFilter()">
+                                                    <label for="falid_filt7">
+                                                        Free Legal
+                                                    </label>
+                                                </div>
+                                                <div class="checkbox checkbox-primary">
+                                                    <input enter id="falid_filt8" type="checkbox" checklist-value="'(none)'" checklist-model="customer.failedFilter.ERC" ng-change="changeFilter()">
+                                                    <label for="falid_filt8">
+                                                        No Early Repayment Charges
+                                                    </label>
+                                                </div>
+                                                <div class="checkbox checkbox-primary">
+                                                    <input enter id="falid_filt9" type="checkbox" checklist-value="'0'" checklist-model="customer.failedFilter.ERCOverHang" ng-change="changeFilter()">
+                                                    <label for="falid_filt9">
+                                                        No Early Repayment Charge Overhang
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-9 DataCol" ng-if="failedList && failedList.length">
+                                        <dir-pagination-controls boundary-links="true" pagination-id="copy" on-page-change="pageChangeHandler(newPageNumber)" template-url="app/directives/dirPagination/dirPagination.tpl.html"></dir-pagination-controls>
+                                        <table class="table table-hover table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <td>Product Name</td>
+                                                    <td ng-if="customer.showLenderIntialSourceClient">Lender Name</td>
+                                                    <td>Term</td>
+                                                    <td>Rate</td>
+                                                    <td>Max LTV Payment</td>
+                                                    <td>Rejection Reason</td>
+                                                    <td>Product Type</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <!--                                                <tr ng-repeat="product in failedList">-->
+                                                <tr dir-paginate="product in filtered = failedList| filterMultiple: { LenderName : customer.failedFilter.lender}| filterMultiple: {Term: customer.failedFilter.Term}|filterMultiple: {ProductType: customer.failedFilter.ProductType}|
+                                                    filterMultiple: {BookingFee : customer.failedFilter.BookingFee}|filterMultiple: {ArrangementFee : customer.failedFilter.ArrangementFee}|filterMultiple: {ERCOverHang : customer.failedFilter.ERCOverHang}|filterMultiple: {ERC : customer.failedFilter.ERC}|
+                                                   filterMultiple: {HLC : customer.failedFilter.HLC}|filterMultiple: {Incentives : customer.failedFilter.Incentives}|filterMultiple: {ProductName : customer.failedFilter.ProductName}|filterMultiple: {Overpayments : customer.failedFilter.Overpayments}| itemsPerPage: pageSize: 'copy'"
+                                                    pagination-id="copy">
+                                                    <td>{{product.ProductName}}</td>
+                                                    <td ng-if="customer.showLenderIntialSourceClient">{{product.LenderName}}</td>
+                                                    <td>{{product.Term}}</td>
+                                                    <td>{{product.LenderRate}}</td>
+                                                    <td>{{product.MaxLTV}}</td>
+                                                    <td>{{product.FailureReason}}</td>
+                                                    <td>{{product.ProductType}}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <button type="button" class="btn scroll-top" ng-click="backButtonAction();">Back</button>
+                                    <button type="button" class="btn btn-primary scroll-top" ng-click="nextButtonAction();">Next</button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

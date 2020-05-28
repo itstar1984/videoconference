@@ -1,0 +1,94 @@
+html, body {
+    padding: 0;
+    margin: 0;
+
+    height: 100%;
+    width: 100%;
+
+    background: url("User.ico");
+    background-size: 100% 100%;
+    color: #fff;
+    font-family: Consolas, monospace;
+}
+
+input, button {
+    font-family: Consolas, monospace;
+}
+
+#localVideo {
+    position: fixed;
+    right: 0px;
+    bottom: 0px;
+
+}
+
+
+#remotes {
+    display: -moz-flex;
+    display: flex;
+
+    -moz-align-items: center;
+         align-items: center;
+
+    -moz-box-sizing: border-box;
+         box-sizing: border-box;
+
+    -moz-box-justify-content: space-between;
+             justify-content: space-between;
+
+	height:100%
+}
+
+#stopicon {
+	bottom: -0.4%;
+	position: fixed;
+	margin-left: 75%;
+	height: 8%;
+}
+
+#starticon {
+	bottom: -1.5%;
+	position: fixed;
+	margin-left: 20%;
+	height: 10%;
+}
+
+#bottombar {
+	bottom: 0;
+	position: fixed;
+	width: 100%;
+	height:7%;
+
+}
+
+#remotes video {
+    margin: auto;
+    padding: 0%;
+
+    -moz-box-sizing: border-box;
+         box-sizing: border-box;
+}
+
+#statusbar {
+    position: fixed;
+    top: 5px;
+    left: 5px;
+    display: block;
+    opacity: 1;
+
+    -webkit-transition: opacity 0.5s ease;
+       -moz-transition: opacity 0.5s ease;
+            transition: opacity 0.5s ease;
+}
+
+#statusbar:hover {
+    opacity: 1;
+}
+
+#comment{
+	position : fixed;
+	font-size: 200%;
+	width : 100%;
+	top : 40%;
+	text-align : center;
+}

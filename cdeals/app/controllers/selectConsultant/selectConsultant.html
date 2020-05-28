@@ -1,0 +1,54 @@
+<div class="loading" ng-if="isLoading">
+    <img src="assets/img/loading.gif" alt="loading-img">
+    <div class="loading-msg">Connecting to consultant... </div>
+</div>
+<div ng-if="isEngagedConsultant()">
+    <!--    <div ng-include="'app/controllers/header/header.html'"></div>-->
+    <div id="top" class="clearfix">
+        <div class="applogo">
+            <a href="javascript:void(0)" class="logo"><img src="assets/img/logo.png" alt="icon" class="icon logo-icon"></a>
+        </div>
+        <a href="javascript:void(0)" class="sidebar-open-button" onclick="sidebarToggle()"><i class="fa fa-bars"></i></a>
+        <a href="javascript:void(0)" class="sidebar-open-button-mobile"><i class="fa fa-bars"></i></a>
+        <ul class="topmenu" ng-if="FFID">
+            <li><span style="font-size:15px;">Case Ref: {{FFID}}</span></li>
+        </ul>
+<!--        <a href="javascript:void(0)" class="sidepanel-open-button" onclick="sidePannelToggle()"><i class="fa fa-outdent"></i></a>-->
+        <ul class="top-right">
+            <li class="dropdown link dropdown-hover">
+                <a href="javascript:void(0)" data-toggle="dropdown" class="dropdown-toggle profilebox"><!--<img src="assets/img/profileimg.png" alt="img"> --><b>{{userName}}</b><span class="caret"></span></a>
+                <ul class="dropdown-menu dropdown-menu-list dropdown-menu-right">
+                    <li><a href="javascript:void(0)" ng-click="logOut()"><i class="fa falist fa-power-off"></i> Logout</a></li>
+                </ul>
+            </li>
+            <li class="link" ng-if="myConsultantInfo"><span><i class="fa fa-circle color-green"></i> &nbsp;{{myConsultantInfo.name}}</span></li>
+            <li class="link">
+                <a href="javascript:void(0)" onclick="sidePannelToggle()"  tooltip="Click here, if you need consultant help" tooltip-placement="bottom"  class="btn btn-primary">Need Help? Click Here </a>
+            </li>
+            <li class="link">
+                <a href="javascript:void(0)" tooltip="Click here to upload document" tooltip-placement="bottom" ng-click="caseDocument()" class="notifications">Case Document</a>
+            </li>
+            <li class="link">
+                <a href="javascript:void(0)" tooltip="Refresh" tooltip-placement="bottom" ng-click="refreshChatPosition($event)" class="notifications"><i class="fa fa-refresh"></i></a>
+            </li>
+            <li class="link">
+                <a href="javascript:void(0)"  ng-click="logOut()" class="btn btn-primary">Logout </a>
+            </li>
+        </ul>
+    </div>
+    <div ng-include="'app/controllers/side_pannel/side_pannel.html'"></div>
+    <div class="sidebar clearfix">
+        <ul class="sidebar-panel nav">
+            <li ng-repeat="tab in tabList" ng-if="tabsStats && tabsStats.currentTabId">
+                <a href="javascript:void(0)" class="scroll-top" ng-click="changeTab(tab)" ng-class="{'active':activeTab(tab)}">
+                    {{tab.title}}
+                    <i class="fa fa-check-circle checked-tab float-l" ng-if="isTicked(tab)"></i>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="content">
+        <div ui-view=""></div>
+    </div>
+</div>
+<div  ng-show="myConsultantInfo" ng-include="'app/controllers/chat_control/chat_control.html'"></div>

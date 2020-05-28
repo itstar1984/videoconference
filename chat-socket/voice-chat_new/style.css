@@ -1,0 +1,55 @@
+html, body {
+    padding: 0;
+    margin: 0;
+
+    height: 100%;
+    width: 100%;
+
+/*    background: url("User.ico");*/
+    background-size: 100% 100%;
+    color: #fff;
+    font-family: Consolas, monospace;
+}
+
+#localVideo {
+    position: fixed;
+    right: 0px;
+    bottom: 0px;
+
+}
+
+
+#remotes {
+    display: -moz-flex;
+    display: flex;
+
+    -moz-align-items: center;
+    align-items: center;
+
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+
+    -moz-box-justify-content: space-between;
+    justify-content: space-between;
+
+    height:100%
+}
+
+.videoContainer {
+    position: relative;
+    width: 200px;
+    height: 150px;
+}
+.videoContainer video {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+.volume_bar {
+    position: absolute;
+    width: 5px;
+    height: 0px;
+    right: 0px;
+    bottom: 0px;
+    background-color: #12acef;
+}

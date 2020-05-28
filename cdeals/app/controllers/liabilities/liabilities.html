@@ -1,0 +1,547 @@
+<!-- Start Page Loading -->
+<div class="loading" ng-if="!customer.activeApplicant"><img src="assets/img/loading.gif" alt="loading-img"></div>
+<!-- End Page Loading -->
+<div ng-if="customer.activeApplicant">
+    <div class="page-header">
+        <h1 class="title">Liabilities</h1>
+    </div>
+    <div class="container-widget">
+        <div class="row">
+            <div class="col-md-12 col-lg-12">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="col-lg-12 padding-0 margin-b-10">
+                            <ul id="fact-form-breadcrumb">
+                                <li>
+                                    <a ng-class="{'active' : isLiabilitiesTab('liabilities')}" href="javascript:;" ng-click="setLiabilitiesTab('liabilities');" >Liabilities</a>
+                                </li>
+                                <li>
+                                    <a ng-class="{'active' : isLiabilitiesTab('payDayLoans')}" href="javascript:;" ng-click="setLiabilitiesTab('payDayLoans');">PayDay Loans</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-sm-12" ng-if="isLiabilitiesTab('liabilities')">
+                            <div class="col-lg-12" ng-if="!customer.allLiability">
+                                <div class="form-group">
+                                    <label class="form-label">Do you have any Liabilities?</label>
+                                    <div>
+                                        <span class="checkboxes">
+                                            <div class="form-control radio-group">
+                                                <div class="radio radio-info radio-inline">
+                                                    <input enter type="radio" id="isLiabilities_1" ng-value="true" ng-model="customer.Liabilities.isLiabilities">
+                                                    <label for="isLiabilities_1"> Yes </label>
+                                                </div>
+                                                <div class="radio radio-info radio-inline">
+                                                    <input enter type="radio" id="isLiabilities_2" ng-value="false" ng-model="customer.Liabilities.isLiabilities">
+                                                    <label for="isLiabilities_2"> No </label>
+                                                </div>
+                                            </div>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel panel-default panel-with-data" ng-repeat="(key,liablity) in customer.allLiability track by $index">
+                                <form name="updateliabilityForm" novalidate ng-submit="updateliabilityForm.$valid && updateLiability(liablity)" >
+                                    <div class="panel-title benifits_title" ng-click="liablity.show = !liablity.show">{{liablity.FullName}} / {{liablity.eLiabilityTypeDescription}} /{{liablity.MonthlyPayments}}</div>
+                                    <input  type="hidden" ng-model="liablity.LiabilityID"/>
+                                    <div class="panel-body" ng-if="liablity.show">
+                                        <div class="col-lg-12 padding-0">
+                                            <div >
+                                                <div class="col-sm-12">
+                                                    <div class="form-group">
+                                                        <span class="step-heading step-heading-small">EDIT LIABILITY</span>
+                                                    </div>
+                                                </div> 
+                                                <div class="col-lg-6">
+                                                    <div class="form-group">
+                                                        <label class="form-label">Applicants</label>
+                                                        <div ng-repeat="applicantData in customer.applicants track by $index" ng-if="applicantData.ClientID">
+                                                            <div class="checkbox checkbox-primary" ng-class="{'checkbox-required': !(liablity.clientids && liablity.clientids.length)}">
+                                                                <input enter id="applicant_{{key}}_{{$index}}" type="checkbox" checklist-value="applicantData.ClientID" checklist-model="liablity.clientids" ng-required="!(liablity.clientids && liablity.clientids.length)" />
+                                                                <label for="applicant_{{key}}_{{$index}}">{{getApplicantTitle(applicantData.eTitleID) + ' ' + applicantData.Firstname + ' ' + applicantData.Surname}}</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    <div class="form-group">
+                                                        <label class="form-label">Liability Type</label>
+                                                        <div>
+                                                            <span class="checkboxes">
+                                                                <ui-select dropdownenter ng-model="liablity.eLiabilityTypeID" ng-required="true">
+                                                                    <ui-select-match placeholder="Please Select">{{$select.selected.name}}</ui-select-match>
+                                                                    <ui-select-choices repeat="value.val as value in liabilitiesType| filter:$select.search">
+                                                                        <div ng-bind-html="value.name | highlight: $select.search"></div>
+                                                                    </ui-select-choices>
+                                                                </ui-select>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6" ng-if="liablity.eLiabilityTypeID === 3">
+                                                    <div class="form-group">
+                                                        <label class="form-label">Card type</label>
+                                                        <div>
+                                                            <span class="checkboxes">
+                                                                <ui-select dropdownenter ng-model="liablity.eCreditCardTypeID" ng-required="true">
+                                                                    <ui-select-match placeholder="Please Select">{{$select.selected.name}}</ui-select-match>
+                                                                    <ui-select-choices repeat="value.val as value in cardType| filter:$select.search">
+                                                                        <div ng-bind-html="value.name | highlight: $select.search"></div>
+                                                                    </ui-select-choices>
+                                                                </ui-select>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6" ng-if="liablity.eLiabilityTypeID === 3">
+                                                    <div class="form-group">
+                                                        <label class="form-label">Credit Limit</label>
+                                                        <span class="checkboxes pound">
+                                                            <input type="text" numbers-only enter class="form-control"  ng-model="liablity.CreditLimit"
+                                                                   ng-focus="setFieldTypingStatus('CreditLimit', true)"
+                                                                   ng-blur="setFieldTypingStatus('CreditLimit', false)"
+                                                                   ng-disabled="checkPartnerTyping('CreditLimit')" ng-change="changeAllLiabilityField(key, 'CreditLimit')" ng-required="true">
+                                                        </span>
+                                                    </div>
+                                                    <div ng-if="checkPartnerTyping('CreditLimit')">
+                                                        <label class="typing">{{partner}} is typing ...</label>
+                                                    </div>
+                                                </div>
+                                                <div ng-if="liablity.eLiabilityTypeID === 1 || liablity.eLiabilityTypeID === 2 || liablity.eLiabilityTypeID === 7 || liablity.eLiabilityTypeID === 8">
+                                                    <div class="col-lg-6" >
+                                                        <div class="form-group">
+                                                            <label class="form-label">Rate of Interest (%)</label>
+                                                            <div>
+                                                                <span class="checkboxes">
+                                                                    <input type="text" enter class="form-control"  ng-model="liablity.Rate" only-decimal-digits="5"
+                                                                           ng-focus="setFieldTypingStatus('Rate', true)"
+                                                                           ng-blur="setFieldTypingStatus('Rate', false)"
+                                                                           ng-disabled="checkPartnerTyping('Rate')" ng-change="changeAllLiabilityField(key, 'Rate')" ng-required="true">
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                        <div ng-if="checkPartnerTyping('Rate')">
+                                                            <label class="typing">{{partner}} is typing ...</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-6" >
+                                                        <div class="form-group" ng-class="{'has-error': hasNotValidErrorDate(liablity.StartDate)}">
+                                                            <label class="form-label">Start Date</label>
+                                                            <div>
+                                                                <span class="checkboxes">
+                                                                    <input type="text" enter class="form-control" ng-datepicker  ng-model="liablity.StartDate"
+                                                                           ng-focus="setFieldTypingStatus('StartDate', true)"
+                                                                           ng-blur="setFieldTypingStatus('StartDate', false)"
+                                                                           ng-disabled="checkPartnerTyping('StartDate')" ng-change="changeAllLiabilityField(key, 'StartDate')" ng-required="true">
+                                                                </span>
+                                                            </div>
+                                                            <span ng-show="hasNotValidErrorDate(liablity.StartDate)" class="help-block">Please enter Valid Date</span>
+                                                        </div>
+                                                        <div ng-if="checkPartnerTyping('StartDate')">
+                                                            <label class="typing">{{partner}} is typing ...</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-6" >
+                                                        <div class="form-group" ng-class="{'has-error': hasNotValidErrorDate(liablity.EndDate)}">
+                                                            <label class="form-label">End Date</label>
+                                                            <div>
+                                                                <span class="checkboxes">
+                                                                    <input type="text" enter class="form-control" ng-datepicker ng-model="liablity.EndDate"
+                                                                           ng-focus="setFieldTypingStatus('EndDate', true)"
+                                                                           ng-blur="setFieldTypingStatus('EndDate', false)"
+                                                                           ng-disabled="checkPartnerTyping('EndDate')" ng-change="changeAllLiabilityField(key, 'EndDate')" ng-required="true">
+                                                                </span>
+                                                            </div>
+                                                            <span ng-show="hasNotValidErrorDate(liablity.EndDate)" class="help-block">Please enter Valid Date</span>
+                                                        </div>
+                                                        <div ng-if="checkPartnerTyping('EndDate')">
+                                                            <label class="typing">{{partner}} is typing ...</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6" ng-if="liablity.eLiabilityTypeID === 6">
+                                                    <div class="form-group">
+                                                        <label class="form-label">Overdraft Rate(%)</label>
+                                                        <div>
+                                                            <span class="checkboxes">    
+                                                                <input type="text" enter class="form-control"  ng-model="liablity.OverdraftIntRate" only-decimal-digits="5"
+                                                                       ng-focus="setFieldTypingStatus('OverdraftIntRate', true)"
+                                                                       ng-blur="setFieldTypingStatus('OverdraftIntRate', false)"
+                                                                       ng-disabled="checkPartnerTyping('OverdraftIntRate')" ng-change="changeAllLiabilityField(key, 'OverdraftIntRate')" ng-required="true">
+                                                            </span>
+                                                        </div>
+
+                                                    </div>
+                                                    <div ng-if="checkPartnerTyping('OverdraftIntRate')">
+                                                        <label class="typing">{{partner}} is typing ...</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    <div class="form-group">
+                                                        <label class="form-label">Monthly Payment</label>
+                                                        <span class="checkboxes pound">
+                                                            <input type="text" numbers-only enter class="form-control"  ng-model="liablity.MonthlyPayments"
+                                                                   ng-focus="setFieldTypingStatus('MonthlyPayments', true)"
+                                                                   ng-blur="setFieldTypingStatus('MonthlyPayments', false)"
+                                                                   ng-disabled="checkPartnerTyping('MonthlyPayments')" ng-change="changeAllLiabilityField(key, 'MonthlyPayments')" ng-required="true">
+                                                        </span>
+                                                    </div>
+                                                    <div ng-if="checkPartnerTyping('MonthlyPayments')">
+                                                        <label class="typing">{{partner}} is typing ...</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    <div class="form-group">
+                                                        <label class="form-label">Balance Outstanding</label>
+                                                        <span class="checkboxes pound">
+                                                            <input type="text" numbers-only enter class="form-control"  ng-model="liablity.BalanceOutstanding"
+                                                                   ng-focus="setFieldTypingStatus('BalanceOutstanding', true)"
+                                                                   ng-blur="setFieldTypingStatus('BalanceOutstanding', false)"
+                                                                   ng-disabled="checkPartnerTyping('BalanceOutstanding')" ng-change="changeAllLiabilityField(key, 'BalanceOutstanding')" ng-required="true">
+                                                        </span>
+                                                    </div>
+                                                    <div ng-if="checkPartnerTyping('BalanceOutstanding')">
+                                                        <label class="typing">{{partner}} is typing ...</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    <div class="form-group">
+                                                        <label class="form-label">Provider</label>
+                                                        <div>
+                                                            <span class="checkboxes">
+                                                                <input type="text" enter class="form-control"  ng-model="liablity.Provider"
+                                                                       ng-focus="setFieldTypingStatus('Provider', true)"
+                                                                       ng-blur="setFieldTypingStatus('Provider', false)"
+                                                                       ng-disabled="checkPartnerTyping('Provider')" ng-change="changeAllLiabilityField(key, 'Provider')" >
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                    <div ng-if="checkPartnerTyping('Provider')">
+                                                        <label class="typing">{{partner}} is typing ...</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    <div class="form-group">
+                                                        <label class="form-label">Repaid</label>
+                                                        <div >
+                                                            <div class="checkbox checkbox-primary">
+                                                                <input enter id="repaid_{{$index}}_1" type="checkbox" ng-value="true" ng-model="liablity.Secured" ng-checked="liablity.Secured === true;">
+                                                                <label for="repaid_{{$index}}_1"></label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div ng-if="checkPartnerTyping('Secured')">
+                                                        <label class="typing">{{partner}} is typing ...</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    <div class="form-group">
+                                                        <label class="form-label">Consolidate</label>
+                                                        <div >
+                                                            <div class="checkbox checkbox-primary">
+                                                                <input enter id="Consolidate_{{$index}}" type="checkbox" ng-value="true" ng-model="liablity.Consolidate" ng-checked="liablity.Consolidate === true;">
+                                                                <label for="Consolidate_{{$index}}"></label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-12 ">
+                                                <button type="submit"  class="btn btn-success float-r scroll-top" >Update</button>
+                                                <button type="button" ng-click="deleteLiabilities(liablity)" class="scroll-top btn btn-danger float-r margin-r-10" >Delete</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="col-sm-12 margin-b-10">
+                                <button ng-if="customer.allLiability.length" type="button" class="btn btn-default float-r" ng-click="customer.Liabilities.isLiabilities = !customer.Liabilities.isLiabilities">Add More</button>
+                            </div>
+                            <div class="col-lg-12" style="padding: 10px;border: 1px solid #ddd;" ng-if="customer.Liabilities.isLiabilities">
+                                <form name="addliabilityForm" novalidate ng-submit="addliabilityForm.$valid && createLiability(customer.Liabilities);">
+                                    <div class="col-lg-12 padding-0" >
+                                        <div class="col-sm-12">
+                                            <div class="form-group">
+                                                <span class="step-heading step-heading-small">ADD LIABILITY</span>                                                
+                                            </div>
+                                        </div> 
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label class="form-label">Applicants</label>
+                                                <div ng-repeat="applicantData in customer.applicants track by $index" ng-if="applicantData.ClientID">
+                                                    <div class="checkbox checkbox-primary" ng-class="{'checkbox-required': !(customer.Liabilities.clientids && customer.Liabilities.clientids.length)}">
+                                                        <input enter id="applicant_{{$index}}" type="checkbox" checklist-value="applicantData.ClientID" checklist-model="customer.Liabilities.clientids" ng-required="!(customer.Liabilities.clientids && customer.Liabilities.clientids.length)" />
+                                                        <label for="applicant_{{$index}}">{{getApplicantTitle(applicantData.eTitleID) + ' ' + applicantData.Firstname + ' ' + applicantData.Surname}}</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label class="form-label">Liability Type</label>
+                                                <div>
+                                                    <span class="checkboxes">
+                                                        <ui-select dropdownenter ng-model="customer.Liabilities.eLiabilityTypeID" ng-required="true">
+                                                            <ui-select-match placeholder="Please Select">{{$select.selected.name}}</ui-select-match>
+                                                            <ui-select-choices repeat="value.val as value in liabilitiesType| filter:$select.search">
+                                                                <div ng-bind-html="value.name | highlight: $select.search"></div>
+                                                            </ui-select-choices>
+                                                        </ui-select>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6" ng-if="customer.Liabilities.eLiabilityTypeID === 3">
+                                            <div class="form-group">
+                                                <label class="form-label">Card type</label>
+                                                <div>
+                                                    <span class="checkboxes">
+                                                        <ui-select dropdownenter ng-model="customer.Liabilities.eCreditCardTypeID" ng-required="true">
+                                                            <ui-select-match placeholder="Please Select">{{$select.selected.name}}</ui-select-match>
+                                                            <ui-select-choices repeat="value.val as value in cardType| filter:$select.search">
+                                                                <div ng-bind-html="value.name | highlight: $select.search"></div>
+                                                            </ui-select-choices>
+                                                        </ui-select>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6" ng-if="customer.Liabilities.eLiabilityTypeID === 3">
+                                            <div class="form-group">
+                                                <label class="form-label">Credit Limit</label>
+
+                                                <span class="checkboxes pound">
+                                                    <input type="text" numbers-only enter class="form-control"  ng-model="customer.Liabilities.CreditLimit"
+                                                           ng-focus="setFieldTypingStatus('CreditLimit', true)"
+                                                           ng-blur="setFieldTypingStatus('CreditLimit', false)"
+                                                           ng-disabled="checkPartnerTyping('CreditLimit')" ng-change="changeLiabilityField('CreditLimit')" ng-required="true">
+                                                </span>
+                                            </div>
+                                            <div ng-if="checkPartnerTyping('CreditLimit')">
+                                                <label class="typing">{{partner}} is typing ...</label>
+                                            </div>
+                                        </div>
+                                        <div ng-if="customer.Liabilities.eLiabilityTypeID === 1 || customer.Liabilities.eLiabilityTypeID === 2 || customer.Liabilities.eLiabilityTypeID === 7 || customer.Liabilities.eLiabilityTypeID === 8">
+                                            <div class="col-lg-6" >
+                                                <div class="form-group">
+                                                    <label class="form-label">Rate of Interest (%)</label>
+                                                    <div>
+                                                        <span class="checkboxes">
+                                                            <input type="text" enter class="form-control"  ng-model="customer.Liabilities.Rate" only-decimal-digits="5"
+                                                                   ng-focus="setFieldTypingStatus('Rate', true)"
+                                                                   ng-blur="setFieldTypingStatus('Rate', false)"
+                                                                   ng-disabled="checkPartnerTyping('Rate')" ng-change="changeLiabilityField('Rate')" ng-required="true">
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div ng-if="checkPartnerTyping('Rate')">
+                                                    <label class="typing">{{partner}} is typing ...</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6" >
+                                                <div class="form-group" ng-class="{'has-error': hasNotValidErrorDate(customer.Liabilities.StartDate)}">
+                                                    <label class="form-label">Start Date</label>
+                                                    <div>
+                                                        <span class="checkboxes">
+                                                            <input type="text" enter class="form-control" ng-datepicker  ng-model="customer.Liabilities.StartDate"
+                                                                   ng-focus="setFieldTypingStatus('StartDate', true)"
+                                                                   ng-blur="setFieldTypingStatus('StartDate', false)"
+                                                                   ng-disabled="checkPartnerTyping('StartDate')" ng-change="changeLiabilityField('StartDate')" ng-required="true">
+                                                        </span>
+                                                    </div>
+                                                    <span ng-show="hasNotValidErrorDate(customer.Liabilities.StartDate)" class="help-block">Please enter Valid Date</span>
+                                                </div>
+                                                <div ng-if="checkPartnerTyping('StartDate')">
+                                                    <label class="typing">{{partner}} is typing ...</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6" >
+                                                <div class="form-group" ng-class="{'has-error': hasNotValidErrorDate(customer.Liabilities.EndDate)}">
+                                                    <label class="form-label">End Date</label>
+                                                    <div>
+                                                        <span class="checkboxes">
+                                                            <input type="text" enter class="form-control" ng-datepicker ng-model="customer.Liabilities.EndDate"
+                                                                   ng-focus="setFieldTypingStatus('EndDate', true)"
+                                                                   ng-blur="setFieldTypingStatus('EndDate', false)"
+                                                                   ng-disabled="checkPartnerTyping('EndDate')" ng-change="changeLiabilityField('EndDate')" ng-required="true">
+                                                        </span>
+                                                    </div>
+                                                    <span ng-show="hasNotValidErrorDate(customer.Liabilities.EndDate)" class="help-block">Please enter Valid Date</span>
+                                                </div>
+                                                <div ng-if="checkPartnerTyping('EndDate')">
+                                                    <label class="typing">{{partner}} is typing ...</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6" ng-if="customer.Liabilities.eLiabilityTypeID === 6">
+                                            <div class="form-group">
+                                                <label class="form-label">Overdraft Rate(%)</label>
+                                                <div>
+                                                    <span class="checkboxes">
+                                                        <input type="text" enter class="form-control"  ng-model="customer.Liabilities.OverdraftIntRate" only-decimal-digits="5"
+                                                               ng-focus="setFieldTypingStatus('OverdraftIntRate', true)"
+                                                               ng-blur="setFieldTypingStatus('OverdraftIntRate', false)"
+                                                               ng-disabled="checkPartnerTyping('OverdraftIntRate')" ng-change="changeLiabilityField('OverdraftIntRate')" ng-required="true">
+                                                    </span>
+                                                </div>
+
+                                            </div>
+                                            <div ng-if="checkPartnerTyping('OverdraftIntRate')">
+                                                <label class="typing">{{partner}} is typing ...</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label class="form-label">Monthly Payment</label>
+                                                <span class="checkboxes pound">
+                                                    <input type="text" numbers-only enter class="form-control"  ng-model="customer.Liabilities.MonthlyPayments"
+                                                           ng-focus="setFieldTypingStatus('MonthlyPayments', true)"
+                                                           ng-blur="setFieldTypingStatus('MonthlyPayments', false)"
+                                                           ng-disabled="checkPartnerTyping('MonthlyPayments')" ng-change="changeLiabilityField('MonthlyPayments')" ng-required="true">
+                                                </span>
+                                            </div>
+                                            <div ng-if="checkPartnerTyping('MonthlyPayments')">
+                                                <label class="typing">{{partner}} is typing ...</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label class="form-label">Balance Outstanding</label>
+                                                <span class="checkboxes pound">
+                                                    <input type="text" numbers-only enter class="form-control"  ng-model="customer.Liabilities.BalanceOutstanding"
+                                                           ng-focus="setFieldTypingStatus('BalanceOutstanding', true)"
+                                                           ng-blur="setFieldTypingStatus('BalanceOutstanding', false)"
+                                                           ng-disabled="checkPartnerTyping('BalanceOutstanding')" ng-change="changeLiabilityField('BalanceOutstanding')" ng-required="true">
+                                                </span>    
+                                                <div ng-if="checkPartnerTyping('BalanceOutstanding')">
+                                                    <label class="typing">{{partner}} is typing ...</label>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label class="form-label">Provider</label>
+                                                <div>
+                                                    <span class="checkboxes">
+                                                        <input type="text" enter class="form-control"  ng-model="customer.Liabilities.Provider"
+                                                               ng-focus="setFieldTypingStatus('Provider', true)"
+                                                               ng-blur="setFieldTypingStatus('Provider', false)"
+                                                               ng-disabled="checkPartnerTyping('Provider')" ng-change="changeLiabilityField('Provider')">
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div ng-if="checkPartnerTyping('Provider')">
+                                                <label class="typing">{{partner}} is typing ...</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label class="form-label">Repaid</label>
+                                                <div >
+                                                    <div class="checkbox checkbox-primary">
+                                                        <input enter id="Repaid_{{$index}}" type="checkbox" ng-value="true" ng-model="customer.Liabilities.Secured" ng-checked="customer.Liabilities.Secured === true;">
+                                                        <label for="Repaid_{{$index}}"></label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div ng-if="checkPartnerTyping('Secured')">
+                                                <label class="typing">{{partner}} is typing ...</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label class="form-label">Consolidate</label>
+                                                <div >
+                                                    <div class="checkbox checkbox-primary" ng-init="customer.Liabilities.Consolidate = false;">
+                                                        <input enter id="New_Consolidate" type="checkbox" value="true" ng-model="customer.Liabilities.Consolidate" ng-checked="customer.Liabilities.Consolidate == true;">
+                                                        <label for="New_Consolidate"></label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-12 ">
+                                            <button type="submit" class="btn btn-success float-r scroll-top" >Save and Continue</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="col-lg-12 padding-t-5">
+                                <button type="button" class="btn scroll-top" ng-click="backButtonAction();">Back</button>
+                                <button type="button" class="btn btn-primary scroll-top" ng-click="createLiability(customer.Liabilities)">Save and Continue</button>
+                            </div>
+                        </div>
+
+                        <div ng-if="isLiabilitiesTab('payDayLoans')">
+                            <div class="col-lg-12 padding-0">
+                                <form name="payDayLoansForm" novalidate ng-submit="payDayLoansForm.$valid && createpaydayloan(customer.ExtraCommonLenderQn);">                           
+                                    <div class="col-lg-12">
+                                        <div class="form-group">
+                                            <label class="form-label">Have you had any pay day loans in the last 12 months</label>
+                                            <div>
+                                                <span class="checkboxes">
+                                                    <div class="form-control radio-group">
+                                                        <div class="radio radio-info radio-inline">
+                                                            <input enter type="radio" id="Payday12Months_1" ng-value="true" ng-model="customer.ExtraCommonLenderQn.Payday12Months">
+                                                            <label for="Payday12Months_1"> Yes </label>
+                                                        </div>
+                                                        <div class="radio radio-info radio-inline">
+                                                            <input enter type="radio" id="Payday12Months_2" ng-value="false" ng-model="customer.ExtraCommonLenderQn.Payday12Months">
+                                                            <label for="Payday12Months_2"> No </label>
+                                                        </div>
+                                                    </div>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <div class="form-group">
+                                            <label class="form-label">Have these been repaid on time</label>
+                                            <div>
+                                                <span class="checkboxes">
+                                                    <div class="form-control radio-group">
+                                                        <div class="radio radio-info radio-inline">
+                                                            <input enter type="radio" id="PaydayRepaid_1" ng-value="true" ng-model="customer.ExtraCommonLenderQn.PaydayRepaid">
+                                                            <label for="PaydayRepaid_1"> Yes </label>
+                                                        </div>
+                                                        <div class="radio radio-info radio-inline">
+                                                            <input enter type="radio" id="PaydayRepaid_2" ng-value="false" ng-model="customer.ExtraCommonLenderQn.PaydayRepaid">
+                                                            <label for="PaydayRepaid_2"> No </label>
+                                                        </div>
+                                                    </div>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <div class="form-group">
+                                            <label class="form-label">Do you have ongoing income payment agreement? </label>
+                                            <div>
+                                                <span class="checkboxes">
+                                                    <div class="form-control radio-group">
+                                                        <div class="radio radio-info radio-inline">
+                                                            <input enter type="radio" id="ongoingincome_1" ng-value="true" ng-model="customer.ExtraCommonLenderQn.IPA">
+                                                            <label for="ongoingincome_1"> Yes </label>
+                                                        </div>
+                                                        <div class="radio radio-info radio-inline">
+                                                            <input enter type="radio" id="ongoingincome_2" ng-value="false" ng-model="customer.ExtraCommonLenderQn.IPA">
+                                                            <label for="ongoingincome_2"> No </label>
+                                                        </div>
+                                                    </div>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12 ">
+                                        <button type="button" class="btn scroll-top" ng-click="backButtonActionForTabs();">Back</button>
+                                        <button type="submit" class="btn btn-primary scroll-top" >Save and Continue</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>  
+    </div>
+</div>

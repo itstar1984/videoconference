@@ -1,0 +1,513 @@
+/* Tabs Form Styles */
+.nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus {
+    color: #333 !important;
+    background-color: #d0dfea !important;
+}
+.checked-tab{
+    padding-top: 6px;
+    padding-right: 12px;
+
+}
+.display-inline{
+    display: inline !important;
+}
+.logo-icon{
+    width: 90px;
+    height: 40px;
+}
+label.typing{
+    color: #0a85ff !important;
+}
+.tab-data {
+    border-left:4px solid #f5f5f5;
+    margin-top:-20px;
+    padding: 10px 15px;
+    width: 92%;
+}
+
+.nav-tabs-custom {
+    margin-right:0px !important;
+}
+
+.radio-group{
+    border-radius: 0px !important;
+    border: none;
+    box-shadow: none;
+    padding: 0px;
+}
+
+.step-heading {
+    background: #baeeff;
+    color: #5a5a5a;
+    display: block;
+    font-size: 18px;
+    font-weight: 500;
+    padding: 8px 10px;
+}
+
+.step-heading-small {
+    background: #d0dfea;
+    border-bottom: 1px solid #ddd;
+    font-size: 12px;
+    font-weight: 300;
+    padding: 4px 10px;
+    text-transform: uppercase;
+    width: 95%;
+}
+
+#fact-form-breadcrumb {
+    list-style: none;
+    display: inline-block;
+    padding-left: 5px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+#fact-form-breadcrumb .icon {
+    font-size: 14px;
+}
+#fact-form-breadcrumb li {
+    float: left;
+}
+#fact-form-breadcrumb li a {
+    color: #FFF;
+    display: block;
+    background: #3498db;
+    text-decoration: none;
+    position: relative;
+    height: 30px;
+    line-height: 27px;
+    padding: 0 10px 0 5px;
+    text-align: center;
+    margin-right: 23px;
+    font-size: 14px;
+}
+#fact-form-breadcrumb li:nth-child(even) a {
+    background-color: #2980b9;
+}
+#fact-form-breadcrumb li:nth-child(even) a:before {
+    border-color: #2980b9;
+    border-left-color: transparent;
+}
+#fact-form-breadcrumb li:nth-child(even) a:after {
+    border-left-color: #2980b9;
+}
+#fact-form-breadcrumb li:first-child a {
+    padding-left: 15px;
+
+}
+#fact-form-breadcrumb li:first-child a:before {
+    border: none;
+}
+
+
+#fact-form-breadcrumb li a:before, #fact-form-breadcrumb li a:after {
+    content: "";
+    position: absolute;
+    top: 0;
+    border: 0 solid #3498db;
+    border-width: 15px 10px;
+    width: 0;
+    height: 0;
+}
+#fact-form-breadcrumb li a:before {
+    left: -20px;
+    border-left-color: transparent;
+}
+#fact-form-breadcrumb li a:after {
+    left: 100%;
+    border-color: transparent;
+    border-left-color: #3498db;
+}
+#fact-form-breadcrumb li a:hover {
+    background-color: #1abc9c;
+    outline: none;
+}
+#fact-form-breadcrumb li a:hover:before {
+    border-color: #1abc9c;
+    border-left-color: transparent;
+}
+#fact-form-breadcrumb li a:hover:after {
+    border-left-color: #1abc9c;
+}
+#fact-form-breadcrumb li a.active {
+    background-color: #16a085;
+    outline: none;
+}
+#fact-form-breadcrumb li a.active:before {
+    border-color: #16a085;
+    border-left-color: transparent;
+}
+#fact-form-breadcrumb li a.active:after {
+    border-left-color: #16a085;
+}
+.addressListDiv {
+    height: 200px;
+    overflow-y: auto;
+    border: 1px solid #e2e2e2;
+    margin:5px 0px 20px 10px;
+}
+
+.addressListDiv ul {
+    padding: 10px 0px 5px 23px !important;
+}
+.mortgageDiv {
+    border: 1px solid #e2e2e2;
+    border-radius: 4px;
+    text-align: center;
+    padding:0px !important;
+}
+.mortgageTitle {
+    background: #399bff;
+    color: #fff;
+    padding:5px;
+    margin-bottom: 0px !important;
+}
+.mortgageLabel {
+    background: #f5f5f5;
+    padding:5px;
+}
+.mortgageVal {
+    font-weight: 600;
+}
+.benifits_title {
+    padding: 10px !important;
+    background: #f5f5f5;
+    margin: 0px !important;
+}
+/*------------- validation-----------------------*/
+/*form.ng-submitted .form-group label {
+    color: #ef4836;
+}*/
+form.ng-submitted .form-group input.ng-invalid {
+    border-color: #ef4836;
+    box-shadow: none;
+}
+form.ng-submitted .select2.ng-invalid .select2-choice{
+    border-color: #ef4836;
+    box-shadow: none;
+}
+
+.filter-header {
+    text-transform: uppercase;
+    font-weight: 600;
+    background: #399bff;
+    padding: 5px 10px;
+    color: white;
+}
+
+.filter-header i {
+    margin-top: 5px;
+}
+
+.filter-body {
+    padding: 10px;
+    border: 1px solid #e2e2e2;
+}
+
+.filter-header small {
+    text-transform: capitalize;
+}
+.error {
+    color: red;
+}
+.panel-with-data {
+    border: 1px solid #ddd;
+    padding: 0px;
+    margin-left: 14px;
+}
+
+.panel-with-data .panel-title {
+    text-transform: capitalize;
+}
+
+.panel-with-data .panel-title:hover {
+    cursor:pointer;
+    text-decoration: underline;
+}
+
+.panel-with-data .panel-body {
+    padding: 15px 5px !important;
+}
+.bor{ border-left:#dfdfdf solid 2px; border-right:#dfdfdf solid 2px; padding:5px 10px;}
+.bor-b{border-bottom:#dfdfdf solid 1px; color:#424242;} 
+.greay-rc{-webkit-border-radius: 10px 10px 0px 0px;-moz-border-radius: 10px 10px 0px 0px;border-radius: 10px 10px 0px 0px; background:#1c2b36; height:40px; color:#fff;}
+.blue-rc{-webkit-border-radius: 10px 10px 0px 0px;-moz-border-radius: 10px 10px 0px 0px;border-radius: 10px 10px 0px 0px; background:#0ba5d7; height:40px; color:#fff;}
+.bor-left.pdes{ width:150px;}
+.source_now_table tbody .header-tr td {
+    border-top:none !important;
+}
+.source_now_table tbody tr {
+    border-left: 1px solid #ddd !important;
+}
+.source_now_table tbody .header-tr {
+    border-left:none !important;
+}
+.noteHeadTD {
+    border-bottom: 1px solid #ddd !important;
+}
+.checkbox input[type="checkbox"]:disabled + label::before {
+    background-color: #399bff !important;
+}
+.box {
+    border: 1px solid #ddd;
+    color: black;
+    display: inline-block;
+    margin-right: -5px;
+    padding: 2px 5px;
+    text-align: center;
+}
+.box.boxcolor {
+    border: 1px solid #ddd;
+    color: white;
+    background: #399bff;
+}
+.pointer-arrow {
+    cursor: pointer;
+}
+.form-group .checkboxes.pound:before {
+    position: absolute;
+    top: 35px;
+    content: "\00a3";
+    left: 15px;
+    color: #58666e;
+    font-size: 12px;
+}
+
+.form-group .checkboxes.pound .form-control {
+    padding-left: 20px !important;
+}
+.disable-pointer{
+    cursor: not-allowed;
+    pointer-events: none;
+}
+/*----------------- chat css -------------------------*/
+.chat-box{
+    position: fixed;
+    width: 430px;
+    z-index: 2;
+    bottom: 0;
+    right: 0;
+}
+.chat-panel .panel-title  {
+    background: #16a085;
+    color: #fff;
+    border: 1px solid #16a085;
+    cursor: pointer;
+}
+
+.chat-panel .panel-title ul.panel-tools {
+    right: 4px !important;
+    top: 7px !important;
+}
+
+.chat-panel .panel-title ul.panel-tools li a {
+    color: #fff !important;
+}
+.chat-text-time{
+    font-weight: 600;
+    float: right;
+    font-size: 10px;
+    font-style: oblique;
+}
+.blink {
+    animation: blink 2s steps(5, start) infinite;
+    -webkit-animation: blink 1s steps(5, start) infinite;
+    color:green;
+}
+@keyframes blink {
+    to {
+        visibility: hidden;
+    }
+}
+@-webkit-keyframes blink {
+    to {
+        visibility: hidden;
+    }
+}
+.video-audio-panel .panel-title  {
+    background: #16a085;
+    color: #fff;
+    border: 1px solid #16a085;
+}
+
+.video-audio-panel .panel-title ul.panel-tools {
+    right: 4px !important;
+    top: 7px !important;
+}
+
+.video-audio-panel .panel-title ul.panel-tools li a {
+    color: #fff !important;
+}
+
+.font-600 {
+    font-weight: 600;
+}
+
+.message-div span.own-msg, .message-div span.con-msg{
+    float:right;
+    background:#ddd;
+    border:1px solid #e2e2e2;
+    border-radius: 4px;
+    padding: 10px; 
+    width: 100%;
+    word-wrap: break-word;
+}
+.message-div span.con-msg {
+    float:left !important;
+}
+.nav-tabs.nav-justified > li > a {
+    font-size: 19px !important;
+}
+.msg_div {
+    width:calc(100% - 170px) !important;
+    height: 400px;
+}
+
+.msg_list_div {
+    overflow-y: auto;
+    height: 325px;
+}
+
+.client_div {
+    width:150px !important;
+    border-right: 3px solid #f5f5f5;
+}
+
+.client_list_div {
+    height: 400px;
+    overflow-y: auto;
+}
+
+.send-btn {
+    margin-top: 10px;
+    margin-left: -10px;
+}
+
+.chat_title {
+    font-size: 14px;
+    font-weight: 600;
+    border-bottom: 1px solid #f5f5f5;
+    padding-left: 10px;
+}
+
+.chat_form {
+    margin-bottom: 10px;
+    border-top: 1px solid #f2f2f2;
+}
+
+.client_name {
+    font-weight: 600;
+    border-bottom: 1px solid #f2f2f2;
+    cursor: pointer;
+}
+
+.client_name.active {
+    background: #f2f2f2;
+}
+
+form.ng-submitted .checkbox.checkbox-required label {
+    color: #ef4836;
+}
+form.ng-submitted .checkbox.checkbox-required label::before {
+    border: 1px solid #ef4836 !important;
+}
+
+.monthlist  label{
+    cursor: pointer;
+    display: block;
+}
+
+.monthlist.hide.ng-show {
+    display: block !important;
+}
+.monthlist {
+    padding-left: 10px !important;
+    padding-top: 10px;
+}
+.monthlist li {
+    background: #399bff;
+    color: white;
+    display: inline-block;
+    list-style: outside none none;
+    margin: 1px;
+    padding: 5px 10px;
+    width: 15%;
+    position: relative;
+}
+
+.monthlist li a{
+    cursor: pointer;
+    /*    display: block;*/
+    color: white !important;    
+    font-size: 12px;
+    font-weight: bold !important;
+}
+.monthlist label:before {
+    content: "";
+    display: inline-block;  
+    position: absolute;
+    left: 0;
+    bottom: 0px;
+    width: 100%;
+    height: 100%;  
+
+} 
+.monthlist input[type=radio]:checked + label:before {
+    content: "\2713";
+    color: #f3f3f3;
+    font-size: 18px;
+    text-align: right;
+    line-height: 18px; 
+    padding: 2px;
+    z-index: -1;
+    box-shadow: 0 0 90px 2px red inset;
+} 
+.failed-product-row {
+    cursor: pointer;
+    border-bottom: 1px solid #e2e2e2; 
+    padding: 10px !important;
+}
+.failed-product-row:hover {
+    background: #eff7ff;
+}
+/* For Firefox */
+input[type='number'] {
+    -moz-appearance:textfield !important;
+}
+/* Webkit browsers like Safari and Chrome */
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none !important;
+    margin: 0;
+}
+.form-group .checkboxes:after {
+    position: absolute;
+    top: 30px;
+    right: -5px;
+    content: " ";
+    background: url(../../assets/img/audio.png);
+    background-size: auto;
+    background-repeat: no-repeat;
+    width: 10%;
+    height: 22%;
+}
+.select2-container, input[type=text], input[type=number] {
+    width: 90% !important;
+}
+.login-form  .select2-container {
+    width: 100% !important;
+}
+.login-form  input[type=text] {
+    width: 100% !important;
+}
+.page-sub-header{
+    text-align: center;
+    margin-top: -20px;
+}
+/* / Sourcing Product Title / */
+.product_label{
+    font-size: 22px;
+    background: -webkit-linear-gradient(#252525, #FFF);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}

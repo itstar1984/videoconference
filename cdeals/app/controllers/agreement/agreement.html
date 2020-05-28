@@ -1,0 +1,27 @@
+
+<div class="agreement-form">
+    <form name="agreementForm" ng-submit="agreed()" novalidate>
+        <div class="top">
+            <h1>Agreement</h1>
+        </div>
+        <div class="form-area">
+            <div class="panel panel-default padding-0">
+                <div class="panel-body">
+                    <div class="col-sm-12 margin-b-20 padding-0">
+                        <embed src="assets/pdf/CIDD.pdf" width="100%" style="height:100vh;"/>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="checkbox checkbox-primary">
+                            <input enter id="checkbox101" type="checkbox" name="agree" ng-model="user.agree" ng-value="true">
+                            <label class="agreeLabel" for="checkbox101">I Agree</label>
+                        </div>
+                    </div>
+                    <div class="col-sm-2 col-sm-offset-5 margin-b-20">
+                        <button type="submit" ng-disabled="!user.agree" class="btn btn-primary btn-block">Submit</button>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </form>
+</div>

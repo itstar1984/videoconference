@@ -1,0 +1,307 @@
+<!-- Start Page Loading -->
+<div class="loading"
+     ng-if="!customer.activeApplicant"><img src="assets/img/loading.gif"
+         alt="loading-img"></div>
+<!-- End Page Loading -->
+<div ng-if="customer.activeApplicant">
+    <div class="page-header">
+        <h1 class="title">Property Details</h1>
+    </div>
+    <div class="container-widget">
+        <div class="row">
+            <div class="col-md-12 col-lg-12">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="col-lg-12 padding-0">
+                            <form class="form"
+                                  name="nonsourcePropertyForm"
+                                  ng-submit="nonsourcePropertyForm.$valid && savePropertyForm(customer)"
+                                  novalidate>
+                                <div class="col-lg-10">
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label class="form-label">Is parking offsite/Onsite</label>
+                                            <div>
+                                                <span class="checkboxes">
+                                                    <div class="form-control radio-group">
+                                                        <div class="radio radio-info radio-inline">
+                                                            <input type="radio"
+                                                                   id="isExpat1"
+                                                                   ng-value="true"
+                                                                   ng-model="customer.ExtraCommonLenderQn.ParkingStatus"
+                                                                   enter>
+                                                            <label for="isExpat1"> offsite </label>
+                                                        </div>
+                                                        <div class="radio radio-info radio-inline">
+                                                            <input type="radio"
+                                                                   id="isExpat2"
+                                                                   ng-value="false"
+                                                                   ng-model="customer.ExtraCommonLenderQn.ParkingStatus"
+                                                                   enter>
+                                                            <label for="isExpat2"> Onsite </label>
+                                                        </div>
+                                                    </div>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label class="form-label">Is there a Parking bay</label>
+                                            <div>
+                                                <span class="checkboxes">
+                                                    <div class="form-control radio-group">
+                                                        <div class="radio radio-info radio-inline">
+                                                            <input type="radio"
+                                                                   id="IsParking1"
+                                                                   ng-value="'True'"
+                                                                   ng-model="customer.ExtraCommonLenderQn.IsParking"
+                                                                   enter>
+                                                            <label for="IsParking1"> Yes </label>
+                                                        </div>
+                                                        <div class="radio radio-info radio-inline">
+                                                            <input type="radio"
+                                                                   id="IsParking2"
+                                                                   ng-value="'False'"
+                                                                   ng-model="customer.ExtraCommonLenderQn.IsParking"
+                                                                   enter>
+                                                            <label for="IsParking2"> No </label>
+                                                        </div>
+                                                    </div>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label class="form-label">Used for business purpose</label>
+                                            <div>
+                                                <span class="checkboxes">
+                                                    <div class="form-control radio-group">
+                                                        <div class="radio radio-info radio-inline">
+                                                            <input type="radio"
+                                                                   id="Usedforbusiness1"
+                                                                   ng-value="true"
+                                                                   ng-model="customer.Properties.IsUsedForBuisnessPurpose"
+                                                                   enter>
+                                                            <label for="Usedforbusiness1"> Yes </label>
+                                                        </div>
+                                                        <div class="radio radio-info radio-inline">
+                                                            <input type="radio"
+                                                                   id="Usedforbusiness2"
+                                                                   ng-value="false"
+                                                                   ng-model="customer.Properties.IsUsedForBuisnessPurpose"
+                                                                   enter>
+                                                            <label for="Usedforbusiness2"> No </label>
+                                                        </div>
+                                                    </div>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label class="form-label">Is there a Garage</label>
+                                            <div>
+                                                <span class="checkboxes">
+                                                    <div class="form-control radio-group">
+                                                        <div class="radio radio-info radio-inline">
+                                                            <input enter
+                                                                   type="radio"
+                                                                   id="IsGarage1"
+                                                                   ng-value="'True'"
+                                                                   ng-model="customer.ExtraCommonLenderQn.IsGarage">
+                                                            <label for="IsGarage1"> Yes </label>
+                                                        </div>
+                                                        <div class="radio radio-info radio-inline">
+                                                            <input enter
+                                                                   type="radio"
+                                                                   id="IsGarage2"
+                                                                   ng-value="'False'"
+                                                                   ng-model="customer.ExtraCommonLenderQn.IsGarage">
+                                                            <label for="IsGarage2"> No </label>
+                                                        </div>
+                                                    </div>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label class="form-label">Capital Raising</label>
+                                            <div>
+                                                <span class="checkboxes">
+                                                    <div class="form-control radio-group">
+                                                        <div class="radio radio-info radio-inline">
+                                                            <input type="radio"
+                                                                   id="IsCapitalRaisingAllowed1"
+                                                                   ng-value="true"
+                                                                   ng-model="customer.ExtraCommonLenderQn.IsCapitalRaisingAllowed"
+                                                                   enter>
+                                                            <label for="IsCapitalRaisingAllowed1"> Yes </label>
+                                                        </div>
+                                                        <div class="radio radio-info radio-inline">
+                                                            <input type="radio"
+                                                                   id="IsCapitalRaisingAllowed2"
+                                                                   ng-value="false"
+                                                                   ng-model="customer.ExtraCommonLenderQn.IsCapitalRaisingAllowed"
+                                                                   enter>
+                                                            <label for="IsCapitalRaisingAllowed2"> No </label>
+                                                        </div>
+                                                    </div>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label class="form-label">No. of Bathrooms </label>
+                                            <div>
+                                                <span class="checkboxes">
+                                                    <div class="col-sm-12 padding-0"
+                                                         style="margin-bottom: 18px;">
+                                                        <div class="col-sm-3 padding-0">
+                                                            <input type="text"
+                                                                   enter
+                                                                   only-digits
+                                                                   class="form-control"
+                                                                   ng-model="customer.ExtraCommonLenderQn.NumBathrooms"
+                                                                   ng-change="changeTextField('NumBathrooms')"
+                                                                   ng-focus="setFieldTypingStatus('NumBathrooms', true)"
+                                                                   ng-blur="setFieldTypingStatus('NumBathrooms', false)"
+                                                                   ng-disabled="checkPartnerTyping('NumBathrooms')">
+                                                        </div>
+                                                    </div>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div ng-if="checkPartnerTyping('NumBathrooms')">
+                                            <label class="typing">{{partner}} is typing ...</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label class="form-label">No. of Receptions </label>
+                                            <div>
+                                                <span class="checkboxes">
+                                                    <div class="col-sm-12 padding-0"
+                                                         style="margin-bottom: 18px;">
+                                                        <div class="col-sm-3 padding-0">
+                                                            <input type="text"
+                                                                   enter
+                                                                   only-digits
+                                                                   class="form-control"
+                                                                   ng-model="customer.ExtraCommonLenderQn.NumReception"
+                                                                   ng-change="changeExtraTextField('NumReception')"
+                                                                   ng-focus="setFieldTypingStatus('NumReception', true)"
+                                                                   ng-blur="setFieldTypingStatus('NumReception', false)"
+                                                                   ng-disabled="checkPartnerTyping('NumReception')">
+                                                        </div>
+                                                    </div>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div ng-if="checkPartnerTyping('NumReception')">
+                                            <label class="typing">{{partner}} is typing ...</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6"
+                                         ng-if="customer.ExtraCommonLenderQn.IsGarage === 'Yes'">
+                                        <div class="form-group">
+                                            <label class="form-label">Garage type</label>
+                                            <div>
+                                                <span class="checkboxes">
+                                                    <ui-select dropdownenter
+                                                               ng-model="customer.ExtraCommonLenderQn.GarageType"
+                                                               class="form-control">
+                                                        <ui-select-match placeholder="Please Select">{{$select.selected.label}}</ui-select-match>
+                                                        <ui-select-choices repeat="value.value as value in GarageTypeList| filter:$select.search">
+                                                            <div ng-bind-html="value.label | highlight: $select.search"></div>
+                                                        </ui-select-choices>
+                                                    </ui-select>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--                                    <div class="col-lg-6">
+                                                                            <div class="form-group">
+                                                                                <div class="checkbox checkbox-primary">
+                                                                                    <input id="checkbox101" type="checkbox" ng-model="customer.ExtraCommonLenderQn.IsCapitalRaisingAllowed">
+                                                                                    <label for="checkbox101"> Capitral Raising</label>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>-->
+                                    <div ng-show="customer.Properties.ePropertyTypeID && customer.Properties.ePropertyTypeID === 2">
+                                        <div class="col-lg-12">
+                                            <div class="form-group"
+                                                 style="border-bottom: 1px solid #000;">
+                                                <label class="form-label"
+                                                       style="font-weight: 600;">Additional Flat questions :</label>
+                                                <br/>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label class="form-label">Own entrance </label>
+                                                <div>
+                                                    <span class="checkboxes">
+                                                        <div class="form-control radio-group">
+                                                            <div class="radio radio-info radio-inline">
+                                                                <input type="radio"
+                                                                       id="IsOwnentrance1"
+                                                                       ng-value="true"
+                                                                       ng-model="customer.ExtraCommonLenderQn.OwnEntrance"
+                                                                       enter>
+                                                                <label for="IsOwnentrance1"> Yes </label>
+                                                            </div>
+                                                            <div class="radio radio-info radio-inline">
+                                                                <input type="radio"
+                                                                       id="IsOwnentrance2"
+                                                                       ng-value="false"
+                                                                       ng-model="customer.ExtraCommonLenderQn.OwnEntrance"
+                                                                       enter>
+                                                                <label for="IsOwnentrance2"> No </label>
+                                                            </div>
+                                                        </div>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label class="form-label">What percentage of flat has flat roof </label>
+                                                <div>
+                                                    <span class="checkboxes">
+                                                        <input type="text"
+                                                               enter
+                                                               only-digits
+                                                               class="form-control"
+                                                               ng-model="customer.Properties.FlatRoofPerc"
+                                                               ng-change="changeTextField('FlatRoofPerc')"
+                                                               ng-focus="setFieldTypingStatus('FlatRoofPerc', true)"
+                                                               ng-blur="setFieldTypingStatus('FlatRoofPerc', false)"
+                                                               ng-disabled="checkPartnerTyping('FlatRoofPerc')">
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div ng-if="checkPartnerTyping('FlatRoofPerc')">
+                                                <label class="typing">{{partner}} is typing ...</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12 ">
+                                        <button type="button"
+                                                class="btn scroll-top"
+                                                ng-click="backButtonAction();">Back</button>
+                                        <button type="submit"
+                                                class="btn btn-primary scroll-top">Save and Continue</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

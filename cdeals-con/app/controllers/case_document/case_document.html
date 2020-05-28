@@ -1,0 +1,68 @@
+<div class="modal-header">
+    <h4 class="modal-title">Case Document</h4>
+</div>
+<div class="modal-body min-h-10">
+    <div class="row">
+        <div class="panel panel-widget">
+            <!--                <div class="panel-title">
+                                <span class="info_title">Case Document</span>
+                            </div>-->
+            <div class="panel-body table-responsive">
+                <div class="col-md-12">
+                    <table class="table table-hover table-bordered">
+                        <thead>
+                            <tr>
+                                <td>#</td>
+                                <td>FFID</td>
+                                <td>Case Document Type</td>
+                                <td>Case Document Name</td>
+                                <td></td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="caseDoc in caseDocuments">
+                                <td>{{$index + 1}}</td>
+                                <td>{{caseDoc.FFID}}</td>
+                                <td>{{caseDoc.eCaseDocument_Description}}</td>
+                                <td>{{caseDoc.CaseDocument_Name}}</td>
+                                <td>
+                                    <a href="javascript:void(0);"
+                                       ng-click="downloadFile(caseDoc)"
+                                       class="btn btn-xs btn-primary">Download</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <form class="form">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label>Select client</label>
+                            <select class="form-control"
+                                    ng-model="clientFFID">
+                                <option ng-value="client.FFID"
+                                        ng-repeat="client in clients">Case ref: {{client.FFID}}</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Upload Case Document</label>
+                            <input enter
+                                   type="file"
+                                   id="fileInput"
+                                   upload-files
+                                   class="form-control file-input" /> </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <input type="button"
+           class="btn"
+           value="Close"
+           ng-click="$dismiss()" />
+    <input type="button"
+           class="btn btn-primary"
+           value="Upload"
+           ng-click="uploadDocument()" /> </div>

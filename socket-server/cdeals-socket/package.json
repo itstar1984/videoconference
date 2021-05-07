@@ -6,6 +6,6 @@
     "express": "~3.2.6",
     "jade": "~0.31.2",
     "socket.io": "~0.9.16",
-    "underscore": "^1.8.3"
+    "underscore": "^1.12.1"
   }
 }
